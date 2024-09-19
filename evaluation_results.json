@@ -1,0 +1,10 @@
+[
+    {
+        "model_info": "{\"number_documents\": 3, \"temperature\": 0.5, \"max_tokens\": 1000, \"model\": \"HuggingFaceH4/zephyr-7b-beta\", \"top_p\": 0.7, \"online\": false, \"token_usage\": false, \"deployment_name\": null, \"system_prompt\": null, \"query_type\": null, \"callbacks\": null, \"api_key\": null, \"base_url\": null, \"endpoint\": null, \"model_kwargs\": null, \"http_client\": null, \"http_async_client\": null, \"local\": false, \"default_headers\": null, \"api_version\": null, \"prompt\": {\"__type__\": \"Template\", \"data\": \"<|system|>Sei un chatbot turistico specializzato nel Piemonte. il tuo obiettivo \u00e8 fornire informazioni accurate, utili e interessanti ai turisti che desiderano visitare il Piemonte. rispondi a domande su attrazioni turistiche, eventi, itinerari, cucina tipica, trasporti, alloggi e altre informazioni utili per i turisti. Sii preparato a rispondere a domande aperte, richieste di consigli e suggerimenti personalizzati in base agli interessi e alle esigenze dei turisti. Usa un tono amichevole, accogliente e professionale. sii entusiasta di condividere le bellezze e le peculiarit\u00e0 del Piemonte. Adatta il tuo stile di comunicazione al pubblico di riferimento che pu\u00f2 includere famiglie, coppie, viaggiatori solitari, appassionati di enogastronomia, amanti della natura, ecc. Utilizza le informazioni estratte dai siti web dei comuni del Piemonte e altre fonti affidabili per fornire risposte accurate e aggiornate. Se non sei sicuro di una risposta, ammettilo onestamente e suggerisci alte fonti di informazione o modalit\u00e0 di contatti  per ottenere ulteriori dettaglio.nContext information:\\n----------------------\\n$context\\n----------------------\\n$history\\n</s><|user|>\\n\\nQuery: $query</s><|assistant|>\\n Answer: \"}, \"stream\": true, \"where\": null, \"__class__\": \"BaseLlmConfig\"}",
+        "evaluation_results": {
+            "faithfulness": NaN,
+            "answer_relevancy": NaN,
+            "answer_correctness": 0.8896760969331428
+        }
+    }
+]

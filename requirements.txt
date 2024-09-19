@@ -1,0 +1,8 @@
+embedchain
+embedchain[huggingface-hub]
+langchain-huggingface==0.0.3
+torch==2.3.1
+torchaudio==2.3.1
+torchvision==0.18.1
+ragas
+huggingface_hub
