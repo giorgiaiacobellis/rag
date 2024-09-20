@@ -1,8 +1,7 @@
 #from ragas.embeddings import HuggingfaceEmbeddings
-from ragas.llms import LangchainLLMWrapper
+#from ragas.llms import LangchainLLMWrapper
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_huggingface import HuggingFaceEmbeddings, HuggingFaceEndpoint, HuggingFacePipeline
+from langchain_huggingface import HuggingFaceEmbeddings, HuggingFacePipeline
 import utils
 import data
 import os
@@ -19,12 +18,20 @@ os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
 #print("Caricamento dati completato!")
 
 
-
-
 def main():
   
   # embedding model
   embed_model = HuggingFaceEmbeddings(model_name='sentence-transformers/all-mpnet-base-v2')
+
+  pipe = pipeline(
+      model=AutoModelForCausalLM.from_pretrained("arcee-ai/Llama-3.1-SuperNova-Lite"),
+      tokenizer=AutoTokenizer.from_pretrained("arcee-ai/Llama-3.1-SuperNova-Lite"),
+      return_full_text=True,  # langchain expects the full text
+      task='text-generation',
+      temperature=0.5,
+      repetition_penalty=1.1,  # without this output begins repeating
+      max_new_tokens = 512
+  )
 
   pipe2 = pipeline(
       model=AutoModelForCausalLM.from_pretrained("mistralai/Mistral-Nemo-Instruct-2407"),
@@ -36,18 +43,7 @@ def main():
       max_new_tokens = 512
   )
 
-  pipe = pipeline(
-      model=AutoModelForCausalLM.from_pretrained("HuggingFaceH4/zephyr-7b-beta"),
-      tokenizer=AutoTokenizer.from_pretrained("HuggingFaceH4/zephyr-7b-beta"),
-      return_full_text=True,  # langchain expects the full text
-      task='text-generation',
-      temperature=0.5,
-      repetition_penalty=1.1,  # without this output begins repeating
-      max_new_tokens = 512
-  )
-
   evaluator1 = HuggingFacePipeline(pipeline=pipe)
-  
   evaluator2 = HuggingFacePipeline(pipeline=pipe2)
 
   #utils.chat_with_chatbot(data.config1, "session_1")
