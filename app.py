@@ -1,9 +1,8 @@
 #from ragas.embeddings import HuggingfaceEmbeddings
 from ragas.llms import LangchainLLMWrapper
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
-from langchain import HuggingFacePipeline
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_huggingface import HuggingFaceEmbeddings, HuggingFaceEndpoint
+from langchain_huggingface import HuggingFaceEmbeddings, HuggingFaceEndpoint, HuggingFacePipeline
 import utils
 import data
 import os
