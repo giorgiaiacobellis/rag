@@ -44,11 +44,11 @@ def main():
   )
 
   evaluator1 = HuggingFacePipeline(pipeline=pipe)
-  evaluator2 = HuggingFacePipeline(pipeline=pipe2)
+  #evaluator2 = HuggingFacePipeline(pipeline=pipe2)
 
   #utils.chat_with_chatbot(data.config1, "session_1")
   utils.evaluate_model(data.config1, evaluator1, embed_model, data.questions, data.answers)
-  utils.evaluate_model(data.config1, evaluator2, embed_model, data.questions, data.answers) 
+  #utils.evaluate_model(data.config1, evaluator2, embed_model, data.questions, data.answers) 
 
 
 if __name__ == "__main__":
