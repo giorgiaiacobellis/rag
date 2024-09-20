@@ -31,7 +31,6 @@ def main():
       temperature=0.5,
       repetition_penalty=1.1,  # without this output begins repeating
       max_new_tokens = 512,
-      device= "cuda:1",
       device_map="auto"
   )
 
@@ -43,7 +42,6 @@ def main():
       #temperature=0.5,
       repetition_penalty=1.03,  # without this output begins repeating
       max_new_tokens = 512,
-      device= "cuda:1",
       device_map="auto"
   )
 
