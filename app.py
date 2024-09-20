@@ -41,8 +41,8 @@ def main():
       tokenizer=AutoTokenizer.from_pretrained("HuggingFaceH4/zephyr-7b-beta"),
       return_full_text=True,  # langchain expects the full text
       task='text-generation',
-      temperature=0.1,
-      repetition_penalty=1.1  # without this output begins repeating
+      temperature=0.5,
+      repetition_penalty=1.1,  # without this output begins repeating
       max_new_tokens = 512
   )
 
