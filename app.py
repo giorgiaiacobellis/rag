@@ -43,6 +43,7 @@ def main():
       task='text-generation',
       temperature=0.1,
       repetition_penalty=1.1  # without this output begins repeating
+      max_new_tokens = 512
   )
 
   evaluator = HuggingFacePipeline(pipeline=pipe)
