@@ -31,7 +31,8 @@ def main():
       temperature=0.5,
       repetition_penalty=1.1,  # without this output begins repeating
       max_new_tokens = 512,
-      device_map="auto"
+      device= "cuda:1"
+      
   )
 
   pipe2 = pipeline(
@@ -42,7 +43,7 @@ def main():
       #temperature=0.5,
       repetition_penalty=1.03,  # without this output begins repeating
       max_new_tokens = 512,
-      device_map="auto"
+      device= "cuda:1"
   )
 
   evaluator1 = HuggingFacePipeline(pipeline=pipe)
