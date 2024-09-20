@@ -47,9 +47,9 @@ def main():
 
   evaluator = HuggingFacePipeline(pipeline=pipe)
 
-  utils.chat_with_chatbot(data.config1, "session_1")
-  #utils.evaluate_model(data.config1, evaluator, embed_model, data.questions, data.answers)
-  #utils.evaluate_model(data.config1, llm, embed_model, data.questions, data.answers) 
+  #utils.chat_with_chatbot(data.config1, "session_1")
+  utils.evaluate_model(data.config1, evaluator, embed_model, data.questions, data.answers)
+  utils.evaluate_model(data.config1, llm, embed_model, data.questions, data.answers) 
 
 
 if __name__ == "__main__":
