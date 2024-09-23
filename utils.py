@@ -60,6 +60,7 @@ def generate_responses(config, test_questions, test_answers):
     app = App.from_config(config=config) #nel caso rimuovere
     app.delete_all_chat_history(app.id)  # clean della chat history
     for q in test_questions:
+        print("siamo nel ciclooooooo e la domanda è: ", q)
         
         answer, context = app.query(q, citations=True)
         answers.append(answer[answer.find("Answer:") + len("Answer") :].strip())
