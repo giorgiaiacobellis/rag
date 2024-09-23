@@ -16,7 +16,7 @@ os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
 
 
 def main():
-
+    '''
     pipe = pipeline(
         model=AutoModelForCausalLM.from_pretrained("arcee-ai/Llama-3.1-SuperNova-Lite"),
         tokenizer=AutoTokenizer.from_pretrained("arcee-ai/Llama-3.1-SuperNova-Lite"),
@@ -29,7 +29,7 @@ def main():
     )
 
     evaluator1 = HuggingFacePipeline(pipeline=pipe)
-
+    '''
     ds = utils.generate_responses(data.config, data.questions, data.answers)
     
     with open('answers.json', 'w') as json_file:
