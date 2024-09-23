@@ -58,6 +58,7 @@ def generate_responses(config, test_questions, test_answers):
     contexts = []
 
     app = App.from_config(config=config) #nel caso rimuovere
+    app.delete_all_chat_history(app.id)  # clean della chat history
     for q in test_questions:
         
         answer, context = app.query(q, citations=True)
