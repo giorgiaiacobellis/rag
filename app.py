@@ -3,6 +3,7 @@ from langchain_huggingface import HuggingFacePipeline
 import utils
 import data
 import os
+import json 
 
 
 os.environ["OPENAI_API_KEY"] = (
@@ -29,9 +30,12 @@ def main():
 
     evaluator1 = HuggingFacePipeline(pipeline=pipe)
 
-    utils.evaluate_model(
-        data.config, evaluator1, data.questions, data.answers
-    )
+    ds = utils.generate_responses(data.config, data.questions, data.answers)
+    
+    with open('answers.json', 'w') as json_file:
+        json.dump(ds, json_file, indent=4)
+    
+    #utils.evaluate_model(data.config, evaluator1, data.questions, data.answers)
 
 
 if __name__ == "__main__":

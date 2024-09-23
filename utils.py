@@ -53,14 +53,14 @@ def load_data_in_batches(filename, app):
 
 
 # funzione che genera il dataset di [query, answer, context, ground_truth]
-def generate_responses(app, test_questions, test_answers):
+def generate_responses(config, test_questions, test_answers):
     answers = []
     contexts = []
 
+    app = App.from_config(config=config) #nel caso rimuovere
     for q in test_questions:
-        # print(q)
+        
         answer, context = app.query(q, citations=True)
-        # print("Answer:", answer[answer.find("Answer:") + len("Answer"):].strip())
         answers.append(answer[answer.find("Answer:") + len("Answer") :].strip())
         contexts.append([tupla[0] for tupla in context])
 
