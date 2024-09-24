@@ -50,7 +50,7 @@ def main():
 
     vectordb = Chroma.from_documents(documents=splits, 
                             collection_name="turism_collection",
-                            embedding_function=embedder,
+                            embedding=embedder,
                             persist_directory="./chroma_langchain_db")
     retriever = vectordb.as_retriever()
 
