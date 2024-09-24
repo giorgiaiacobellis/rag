@@ -20,6 +20,7 @@ os.environ["LANGCHAIN_API_KEY"] = "lsv2_pt_fb4c238923f848e5a3f9e5f0ab1e2028_d791
 
 def main():
     # Caricamento del modello LLM
+    print("ehi fratello, sto caricando il modello!")
     llm = VLLM(
         model="HuggingFaceH4/zephyr-7b-beta",
         top_p=1,
@@ -28,6 +29,7 @@ def main():
         stream=True
     )
 
+    print("yo gang, sto caricando i dati!")
     # Caricamento dei dati
     with open("cleaned_data.json", "r") as f: # Caricamento dei dati dal file JSON
         json_data = json.load(f)
@@ -38,16 +40,19 @@ def main():
         for item in json_data
     ]
 
+    print("e diamogliela na splittata a sti docssss")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     splits = text_splitter.split_documents(documents)
 
 
+    print("lo facciamo o non lo facciamo sto embedder?")
     #Vector DB
     embedder = HuggingFaceEmbeddings(
         model_name="sentence-transformers/all-mpnet-base-v2",
         model_kwargs={"trust_remote_code": True, "device": 0},
     )
 
+    print("grande fra, hai raggiunto il livello VectorDB, ecco a te il tuo calippo!")
     vectordb = Chroma.from_documents(documents=splits, 
                             collection_name="turism_collection",
                             embedding=embedder,
@@ -65,6 +70,7 @@ def main():
         ]
     )
 
+    print("chattiamo va! Boia faus!")
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
