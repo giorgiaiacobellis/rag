@@ -6,6 +6,9 @@ torchvision==0.18.1
 ragas
 huggingface_hub
 
+vllm
+chromadb
+
 langchain
 langchain_community
 langchain-chroma

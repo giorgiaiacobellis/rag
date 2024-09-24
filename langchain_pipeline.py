@@ -48,13 +48,10 @@ def main():
         model_kwargs={"trust_remote_code": True, "device": 0},
     )
 
-    vectordb = Chroma(
-        collection_name="turism_collection",
-        embedding_function=embedder,
-        persist_directory="./chroma_langchain_db",  # Where to save data locally, remove if not necessary
-    )
-
-    vectordb.from_documents(splits)
+    vectordb = Chroma.from_documents(documents=splits, 
+                            collection_name="turism_collection",
+                            embedding_function=embedder,
+                            persist_directory="./chroma_langchain_db")
     retriever = vectordb.as_retriever()
 
 
@@ -71,10 +68,13 @@ def main():
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
-    for question in data.questions:
-        response = rag_chain.invoke({"input": question})
+    # Esecuzione della RAG per ogni domanda
+    responses = rag_chain.batch(data.questions)
+
+    # Stampa le risposte
+    for i, question in enumerate(data.questions):
         print(f"Domanda: {question}")
-        print(f"Risposta: {response}\n")
+        print(f"Risposta: {responses[i]}\n")
        
 
 if __name__ == "__main__":
