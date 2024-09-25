@@ -24,6 +24,9 @@ os.environ["LANGCHAIN_API_KEY"] = "lsv2_pt_fb4c238923f848e5a3f9e5f0ab1e2028_d791
 SPLIT = 1  # vale zero se lo split è da eseguire altimenti 1
 VECTORDB = 1 #vale 0 se il vectordb è da costruire altrimenti 1
 
+def format_docs(documents):
+        return "\n\n".join(doc.page_content for doc in documents)
+
 
 def main():
     # Caricamento del modello LLM
@@ -36,18 +39,18 @@ def main():
         stream=True
     )
 
+    with open("cleaned_data.json", "r") as f: # Caricamento dei dati dal file JSON
+        json_data = json.load(f)
+
+    # Conversione dei dati in documenti Langchain
+    documents = [
+        Document(page_content=item["text"], metadata={"source": item["page_name"]})
+        for item in json_data
+    ]
 
     if SPLIT == 0:
         print("yo gang, sto caricando i dati!")
         # Caricamento dei dati
-        with open("cleaned_data.json", "r") as f: # Caricamento dei dati dal file JSON
-            json_data = json.load(f)
-
-        # Conversione dei dati in documenti Langchain
-        documents = [
-            Document(page_content=item["text"], metadata={"source": item["page_name"]})
-            for item in json_data
-        ]
 
         print("e diamogliela na splittata a sti docssss")
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -83,9 +86,16 @@ def main():
 
     print("chattiamo va! Boia faus!")
 
+    
 
-    question_answer_chain = create_stuff_documents_chain(llm, prompt)
-    rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+    rag_chain = (
+        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        | prompt
+        | llm
+        | StrOutputParser()
+    )
+    #question_answer_chain = create_stuff_documents_chain(llm, prompt)
+    #rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
     # Esecuzione della RAG per ogni domanda
     #responses = rag_chain.batch(data.questions)
