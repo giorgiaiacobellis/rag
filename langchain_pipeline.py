@@ -88,12 +88,13 @@ def main():
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
     # Esecuzione della RAG per ogni domanda
-    responses = rag_chain.batch(data.questions)
+    #responses = rag_chain.batch(data.questions)
 
     # Stampa le risposte
-    for i, question in enumerate(data.questions):
+    for question in enumerate(data.questions):
+        response = rag_chain.invoke(question)
         print(f"Domanda: {question}")
-        print(f"Risposta: {responses[i]}\n")
+        print(f"Risposta: {response}\n")
        
 
 if __name__ == "__main__":
