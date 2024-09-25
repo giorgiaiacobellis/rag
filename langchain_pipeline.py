@@ -62,7 +62,7 @@ def main():
 
     print("grande fra, hai raggiunto il livello VectorDB, ecco a te il tuo calippo!")
     vectordb = Chroma(collection_name="turism_collection",
-                      embedding=embedder,
+                      embedding_function=embedder,
                       persist_directory="./chroma_langchain_db")
     
     if VECTORDB == 0:
