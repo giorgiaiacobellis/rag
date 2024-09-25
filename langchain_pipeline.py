@@ -1,6 +1,6 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain.llms import VLLM
+#from langchain.llms import VLLM
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_chroma import Chroma
@@ -19,17 +19,18 @@ os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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
 os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = "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"
+os.environ["LANGCHAIN_ENDPOINT"]="https://api.smith.langchain.com"
+os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 
 #VARIABILI DI CONTROLLO
 SPLIT = 1  # vale zero se lo split è da eseguire altimenti 1
 VECTORDB = 1 #vale 0 se il vectordb è da costruire altrimenti 1
 
-def format_docs(documents):
-        return "\n\n".join(doc.page_content for doc in documents)
 
 
 def main():
     # Caricamento del modello LLM
+    
     print("ehi fratello, sto caricando il modello!")
     llm = VLLM(
         model="HuggingFaceH4/zephyr-7b-beta",
@@ -39,6 +40,7 @@ def main():
         stream=True
     )
 
+    
     with open("cleaned_data.json", "r") as f: # Caricamento dei dati dal file JSON
         json_data = json.load(f)
 
@@ -47,6 +49,7 @@ def main():
         Document(page_content=item["text"], metadata={"source": item["page_name"]})
         for item in json_data
     ]
+    
 
     if SPLIT == 0:
         print("yo gang, sto caricando i dati!")
@@ -66,7 +69,7 @@ def main():
     print("grande fra, hai raggiunto il livello VectorDB, ecco a te il tuo calippo!")
     vectordb = Chroma(collection_name="turism_collection",
                       embedding_function=embedder,
-                      persist_directory="./chroma_langchain_db")
+                       persist_directory="./chroma_langchain_db")
     
     if VECTORDB == 0:
         vectordb.from_documents(documents=splits, 
@@ -75,7 +78,6 @@ def main():
                                 persist_directory="./chroma_langchain_db")
     
     retriever = vectordb.as_retriever()
-
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -86,7 +88,9 @@ def main():
 
     print("chattiamo va! Boia faus!")
 
-    
+    def format_docs(documents):
+        return "\n\n".join(doc.page_content for doc in documents)
+
 
     rag_chain = (
         {"context": retriever | format_docs, "question": RunnablePassthrough()}
@@ -94,14 +98,14 @@ def main():
         | llm
         | StrOutputParser()
     )
-    #question_answer_chain = create_stuff_documents_chain(llm, prompt)
-    #rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+    question_answer_chain = create_stuff_documents_chain(llm, prompt)
+    rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
     # Esecuzione della RAG per ogni domanda
     #responses = rag_chain.batch(data.questions)
 
     # Stampa le risposte
-    for question in enumerate(data.questions):
+    for question in data.questions:
         response = rag_chain.invoke(question)
         print(f"Domanda: {question}")
         print(f"Risposta: {response}\n")
@@ -109,9 +113,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-#text_splitter = RecursiveJsonSplitter(chunk_size=500, chunk_overlap=0)
-#texts = text_splitter.split_text(json_data=json_data, convert_lists=True)
