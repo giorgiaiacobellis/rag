@@ -91,13 +91,14 @@ def main():
     def format_docs(documents):
         return "\n\n".join(doc.page_content for doc in documents)
 
-
+    '''
     rag_chain = (
-        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        {"context": retriever | format_docs, "input": RunnablePassthrough()}
         | prompt
         | llm
         | StrOutputParser()
     )
+    '''
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
@@ -106,7 +107,7 @@ def main():
 
     # Stampa le risposte
     for question in data.questions:
-        response = rag_chain.invoke(question)
+        response = rag_chain.invoke({"input": question})
         print(f"Domanda: {question}")
         print(f"Risposta: {response}\n")
        
