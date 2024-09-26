@@ -35,7 +35,7 @@ def split_data(split_value):
         splits = text_splitter.split_documents(documents)
         return splits
     else:
-        return None
+        return []
     
 
 def create_vector_db(vectordb_value, config, splits):
