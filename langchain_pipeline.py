@@ -21,7 +21,7 @@ VECTORDB = 1 #vale 0 se il vectordb è da costruire altrimenti 1
 def main():
 
     splits = utils.split_data(SPLIT)  # Caricamento dei dati e divisione in chunk
-    retriever = utils.create_vector_db(VECTORDB, splits)  # Creazione del Vector DB
+    retriever = utils.create_vector_db(VECTORDB,data.config, splits)  # Creazione del Vector DB
 
     print("chattiamo!")
     question_answer_chain = utils.generate_chat(data.config)
