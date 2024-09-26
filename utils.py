@@ -64,13 +64,13 @@ def create_vector_db(vectordb_value, config, splits):
 # funzione che adatta il prompt in base al modello
 def get_modified_prompt(system: str, model_name: str) -> str:
     if "gemma" in model_name.lower() and "-it" in model_name.lower():
-        return f"<bos><start_of_turn>user\n{system}\n""Context: {context}""Question: {question}""<end_of_turn>\n<start_of_turn>model\n"
+        return f"<bos><start_of_turn>user\n{system}\n""Context: {context}""Question: {input}""<end_of_turn>\n<start_of_turn>model\n"
 
     elif "zephyr-7b-beta" in model_name.lower():
-        return f"<|system|>{system}<\s>\n<|user|>""Context: {context}\n Question: {question}<\s>\n""<|assistant|>\n"
+        return f"<|system|>{system}<\s>\n<|user|>""Context: {context}\n Question: {input}<\s>\n""<|assistant|>\n"
 
     elif "meta" in model_name.lower():
-        return f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n{system}<|eot_id|>\n<|start_header_id|>user<|end_header_id|>\n""Context {context}\n Question: {question}<|eot_id|>""<|start_header_id|>assistant<|end_header_id|>\n\n"
+        return f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n{system}<|eot_id|>\n<|start_header_id|>user<|end_header_id|>\n""Context {context}\n Question: {input}<|eot_id|>""<|start_header_id|>assistant<|end_header_id|>\n\n"
 
     elif "c4ai" in model_name.lower():
         return f"<BOS_TOKEN><|START_OF_TURN_TOKEN|><|USER_TOKEN|>{system}<|END_OF_TURN_TOKEN|><|START_OF_TURN_TOKEN|><|CHATBOT_TOKEN|>"
@@ -79,9 +79,9 @@ def get_modified_prompt(system: str, model_name: str) -> str:
         return f"{system}\n""{context}"
     
     elif "mistral" in model_name.lower():
-         return f"<s>[INST]{system}[/INST]<\s>\n" "Question:{question}\n Context:{context}" "Answer: [/INST]"
+         return f"<s>[INST]{system}[/INST]<\s>\n" "Question:{input}\n Context:{context}" "Answer: [/INST]"
     
-    return f"[INST]<<SYS>>{system} <</SYS>> Question:""{question}""Context:""{context}" "Answer: [/INST]"
+    return f"[INST]<<SYS>>{system} <</SYS>> Question:""{input}""Context:""{context}" "Answer: [/INST]"
 
 
 # funzione che genera il dataset di [query, answer, context, ground_truth]
