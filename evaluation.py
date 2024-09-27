@@ -27,7 +27,7 @@ filename = "dataset_2024-09-27_17-47-35.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
-ds  = Dataset.from_dict(json_data[0]["data"])
+ds  = Dataset.from_dict(json_data["data"])
 
 try:
     # Valuta il modello
