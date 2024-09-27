@@ -33,9 +33,10 @@ def main():
 
     for q in data.questions:
         response = rag_chain.invoke({"input": q})
+        print(response)
 
         answers.append(response["answer"])
-        documents = [doc["page_content"] for doc in response["context"]]
+        documents = [doc.page_content for doc in response["context"]]
         contexts.append(documents)
 
     dataset_dict = {
