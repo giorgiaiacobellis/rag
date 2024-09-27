@@ -27,15 +27,11 @@ def main():
     question_answer_chain = utils.generate_chat(data.config)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
-    # Esecuzione della RAG per ogni domanda
-    quest = [{"input": s} for s in data.questions]
-    responses = rag_chain.batch(quest)
-
     answers = []
     contexts = []
 
-    for response in responses:
-        #response = rag_chain.invoke({"input": q})
+    for q in data.questions:
+        response = rag_chain.invoke({"input": q})
 
         answers.append(response["answer"])
         contexts.append(response["context"])
