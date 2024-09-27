@@ -23,7 +23,7 @@ os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 
 
 # Caricamento dei dati
-filename = "results.json"
+filename = "dataset_2024-09-27_17-47-35.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
