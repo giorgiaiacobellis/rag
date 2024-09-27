@@ -39,12 +39,12 @@ def main():
 
     dataset_dict = {
         "model" : data.config["llm"],
-        "question": data.questions,
-        "answer": answers,
-        "contexts": contexts,
+        "data" : {"question": data.questions,
+                   "answer": answers,
+                   "contexts": contexts,}
     }
     if data.answers is not None:
-        dataset_dict["ground_truth"] = data.answers
+        dataset_dict["data"]["ground_truth"] = data.answers
 
     #save results 
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
