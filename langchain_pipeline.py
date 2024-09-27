@@ -1,7 +1,7 @@
 from langchain.chains import create_retrieval_chain
 from datasets import Dataset
 
-
+import datetime
 import os
 import utils
 import data
@@ -28,15 +28,14 @@ def main():
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
     # Esecuzione della RAG per ogni domanda
-    #responses = rag_chain.batch(data.questions)
+    responses = rag_chain.batch(data.questions)
 
     answers = []
     contexts = []
 
-    for q in data.questions:
-        response = rag_chain.invoke({"input": q})
-        
-        
+    for response in responses:
+        #response = rag_chain.invoke({"input": q})
+
         answers.append(response["answer"])
         contexts.append(response["context"])
 
@@ -49,7 +48,11 @@ def main():
     if data.answers is not None:
         dataset_dict["ground_truth"] = data.answers
     ds = Dataset.from_dict(dataset_dict)
-    ds.save_to_disk("output_dataset")
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"dataset_{timestamp}.json" 
+
+    # Salva il dataset in un file JSON
+    ds.to_json(filename)
        
 
 if __name__ == "__main__":
