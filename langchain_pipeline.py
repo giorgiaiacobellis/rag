@@ -32,10 +32,11 @@ def main():
     contexts = []
 
     for q in data.questions:
-        response = rag_chain.invoke({"input": q})
+        response = rag_chain.invoke({"input": q}).dict()
 
         answers.append(response["answer"])
-        contexts.append(response["context"])
+        documents = [doc["page_content"] for doc in response["context"]]
+        contexts.append(documents)
 
     dataset_dict = {
         "model" : data.config["llm"],
