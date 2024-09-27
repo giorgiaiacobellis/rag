@@ -32,7 +32,7 @@ def main():
     contexts = []
 
     for q in data.questions:
-        response = rag_chain.invoke({"input": q}).dict()
+        response = rag_chain.invoke({"input": q})
 
         answers.append(response["answer"])
         documents = [doc["page_content"] for doc in response["context"]]
