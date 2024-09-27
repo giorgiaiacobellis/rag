@@ -5,6 +5,7 @@ import datetime
 import os
 import utils
 import data
+import json
 
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
@@ -44,12 +45,12 @@ def main():
     }
     if data.answers is not None:
         dataset_dict["ground_truth"] = data.answers
-    ds = Dataset.from_dict(dataset_dict)
+
+    #save results 
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"dataset_{timestamp}.json" 
-
-    # Salva il dataset in un file JSON
-    ds.to_json(filename)
+    with open(filename, "w") as outfile:
+        json.dump(dataset_dict, outfile) 
        
 
 if __name__ == "__main__":
