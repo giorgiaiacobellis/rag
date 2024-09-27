@@ -51,7 +51,9 @@ def main():
     filename = f"dataset_{timestamp}.json" 
     with open(filename, "w") as outfile:
         json.dump(dataset_dict, outfile) 
-       
+    
+    print(f"Results saved to {filename}")
+
 
 if __name__ == "__main__":
     main()

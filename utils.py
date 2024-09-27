@@ -2,18 +2,11 @@ import json
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.llms import VLLM
-from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_chroma import Chroma
 from langchain_core.prompts import PromptTemplate
 from langchain.docstore.document import Document
-from datasets import Dataset
-from ragas import evaluate
-from ragas.metrics import (
-    faithfulness,
-    answer_relevancy,
-    answer_correctness,
-)
+
 
 
 def split_data(split_value): 
@@ -57,7 +50,7 @@ def create_vector_db(vectordb_value, config, splits):
                                 embedding=embedder,
                                 persist_directory=config["vectordb"]["persist_directory"])
     
-    retriever = vectordb.as_retriever()
+    retriever = vectordb.as_retriever(search_type = "mmr")
     return retriever
 
 
@@ -100,45 +93,3 @@ def generate_chat(config):
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     
     return question_answer_chain
-
-
-
-# funzione per valutare il modello
-def evaluate_model(config, evaluator, test_questions, test_answers, filename="evaluation_results.json"):
-
-    try:
-        # Valuta il modello
-        results = evaluate(
-            llm=evaluator,
-            dataset=ds,
-            metrics=[
-                faithfulness,
-                answer_relevancy,
-                answer_correctness,
-                # context_recall,
-                # context_precision
-            ],
-        )
-        print(results)
-    except Exception as e:
-        print(f"Errore durante la valutazione: {e}")
-        results = None
-
-    # Salva i risultati in un file
-    save_results = {"model_info": llm_config, "evaluation_results": results}
-
-    try:
-        with open(filename, "r") as f:
-            existing_result = json.load(f)
-    except FileNotFoundError:
-        existing_result = []  # Se il file non esiste, crea una lista vuota
-
-    # Aggiungi i nuovi dati alla lista esistente
-    existing_result.append(save_results)
-
-    with open(filename, "w") as f:
-        json.dump(existing_result, f, indent=4)
-
-    print(f"Results saved to {filename}")
-
-    return results
