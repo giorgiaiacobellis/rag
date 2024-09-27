@@ -28,7 +28,7 @@ def main():
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
     # Esecuzione della RAG per ogni domanda
-    responses = rag_chain.batch(data.questions)
+    responses = rag_chain.batch({"input": data.questions})
 
     answers = []
     contexts = []
