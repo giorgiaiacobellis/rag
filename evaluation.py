@@ -6,6 +6,9 @@ import datetime
 
 from datasets import Dataset
 from ragas import evaluate
+from ragas.langchain.evalchain import RagasEvaluatorChain
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain.llms import VLLM
 from ragas.metrics import (
     faithfulness,
     answer_relevancy,
@@ -29,12 +32,25 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 
 ds  = Dataset.from_dict(json_data["data"])
 
+
+evaluator = VLLM(
+            model=data.config["llm"]["model"],
+            top_p=data.config["llm"]["top_p"],
+            max_tokens=data.config["llm"]["max_tokens"],
+            temperature=data.config["llm"]["temperature"],
+            stream=data.config["llm"]["stream"]
+        )
+
+embedder = HuggingFaceEmbeddings(
+        model_name=data.config["embedder"]["model"],
+        model_kwargs=data.config["embedder"]["model_kwargs"],
+    )
 try:
     # Valuta il modello
     results = evaluate(
-        llm=data.config["llm"],
+        llm=evaluator,
         dataset=ds,
-        embeddings=data.config["embedder"],
+        embeddings=embedder,
         metrics=[
             faithfulness,
             answer_relevancy,
