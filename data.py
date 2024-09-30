@@ -39,7 +39,7 @@ questions = [
     "Come posso raggiungere il Piemonte dall'aeroporto di Milano Malpensa?",
 ]
 
-answers = [
+ground_truth = [
     # Cibo
     "Antipasti: Vitello tonnato, battuta di fassona al coltello, acciughe al verde, peperoni con la bagna cauda. Primi: Agnolotti del plin, tajarin al tartufo, risotto al Barolo, panissa. Secondi: Brasato al Barolo, bollito misto alla piemontese, finanziera, polenta concia. Dolci: Bonet, torta di nocciole, baci di dama, panna cotta.",
     "Ristorante Del Cambio: Storico ristorante nel cuore di Torino, offre un'esperienza culinaria di alto livello con piatti della tradizione rivisitati in chiave moderna. Tre Galline: Locale caratteristico con atmosfera rustica, propone piatti tipici piemontesi preparati con ingredienti di qualità. La Taverna dei Mercanti: Situata in un antico palazzo, offre un ambiente elegante e una cucina piemontese raffinata. Cianci Piola Caffè: Trattoria storica con cucina casalinga e porzioni abbondanti, ideale per un pranzo informale.",

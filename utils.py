@@ -92,4 +92,4 @@ def generate_chat(config):
 
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     
-    return question_answer_chain
+    return question_answer_chain, llm
