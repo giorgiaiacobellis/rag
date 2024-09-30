@@ -6,7 +6,6 @@ import datetime
 
 from datasets import Dataset
 from ragas import evaluate
-from ragas.langchain.evalchain import RagasEvaluatorChain
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.llms import VLLM
 from ragas.metrics import (
