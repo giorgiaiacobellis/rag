@@ -5,8 +5,8 @@ import json
 import datetime
 
 from datasets import Dataset
-from langchain_huggingface import HuggingFacePipeline
-from langchain_community.llms import VLLM
+import torch
+from transformers import pipeline
 from ragas import evaluate
 
 from ragas.metrics import (
@@ -33,18 +33,22 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 ds.remove_columns(["contexts"])
 
-evaluator = HuggingFacePipeline.from_model_id(
-            model_id="HuggingFaceH4/zephyr-7b-beta",
-            task="text-generation",
-            device=0,
-            pipeline_kwargs={  "trust_remote_code":True,
-                               "top_k":10,
-                               "top_p":0.95,
-                                "max_new_tokens":128,
-                                "do_sample":True,
-                            }
+model_name = "HuggingFaceH4/zephyr-7b-beta"
 
-        )
+pipe = pipeline(
+                "text-generation",
+                model=model_name,
+                torch_dtype=torch.bfloat16,
+                device=0,)
+
+evaluator = pipe(
+    max_new_tokens=300,
+    do_sample=True,
+    temperature=0.7,
+    top_k=50,
+    top_p=0.95,
+)
+
 
 try:
     # Valuta il modello
