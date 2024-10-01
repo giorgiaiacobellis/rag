@@ -8,7 +8,7 @@ from datasets import Dataset
 import torch
 from transformers import pipeline
 from ragas import evaluate
-from ragas.llms import HuggingFacePipeline
+from langchain_huggingface import HuggingFacePipeline
 
 from ragas.metrics import (
     answer_correctness,
