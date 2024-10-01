@@ -41,17 +41,11 @@ evaluator = VLLM(
             max_new_tokens=128,
         )
 
-embedder = HuggingFaceEmbeddings(
-        model= "sentence-transformers/all-mpnet-base-v2",
-        model_kwargs = {"trust_remote_code": True, "device": 0},
-    )
-
 try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator,
         dataset=ds,
-        embeddings=embedder,
         metrics=[
             faithfulness
         ],
