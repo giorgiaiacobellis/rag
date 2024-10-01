@@ -42,6 +42,7 @@ pipe = pipeline(
     repetition_penalty=1.1,  # without this output begins repeating
     max_new_tokens=512,
     device=0,
+    do_sample=True,
 )
 
 evaluator = HuggingFacePipeline(pipeline=pipe)
