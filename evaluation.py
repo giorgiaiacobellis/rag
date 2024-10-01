@@ -36,6 +36,7 @@ ds.remove_columns(["contexts"])
 evaluator = HuggingFacePipeline.from_model_id(
             model_id="HuggingFaceH4/zephyr-7b-beta",
             task="text-generation",
+            device=0
             pipeline_kwargs={  "trust_remote_code":True,
                                "top_k":10,
                                "top_p":0.95,
