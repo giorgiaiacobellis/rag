@@ -34,8 +34,8 @@ ds  = Dataset.from_dict(json_data["data"])
 ds.remove_columns(["contexts"])
 
 pipe = pipeline(
-    model=AutoModelForCausalLM.from_pretrained("arcee-ai/Llama-3.1-SuperNova-Lite"),
-    tokenizer=AutoTokenizer.from_pretrained("arcee-ai/Llama-3.1-SuperNova-Lite"),
+    model=AutoModelForCausalLM.from_pretrained("HuggingFaceH4/zephyr-7b-beta"),
+    tokenizer=AutoTokenizer.from_pretrained("HuggingFaceH4/zephyr-7b-beta"),
     return_full_text=True,  # langchain expects the full text
     task="text-generation",
     temperature=0.5,
