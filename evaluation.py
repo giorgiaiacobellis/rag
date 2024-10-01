@@ -8,6 +8,7 @@ from datasets import Dataset
 import torch
 from transformers import pipeline
 from ragas import evaluate
+from ragas.llms import HuggingFacePipeline
 
 from ragas.metrics import (
     answer_correctness,
@@ -33,13 +34,12 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 ds.remove_columns(["contexts"])
 
-model_name = "HuggingFaceH4/zephyr-7b-beta"
-
-evaluator = pipeline(
-                "text-generation",
-                model=model_name,
-                torch_dtype=torch.bfloat16,
-                device=0,)
+llm = HuggingFacePipeline.from_model_id(
+model_id="TheBloke/wizardLM-7B-HF",
+task="text-generation",
+pipeline_kwargs={"max_new_tokens": 1200, "temperature": 0.3, "top_p": 0.95, "repetition_penalty": 1.15,},
+device=0,
+)
 
 
 try:
