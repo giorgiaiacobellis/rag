@@ -31,23 +31,21 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
 ds  = Dataset.from_dict(json_data["data"])
-#ds.remove_columns(["contexts"])
+ds.remove_columns(["contexts"])
 
 model_name = "HuggingFaceH4/zephyr-7b-beta"
 
-pipe = pipeline(
+evaluator = pipeline(
                 "text-generation",
                 model=model_name,
                 torch_dtype=torch.bfloat16,
-                device=0,)
-
-evaluator = pipe(
-    max_new_tokens=300,
-    do_sample=True,
-    temperature=0.7,
-    top_k=50,
-    top_p=0.95,
-)
+                device=0,
+                pipeline_kwargs={  "trust_remote_code":True,
+                               "top_k":10,
+                               "top_p":0.95,
+                                "max_new_tokens":128,
+                                "do_sample":True,
+                            })
 
 
 try:
@@ -56,7 +54,7 @@ try:
         llm=evaluator,
         dataset=ds,
         metrics=[
-            faithfulness,
+            answer_correctness,
         ],
     )
     print(results)
