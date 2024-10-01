@@ -1,16 +1,25 @@
 from langchain.chains import create_retrieval_chain
-from datasets import Dataset
+#from datasets import Dataset
 
-import datetime
+#import datetime
 import os
 import utils
 import data
-import json
+#import json
 
 
 from langsmith import Client
 from langsmith.evaluation import evaluate, LangChainStringEvaluator
-
+from langchain.smith import RunEvalConfig
+'''
+from ragas.integrations.langchain import EvaluatorChain
+from ragas.metrics import (
+    answer_correctness,
+    answer_relevancy,
+    context_precision,
+    context_recall,
+    faithfulness,
+)'''
 
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
@@ -23,6 +32,9 @@ os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 SPLIT = 1  # vale zero se lo split è da eseguire altimenti 1
 VECTORDB = 1 #vale 0 se il vectordb è da costruire altrimenti 1
 
+
+
+#valutazione con lanchain direttamente
 def create_evaluator(data,evaluator,predict_rag_answer):
     client = Client()
     dataset_name = "rag_dataset"
@@ -41,7 +53,7 @@ def create_evaluator(data,evaluator,predict_rag_answer):
     experiment_results = evaluate(
         predict_rag_answer,
         data=dataset_name,
-        evaluators=qa_evaluator,
+        evaluators=[qa_evaluator],
         experiment_prefix="rag-qa-oai",
     )
     return experiment_results
@@ -64,7 +76,7 @@ def main():
     def predict_rag_answer_with_context(example: dict):
         """Use this for evaluation of retrieved documents and hallucinations"""
         response = rag_chain.invoke({"input": example["question"]})
-        return {"answer": response["answer"], "contexts": response["contexts"]}
+        return {"answer": response["answer"], "contexts": [str(doc) for doc in response["contexts"]]}
 
 
     dataset_dict = {
@@ -76,6 +88,9 @@ def main():
 
     eval_results = create_evaluator(dataset_dict,evaluator,predict_rag_answer)
     print(eval_results)
+
+    #ragas_eval_results = create_ragas_evaluator(dataset_dict,predict_rag_answer_with_context)
+    #print(ragas_eval_results)
 
 
 if __name__ == "__main__":
