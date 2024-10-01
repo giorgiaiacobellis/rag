@@ -1,12 +1,8 @@
-torch==2.3.1
-torchaudio==2.3.1
-torchvision==0.18.1
 huggingface_hub
-
 vllm
 chromadb
-ragas
-langchain == 0.3.0
+--force ragas
+langchain
 langchain_community
 langchain-chroma
 langchain-huggingface

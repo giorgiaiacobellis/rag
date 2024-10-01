@@ -5,15 +5,16 @@ import json
 import datetime
 
 from datasets import Dataset
-from ragas import evaluate
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.llms import VLLM
+from ragas import evaluate
+
 from ragas.metrics import (
-    faithfulness,
-    answer_relevancy,
     answer_correctness,
+    answer_relevancy,
+    context_precision,
     context_recall,
-    context_precision
+    faithfulness,
 )
 
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
@@ -30,7 +31,6 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
 ds  = Dataset.from_dict(json_data["data"])
-
 
 evaluator = VLLM(
             model=data.config["llm"]["model"],
@@ -63,6 +63,7 @@ except Exception as e:
     print(f"Errore durante la valutazione: {e}")
     results = None
 
+'''
 # Salva i risultati in un file
 save_results = {"model_info": data.config["llm"], "evaluation_results": results}
 
@@ -72,3 +73,4 @@ with open(results_file, "w") as f:
     json.dump(save_results, f, indent=4)
 
 print(f"Results saved to {results_file}")
+'''

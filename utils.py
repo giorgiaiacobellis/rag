@@ -1,5 +1,5 @@
 import json
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+#from langchain_text_splitters import RecursiveCharacterTextSplitter rimetti
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.llms import VLLM
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -24,8 +24,9 @@ def split_data(split_value):
 
 
         print("split dei dati!")
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-        splits = text_splitter.split_documents(documents)
+        #text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200) rimetti
+        #splits = text_splitter.split_documents(documents) rimetti
+        splits = [] #elimina
         return splits
     else:
         return []
