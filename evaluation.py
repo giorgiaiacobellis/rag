@@ -31,13 +31,13 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
 ds  = Dataset.from_dict(json_data["data"])
+ds.remove_columns(["contexts"])
 
 evaluator = VLLM(
             model="HuggingFaceH4/zephyr-7b-beta",
             trust_remote_code=True,
             top_k=10,
             top_p=0.95,
-            temperature=0.8,
             max_new_tokens=128,
         )
 
