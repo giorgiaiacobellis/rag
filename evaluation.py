@@ -40,8 +40,7 @@ evaluator = HuggingFacePipeline(
                                "top_k":10,
                                "top_p":0.95,
                                 "max_new_tokens":128
-                            },
-            
+                            }
         )
 
 try:
