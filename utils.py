@@ -52,7 +52,7 @@ def create_vector_db(vectordb_value, config, splits):
                                 persist_directory=config["vectordb"]["persist_directory"])
     
     retriever = vectordb.as_retriever(search_type = "mmr")
-    return retriever
+    return retriever, embedder
 
 
 # funzione che adatta il prompt in base al modello

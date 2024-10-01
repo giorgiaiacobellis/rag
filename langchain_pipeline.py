@@ -1,5 +1,5 @@
 from langchain.chains import create_retrieval_chain
-#from datasets import Dataset
+from datasets import Dataset
 
 #import datetime
 import os
@@ -7,19 +7,17 @@ import utils
 import data
 #import json
 
-
-from langsmith import Client
-from langsmith.evaluation import evaluate, LangChainStringEvaluator
-from langchain.smith import RunEvalConfig
-'''
-from ragas.integrations.langchain import EvaluatorChain
 from ragas.metrics import (
     answer_correctness,
     answer_relevancy,
     context_precision,
     context_recall,
     faithfulness,
-)'''
+)
+from ragas import evaluate
+
+
+
 
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
@@ -31,67 +29,54 @@ os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 #VARIABILI DI CONTROLLO
 SPLIT = 1  # vale zero se lo split è da eseguire altimenti 1
 VECTORDB = 1 #vale 0 se il vectordb è da costruire altrimenti 1
-DATASET = 1 #vale 0 se il dataset è da costruire altrimenti 1
-
-
-#valutazione con lanchain direttamente
-def create_evaluator(data,evaluator,predict_rag_answer):
-    client = Client()
-    dataset_name = "rag_dataset"
-    if DATASET == 0:
-        dataset = client.create_dataset(dataset_name=dataset_name, description="Dataset for RAG evaluation")
-        client.create_examples(inputs=[{"question": q} for q in data["data"]["question"]],
-                            outputs=[{"ground_truth": a} for a in data["data"]["ground_truth"]],
-                            dataset_id=dataset.id)
-
-    qa_evaluator = LangChainStringEvaluator("cot_qa",
-                                            config={"llm": evaluator},
-                                            prepare_data=lambda run, example: {
-                                                "prediction": run.outputs["answer"],
-                                                "reference": example.outputs["ground_truth"],
-                                                "input": example.inputs["question"],
-                                            },) 
-    experiment_results = evaluate(
-        predict_rag_answer,
-        data=dataset_name,
-        evaluators=[qa_evaluator],
-        experiment_prefix="rag-qa-oai",
-    )
-    return experiment_results
 
 def main():
 
     splits = utils.split_data(SPLIT)  # Caricamento dei dati e divisione in chunk
-    retriever = utils.create_vector_db(VECTORDB,data.config, splits)  # Creazione del Vector DB
+    retriever,embedder = utils.create_vector_db(VECTORDB,data.config, splits)  # Creazione del Vector DB
 
     print("chattiamo!")
     question_answer_chain, evaluator = utils.generate_chat(data.config)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
-    # RAG chain
-    def predict_rag_answer(example: dict):
-        """Use this for answer evaluation"""
-        response = rag_chain.invoke({"input": example["question"]})
-        return {"answer": response["answer"]}
 
-    def predict_rag_answer_with_context(example: dict):
-        """Use this for evaluation of retrieved documents and hallucinations"""
-        response = rag_chain.invoke({"input": example["question"]})
-        return {"answer": response["answer"], "contexts": [str(doc) for doc in response["contexts"]]}
+    answers = []
+    contexts = []
 
+    for q in data.questions:
+        response = rag_chain.invoke({"input": q})
+        print(response)
+
+        answers.append(response["answer"])
+        documents = [doc.page_content for doc in response["context"]]
+        contexts.append(documents)
 
     dataset_dict = {
         "model" : data.config["llm"],
         "data" : {"question": data.questions,
-                  "ground_truth": data.ground_truth,
-                  }
+                   "answer": answers,
+                   "contexts": contexts,}
     }
+    if data.answers is not None:
+        dataset_dict["data"]["ground_truth"] = data.ground_truth
+    
+    ds  = Dataset.from_dict(dataset_dict["data"])
 
-    eval_results = create_evaluator(dataset_dict,evaluator,predict_rag_answer)
-    print(eval_results)
-
-    #ragas_eval_results = create_ragas_evaluator(dataset_dict,predict_rag_answer_with_context)
-    #print(ragas_eval_results)
+    print("sto valutando il modello!")
+    try:
+        # Valuta il modello
+        results = evaluate(
+            llm=evaluator,
+            embeddings=embedder,
+            dataset=ds,
+            metrics=[
+                faithfulness
+            ],
+        )
+        print(results)
+    except Exception as e:
+        print(f"Errore durante la valutazione: {e}")
+        results = None
 
 
 if __name__ == "__main__":
