@@ -40,7 +40,8 @@ evaluator = HuggingFacePipeline.from_model_id(
             pipeline_kwargs={  "trust_remote_code":True,
                                "top_k":10,
                                "top_p":0.95,
-                                "max_new_tokens":128
+                                "max_new_tokens":128,
+                                "do_sample":True,
                             }
 
         )
