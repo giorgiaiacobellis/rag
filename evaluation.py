@@ -39,13 +39,7 @@ evaluator = pipeline(
                 "text-generation",
                 model=model_name,
                 torch_dtype=torch.bfloat16,
-                device=0,
-                pipeline_kwargs={  "trust_remote_code":True,
-                               "top_k":10,
-                               "top_p":0.95,
-                                "max_new_tokens":128,
-                                "do_sample":True,
-                            })
+                device=0,)
 
 
 try:
