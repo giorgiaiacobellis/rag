@@ -31,17 +31,18 @@ os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 #VARIABILI DI CONTROLLO
 SPLIT = 1  # vale zero se lo split è da eseguire altimenti 1
 VECTORDB = 1 #vale 0 se il vectordb è da costruire altrimenti 1
-
+DATASET = 1 #vale 0 se il dataset è da costruire altrimenti 1
 
 
 #valutazione con lanchain direttamente
 def create_evaluator(data,evaluator,predict_rag_answer):
     client = Client()
     dataset_name = "rag_dataset"
-    dataset = client.create_dataset(dataset_name=dataset_name, description="Dataset for RAG evaluation")
-    client.create_examples(inputs=[{"question": q} for q in data["data"]["question"]],
-                        outputs=[{"ground_truth": a} for a in data["data"]["ground_truth"]],
-                        dataset_id=dataset.id)
+    if DATASET == 0:
+        dataset = client.create_dataset(dataset_name=dataset_name, description="Dataset for RAG evaluation")
+        client.create_examples(inputs=[{"question": q} for q in data["data"]["question"]],
+                            outputs=[{"ground_truth": a} for a in data["data"]["ground_truth"]],
+                            dataset_id=dataset.id)
 
     qa_evaluator = LangChainStringEvaluator("cot_qa",
                                             config={"llm": evaluator},
