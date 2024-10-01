@@ -1,8 +1,8 @@
 huggingface_hub
 vllm
 chromadb
-ragas
-langchain = 0.3.0
+--force ragas
+--force langchain = 0.3.0
 langchain_community
 langchain-chroma
 langchain-huggingface
