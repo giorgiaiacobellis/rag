@@ -31,7 +31,7 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
 ds  = Dataset.from_dict(json_data["data"])
-ds.remove_columns(["contexts"])
+#ds.remove_columns(["contexts"])
 
 model_name = "HuggingFaceH4/zephyr-7b-beta"
 
@@ -56,7 +56,7 @@ try:
         llm=evaluator,
         dataset=ds,
         metrics=[
-            answer_correctness,
+            faithfulness,
         ],
     )
     print(results)
