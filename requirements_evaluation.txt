@@ -1,5 +1,5 @@
 huggingface_hub
-vllm
+vllm == 0.6.2
 chromadb
 ragas == 0.1.20
 langchain_core < 0.3.0
