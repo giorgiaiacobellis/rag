@@ -6,7 +6,7 @@ import datetime
 
 from datasets import Dataset
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain.llms import VLLM
+from langchain_community.llms import VLLM
 from ragas import evaluate
 
 from ragas.metrics import (
@@ -33,17 +33,19 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 
 evaluator = VLLM(
-            model=data.config["llm"]["model"],
-            top_p=data.config["llm"]["top_p"],
-            max_tokens=data.config["llm"]["max_tokens"],
-            temperature=data.config["llm"]["temperature"],
-            stream=data.config["llm"]["stream"]
+            model="HuggingFaceH4/zephyr-7b-beta",
+            trust_remote_code=True,
+            top_k=10,
+            top_p=0.95,
+            temperature=0.8,
+            max_new_tokens=128,
         )
 
 embedder = HuggingFaceEmbeddings(
-        model_name=data.config["embedder"]["model"],
-        model_kwargs=data.config["embedder"]["model_kwargs"],
+        model= "sentence-transformers/all-mpnet-base-v2",
+        model_kwargs = {"trust_remote_code": True, "device": 0},
     )
+
 try:
     # Valuta il modello
     results = evaluate(
@@ -51,11 +53,7 @@ try:
         dataset=ds,
         embeddings=embedder,
         metrics=[
-            faithfulness,
-            answer_relevancy,
-            answer_correctness,
-            context_recall,
-            context_precision
+            faithfulness
         ],
     )
     print(results)

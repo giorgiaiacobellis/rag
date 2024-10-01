@@ -1,7 +1,7 @@
 import json
 #from langchain_text_splitters import RecursiveCharacterTextSplitter rimetti
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain.llms import VLLM
+from langchain_community.llms import VLLM
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_chroma import Chroma
 from langchain_core.prompts import PromptTemplate

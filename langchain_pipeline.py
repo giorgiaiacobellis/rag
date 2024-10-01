@@ -1,11 +1,11 @@
 from langchain.chains import create_retrieval_chain
 from datasets import Dataset
 
-#import datetime
+import datetime
 import os
 import utils
 import data
-#import json
+import json
 
 from ragas.metrics import (
     answer_correctness,
@@ -15,9 +15,6 @@ from ragas.metrics import (
     faithfulness,
 )
 from ragas import evaluate
-
-
-
 
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
@@ -30,6 +27,39 @@ os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 SPLIT = 1  # vale zero se lo split è da eseguire altimenti 1
 VECTORDB = 1 #vale 0 se il vectordb è da costruire altrimenti 1
 
+def generate_db(rag_chain):
+    
+    answers = []
+    contexts = []
+
+    for q in data.questions:
+        response = rag_chain.invoke({"input": q})
+
+        answers.append(response["answer"])
+        documents = [doc.page_content for doc in response["context"]]
+        contexts.append(documents)
+
+    dataset_dict = {
+        "model" : data.config["llm"],
+        "data" : {"question": data.questions,
+                  "ground_truth": data.ground_truth,
+                  "answer": answers,
+                  "contexts": contexts,
+                }
+    }
+    
+    ds  = Dataset.from_dict(dataset_dict["data"])
+    #save results 
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"dataset_{timestamp}.json" 
+    with open(filename, "w") as outfile:
+        json.dump(dataset_dict, outfile) 
+    
+    print(f"Results saved to {filename}")
+
+    return ds
+
+
 def main():
 
     splits = utils.split_data(SPLIT)  # Caricamento dei dati e divisione in chunk
@@ -39,28 +69,16 @@ def main():
     question_answer_chain, evaluator = utils.generate_chat(data.config)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
+    ds = generate_db(rag_chain)
 
-    answers = []
-    contexts = []
+    '''
+    # Caricamento dei dati
+    filename = "dataset_2024-09-27_18-23-43.json"
+    with open(filename, "r") as f: # Caricamento dei dati dal file JSON
+        json_data = json.load(f)
 
-    for q in data.questions:
-        response = rag_chain.invoke({"input": q})
-        print(response)
-
-        answers.append(response["answer"])
-        documents = [doc.page_content for doc in response["context"]]
-        contexts.append(documents)
-
-    dataset_dict = {
-        "model" : data.config["llm"],
-        "data" : {"question": data.questions,
-                   "answer": answers,
-                   "contexts": contexts,}
-    }
-    if data.answers is not None:
-        dataset_dict["data"]["ground_truth"] = data.ground_truth
+    ds  = Dataset.from_dict(json_data["data"])
     
-    ds  = Dataset.from_dict(dataset_dict["data"])
 
     print("sto valutando il modello!")
     try:
@@ -77,7 +95,7 @@ def main():
     except Exception as e:
         print(f"Errore durante la valutazione: {e}")
         results = None
-
+'''
 
 if __name__ == "__main__":
     main()
