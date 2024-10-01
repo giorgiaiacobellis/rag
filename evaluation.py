@@ -47,9 +47,7 @@ try:
         llm=evaluator,
         dataset=ds,
         metrics=[
-            faithfulness,
             answer_correctness,
-            answer_relevancy,
         ],
     )
     print(results)
