@@ -1,8 +1,8 @@
 huggingface_hub
-vllm == 0.6.2
+vllm
 chromadb
-ragas == 0.1.20
-langchain_core < 0.3.0
+git+https://github.com/explodinggradients/ragas
+langchain_core
 langchain_community
 langchain-chroma
 langchain-huggingface
