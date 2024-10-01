@@ -5,7 +5,7 @@ import json
 import datetime
 
 from datasets import Dataset
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFacePipeline
 from langchain_community.llms import VLLM
 from ragas import evaluate
 
@@ -33,12 +33,15 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 ds.remove_columns(["contexts"])
 
-evaluator = VLLM(
-            model="HuggingFaceH4/zephyr-7b-beta",
-            trust_remote_code=True,
-            top_k=10,
-            top_p=0.95,
-            max_new_tokens=128,
+evaluator = HuggingFacePipeline(
+            model_id="HuggingFaceH4/zephyr-7b-beta",
+            task="text-generation",
+            pipeline_kwargs={  "trust_remote_code":True,
+                               "top_k":10,
+                               "top_p":0.95,
+                                "max_new_tokens":128
+                            },
+            device_map="auto"
         )
 
 try:
