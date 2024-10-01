@@ -50,8 +50,6 @@ try:
             faithfulness,
             answer_correctness,
             answer_relevancy,
-            context_precision,
-            context_recall,
         ],
     )
     print(results)
