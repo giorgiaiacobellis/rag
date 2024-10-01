@@ -5,10 +5,9 @@ import json
 import datetime
 
 from datasets import Dataset
-import torch
-from transformers import pipeline
 from ragas import evaluate
 from langchain_huggingface import HuggingFacePipeline
+from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
 
 from ragas.metrics import (
     answer_correctness,
@@ -34,12 +33,18 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 ds.remove_columns(["contexts"])
 
-evaluator = HuggingFacePipeline.from_model_id(
-model_id="TheBloke/wizardLM-7B-HF",
-task="text-generation",
-pipeline_kwargs={"max_new_tokens": 1200, "temperature": 0.3, "top_p": 0.95, "repetition_penalty": 1.15,},
-device=0,
+pipe = pipeline(
+    model=AutoModelForCausalLM.from_pretrained("arcee-ai/Llama-3.1-SuperNova-Lite"),
+    tokenizer=AutoTokenizer.from_pretrained("arcee-ai/Llama-3.1-SuperNova-Lite"),
+    return_full_text=True,  # langchain expects the full text
+    task="text-generation",
+    temperature=0.5,
+    repetition_penalty=1.1,  # without this output begins repeating
+    max_new_tokens=512,
+    device=0,
 )
+
+evaluator = HuggingFacePipeline(pipeline=pipe)
 
 
 try:
