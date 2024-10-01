@@ -34,7 +34,7 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 ds.remove_columns(["contexts"])
 
-llm = HuggingFacePipeline.from_model_id(
+evaluator = HuggingFacePipeline.from_model_id(
 model_id="TheBloke/wizardLM-7B-HF",
 task="text-generation",
 pipeline_kwargs={"max_new_tokens": 1200, "temperature": 0.3, "top_p": 0.95, "repetition_penalty": 1.15,},
