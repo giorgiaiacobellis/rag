@@ -33,7 +33,7 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 #ds.remove_columns(["contexts"])
 
-model_id = "neuralmagic/Meta-Llama-3.1-70B-Instruct-quantized.w4a16" 
+model_id = "TheBloke/Llama-2-13B-chat-GGML" 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 model = AutoModelForCausalLM.from_pretrained(model_id)
 
