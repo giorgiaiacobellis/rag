@@ -6,7 +6,7 @@ import datetime
 
 from datasets import Dataset
 from ragas import evaluate
-from langchain.llms import HuggingFacePipeline
+from langchain_community.llms import HuggingFacePipeline
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 from ragas.metrics import (
