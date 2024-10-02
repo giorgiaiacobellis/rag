@@ -60,8 +60,9 @@ nli_statement_message_new = Prompt(
     language="italian",
 )
 
-prompt="[INST] <<SYS>> Given a question, an answer, and sentences from the answer analyze the complexity of each sentence given under 'sentences' and break down each sentence into one or more fully understandable statements while also ensuring no pronouns are used in each statement. Format the outputs in JSON.The output should be a well-formatted JSON instance.Do not return any preamble or explanations, return only a pure JSON string surrounded by triple backticks (```).<</SYS>>\n[/INST]",
-    
+prompt:str='Given a question, an answer, and sentences from the answer analyze the complexity of each sentence given under "sentences" and break down each sentence into one or more fully understandable statements while also ensuring no pronouns are used in each statement. Format the outputs in JSON.The output should be a well-formatted JSON instance.Do not return any preamble or explanations, return only a pure JSON string surrounded by triple backticks.',
+
+ciao = ""
 
 evaluator =  VLLM(
     model="TheBloke/LLaMA2-13B-Tiefighter-AWQ",
