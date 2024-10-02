@@ -60,9 +60,7 @@ nli_statement_message_new = Prompt(
     language="italian",
 )
 
-prompt:str='Given a question, an answer, and sentences from the answer analyze the complexity of each sentence given under "sentences" and break down each sentence into one or more fully understandable statements while also ensuring no pronouns are used in each statement. Format the outputs in JSON.The output should be a well-formatted JSON instance.Do not return any preamble or explanations, return only a pure JSON string surrounded by triple backticks.',
 
-ciao = ""
 
 evaluator =  VLLM(
     model="TheBloke/LLaMA2-13B-Tiefighter-AWQ",
@@ -74,7 +72,7 @@ evaluator =  VLLM(
 
 #faithfulness.nli_statements_message = nli_statement_message_new
 #answer_correctness.max_retries=3
-answer_correctness.llm = evaluator(prompt)
+answer_correctness.llm = evaluator
 #faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 
 try:
