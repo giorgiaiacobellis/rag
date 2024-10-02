@@ -6,7 +6,8 @@ import datetime
 
 from datasets import Dataset
 from ragas import evaluate
-from langchain_ollama import OllamaLLM
+from langchain.llms import HuggingFacePipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 from ragas.metrics import (
     answer_correctness,
@@ -32,7 +33,18 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 #ds.remove_columns(["contexts"])
 
-evaluator = OllamaLLM(model="llama3.1:8b")
+model_id = "neuralmagic/Meta-Llama-3.1-70B-Instruct-quantized.w4a16" 
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(model_id)
+
+pipe = pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    max_new_tokens=250,  
+)
+
+evaluator = HuggingFacePipeline(pipeline=pipe)
 
 try:
     # Valuta il modello
