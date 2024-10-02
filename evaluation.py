@@ -6,7 +6,7 @@ import datetime
 
 from datasets import Dataset
 from ragas import evaluate
-from langchain_community.llms import VLLM
+from langchain_community.llms.vllm import VLLM
 from ragas.llms import LangchainLLMWrapper
 from ragas.llms.prompt import Prompt
 from ragas.metrics import (
@@ -61,8 +61,9 @@ nli_statement_message_new = Prompt(
 )
 
 evaluator =  VLLM(
-    model="ybelkada/Mixtral-8x7B-Instruct-v0.1-AWQ",
+    model="meta-llama/Llama-2-13b-hf",
     trust_remote_code=True,
+    temperature=0.1,
     vllm_kwargs={"quantization": "awq"},
 )
 
