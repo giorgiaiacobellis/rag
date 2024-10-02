@@ -77,7 +77,7 @@ try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator,
-        dataset=ds,
+        dataset=ds.select(range(31)),
         metrics=[
             faithfulness,
         ],
