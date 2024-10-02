@@ -63,7 +63,7 @@ nli_statement_message_new = Prompt(
 )
 
 evaluator =  VLLM(
-    model="TheBloke/Llama-2-7b-Chat-AWQ",
+    model="hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
     trust_remote_code=True,
     max_new_tokens=512,
     vllm_kwargs={"quantization": "awq"},
