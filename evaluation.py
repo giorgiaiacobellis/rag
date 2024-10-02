@@ -31,7 +31,7 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
 ds  = Dataset.from_dict(json_data["data"])
-ds.remove_columns(["ground_truth"])
+#ds.remove_columns(["ground_truth"])
 
 long_form_answer_prompt_new = Prompt(
     name="long_form_answer_new_v1",
@@ -61,26 +61,25 @@ nli_statement_message_new = Prompt(
 )
 
 evaluator =  VLLM(
-    model="TheBloke/Llama-2-7b-Chat-AWQ",
+    model="ybelkada/Mixtral-8x7B-Instruct-v0.1-AWQ",
     trust_remote_code=True,
-    max_new_tokens=512,
-    top_k=10,
-    top_p=0.95,
-    temperature=0.8,
+    max_new_tokens=2000,
+    temperature=0,
     vllm_kwargs={"quantization": "awq"},
 )
 
 #faithfulness.nli_statements_message = nli_statement_message_new
 faithfulness.max_retries=3
+faithfulness.llm = evaluator
 #faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 
 try:
     # Valuta il modello
     results = evaluate(
-        llm=LangchainLLMWrapper(evaluator),
+        #llm=LangchainLLMWrapper(evaluator),
         dataset=ds,
         metrics=[
-            faithfulness,
+            faithfulness
         ],
     )
     print(results)
