@@ -69,14 +69,14 @@ evaluator =  VLLM(
 
 
 #faithfulness.nli_statements_message = nli_statement_message_new
-#faithfulness.max_retries=3
-#faithfulness.llm = LangchainLLMWrapper(evaluator)
+answer_correctness.max_retries=3
+answer_correctness.llm = LangchainLLMWrapper(evaluator)
 #faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 
 try:
     # Valuta il modello
     results = evaluate(
-        llm=LangchainLLMWrapper(evaluator),
+        #llm=LangchainLLMWrapper(evaluator),
         dataset=ds,
         metrics=[
             answer_correctness
@@ -106,5 +106,7 @@ Lista modelli testati come evaluators:
 - TheBloke/Llama-2-13B-chat-GGM
 - TheBloke/Llama-2-7b-Chat-AWQ
 - hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4
+- meta-llama/Llama-2-13b-hf
+- TheBloke/LLaMA2-13B-Tiefighter-AWQ"
 
 '''
