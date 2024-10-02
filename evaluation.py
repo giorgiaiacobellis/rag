@@ -31,7 +31,7 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
 ds  = Dataset.from_dict(json_data["data"])
-#ds.remove_columns(["contexts"])
+ds.remove_columns(["ground_truth"])
 
 
 
@@ -63,21 +63,24 @@ nli_statement_message_new = Prompt(
 )
 
 evaluator =  VLLM(
-    model="hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
+    model="TheBloke/Llama-2-13B-chat-GGML",
     trust_remote_code=True,
     max_new_tokens=512,
-    vllm_kwargs={"quantization": "awq"},
+    top_k=10,
+    top_p=0.95,
+    temperature=0.8,
+    vllm_kwargs={"quantization": "ggml"},
 )
 
 #faithfulness.nli_statements_message = nli_statement_message_new
 faithfulness.max_retries=3
-faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
+#faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 
 try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator,
-        dataset=ds.select(range(1)),
+        dataset=ds,
         metrics=[
             faithfulness,
         ],
