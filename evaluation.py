@@ -33,16 +33,17 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 #ds.remove_columns(["contexts"])
 
-model_id = "TheBloke/Llama-2-13B-chat-GGML" 
-tokenizer = AutoTokenizer.from_pretrained(model_id)
-model = AutoModelForCausalLM.from_pretrained(model_id)
 
 pipe = pipeline(
-    "text-generation",
-    model=model,
-    tokenizer=tokenizer,
-    max_new_tokens=250,  
-)
+        model=AutoModelForCausalLM.from_pretrained("TheBloke/Llama-2-13B-chat-GGML"),
+        tokenizer=AutoTokenizer.from_pretrained("TheBloke/Llama-2-13B-chat-GGML"),
+        return_full_text=True,  # langchain expects the full text
+        task="text-generation",
+        temperature=0.5,
+        repetition_penalty=1.1,  # without this output begins repeating
+        max_new_tokens=512,
+        device=0,
+    )
 
 evaluator = HuggingFacePipeline(pipeline=pipe)
 
