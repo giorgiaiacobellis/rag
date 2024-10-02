@@ -76,7 +76,7 @@ faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 try:
     # Valuta il modello
     results = evaluate(
-        model=evaluator,
+        llm=evaluator,
         dataset=ds,
         metrics=[
             faithfulness,
