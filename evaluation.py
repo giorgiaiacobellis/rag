@@ -69,9 +69,9 @@ evaluator =  VLLM(
     vllm_kwargs={"quantization": "awq"},
 )
 
-faithfulness.nli_statements_message = nli_statement_message_new
+#faithfulness.nli_statements_message = nli_statement_message_new
 faithfulness.max_retries=3
-faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
+#faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 
 try:
     # Valuta il modello
