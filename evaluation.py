@@ -63,23 +63,22 @@ nli_statement_message_new = Prompt(
 evaluator =  VLLM(
     model="ybelkada/Mixtral-8x7B-Instruct-v0.1-AWQ",
     trust_remote_code=True,
-    max_new_tokens=2000,
-    temperature=0,
     vllm_kwargs={"quantization": "awq"},
 )
 
+
 #faithfulness.nli_statements_message = nli_statement_message_new
-faithfulness.max_retries=3
-faithfulness.llm = LangchainLLMWrapper(evaluator)
+#faithfulness.max_retries=3
+#faithfulness.llm = LangchainLLMWrapper(evaluator)
 #faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 
 try:
     # Valuta il modello
     results = evaluate(
-        #llm=LangchainLLMWrapper(evaluator),
+        llm=LangchainLLMWrapper(evaluator),
         dataset=ds,
         metrics=[
-            faithfulness
+            answer_correctness
         ],
     )
     print(results)
