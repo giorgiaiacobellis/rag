@@ -61,10 +61,10 @@ nli_statement_message_new = Prompt(
 )
 
 evaluator =  VLLM(
-    model="meta-llama/Llama-2-13b-hf",
+    model="TheBloke/LLaMA2-13B-Tiefighter-AWQ",
     trust_remote_code=True,
     temperature=0.1,
-    #vllm_kwargs={"quantization": "awq"},
+    vllm_kwargs={"quantization": "awq"},
 )
 
 
