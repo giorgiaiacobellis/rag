@@ -60,6 +60,17 @@ nli_statement_message_new = Prompt(
     language="italian",
 )
 
+prompt='''[INST] <<SYS>> Given a question, an answer, and sentences from the answer analyze the complexity of each sentence given under 'sentences' and break down each sentence into one or more fully understandable statements while also ensuring no pronouns are used in each statement. Format the outputs in JSON.
+                    The output should be a well-formatted JSON instance that conforms to the JSON schema below.
+                    As an example, for the schema {"properties": {"foo": {"title": "Foo", "description": "a list of strings", "type": "array", "items": {"type": "string"}}}, "required": ["foo"]}
+                    the object {"foo": ["bar", "baz"]} is a well-formatted instance of the schema. The object {"properties": {"foo": ["bar", "baz"]}} is not well-formatted.
+                    Here is the output JSON schema:
+                    ```
+                    {"type": "array", "items": {"$ref": "#/definitions/Statements"}, "definitions": {"Statements": {"title": "Statements", "type": "object", "properties": {"sentence_index": {"title": "Sentence Index", "description": "Index of the sentence from the statement list", "type": "integer"}, "simpler_statements": {"title": "Simpler Statements", "description": "the simpler statements", "type": "array", "items": {"type": "string"}}}, "required": ["sentence_index", "simpler_statements"]}}}
+                    ```
+                    Do not return any preamble or explanations, return only a pure JSON string surrounded by triple backticks (```).<</SYS>>\n'''"{input}[/INST]",
+    
+
 evaluator =  VLLM(
     model="TheBloke/LLaMA2-13B-Tiefighter-AWQ",
     trust_remote_code=True,
@@ -69,8 +80,8 @@ evaluator =  VLLM(
 
 
 #faithfulness.nli_statements_message = nli_statement_message_new
-answer_correctness.max_retries=3
-answer_correctness.llm = LangchainLLMWrapper(evaluator)
+#answer_correctness.max_retries=3
+answer_correctness.llm = evaluator(prompt)
 #faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 
 try:
@@ -81,6 +92,7 @@ try:
         metrics=[
             answer_correctness
         ],
+        show_progress=False,
     )
     print(results)
 except Exception as e:
