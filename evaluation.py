@@ -43,7 +43,7 @@ long_form_answer_prompt_new = Prompt(
                     ```
                     {"type": "array", "items": {"$ref": "#/definitions/Statements"}, "definitions": {"Statements": {"title": "Statements", "type": "object", "properties": {"sentence_index": {"title": "Sentence Index", "description": "Index of the sentence from the statement list", "type": "integer"}, "simpler_statements": {"title": "Simpler Statements", "description": "the simpler statements", "type": "array", "items": {"type": "string"}}}, "required": ["sentence_index", "simpler_statements"]}}}
                     ```
-                    Do not return any preamble or explanations, return only a pure JSON string surrounded by triple backticks (```).<</SYS>>\n'''"Question: {question}\n""Answer: {answer}\n""Sentences:{sentences}\n""[/INST]",
+                    Do not return any preamble or explanations, return only a pure JSON string surrounded by triple backticks (```).<</SYS>>\n'''"{input}[/INST]",
     
     input_keys=["question", "answer", "sentences"],
     output_key="analysis",
@@ -70,7 +70,7 @@ evaluator =  VLLM(
 
 #faithfulness.nli_statements_message = nli_statement_message_new
 faithfulness.max_retries=3
-faithfulness.llm = evaluator
+faithfulness.llm = LangchainLLMWrapper(evaluator)
 #faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 
 try:
@@ -97,4 +97,14 @@ with open(results_file, "w") as f:
     json.dump(save_results, f, indent=4)
 
 print(f"Results saved to {results_file}")
+'''
+
+
+'''
+Lista modelli testati come evaluators: 
+- ybelkada/Mixtral-8x7B-Instruct-v0.1-AWQ
+- TheBloke/Llama-2-13B-chat-GGM
+- TheBloke/Llama-2-7b-Chat-AWQ
+- hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4
+
 '''
