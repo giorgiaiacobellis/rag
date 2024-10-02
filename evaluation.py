@@ -6,8 +6,7 @@ import datetime
 
 from datasets import Dataset
 from ragas import evaluate
-from langchain_huggingface import HuggingFacePipeline
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+from langchain_community.llms import VLLM
 
 from ragas.metrics import (
     answer_correctness,
@@ -34,18 +33,12 @@ ds  = Dataset.from_dict(json_data["data"])
 #ds.remove_columns(["contexts"])
 
 
-pipe = pipeline(
-        model=AutoModelForCausalLM.from_pretrained("TheBloke/Llama-2-13B-chat-GGML"),
-        tokenizer=AutoTokenizer.from_pretrained("TheBloke/Llama-2-13B-chat-GGML"),
-        return_full_text=True,  # langchain expects the full text
-        task="text-generation",
-        temperature=0.5,
-        repetition_penalty=1.1,  # without this output begins repeating
-        max_new_tokens=512,
-        device=0,
-    )
-
-evaluator = HuggingFacePipeline(pipeline=pipe)
+evaluator =  VLLM(
+    model="TheBloke/Llama-2-7b-Chat-AWQ",
+    trust_remote_code=True,
+    max_new_tokens=512,
+    vllm_kwargs={"quantization": "awq"},
+)
 
 try:
     # Valuta il modello
