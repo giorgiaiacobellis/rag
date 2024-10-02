@@ -9,4 +9,3 @@ langchain-huggingface
 langsmith
 transformers
 accelerate
-langchain_ollama
