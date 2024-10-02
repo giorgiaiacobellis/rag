@@ -64,7 +64,7 @@ evaluator =  VLLM(
     model="meta-llama/Llama-2-13b-hf",
     trust_remote_code=True,
     temperature=0.1,
-    vllm_kwargs={"quantization": "awq"},
+    #vllm_kwargs={"quantization": "awq"},
 )
 
 
