@@ -72,13 +72,13 @@ evaluator =  VLLM(
 
 #faithfulness.nli_statements_message = nli_statement_message_new
 #answer_correctness.max_retries=3
-answer_correctness.llm = evaluator
+#answer_correctness.llm = evaluator
 #faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 
 try:
     # Valuta il modello
     results = evaluate(
-        #llm=LangchainLLMWrapper(evaluator),
+        llm=evaluator,
         dataset=ds,
         metrics=[
             answer_correctness
