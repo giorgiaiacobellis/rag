@@ -7,7 +7,7 @@ import datetime
 from datasets import Dataset
 from ragas import evaluate
 from langchain_community.llms import VLLM
-from ragas.metrics import Faithfulness
+from ragas.llms import LangchainLLMWrapper
 from ragas.llms.prompt import Prompt
 from ragas.metrics import (
     answer_correctness,
@@ -32,8 +32,6 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 
 ds  = Dataset.from_dict(json_data["data"])
 ds.remove_columns(["ground_truth"])
-
-
 
 long_form_answer_prompt_new = Prompt(
     name="long_form_answer_new_v1",
@@ -63,13 +61,13 @@ nli_statement_message_new = Prompt(
 )
 
 evaluator =  VLLM(
-    model="TheBloke/Llama-2-13B-chat-GGML",
+    model="TheBloke/Llama-2-7b-Chat-AWQ",
     trust_remote_code=True,
     max_new_tokens=512,
     top_k=10,
     top_p=0.95,
     temperature=0.8,
-    vllm_kwargs={"quantization": "ggml"},
+    vllm_kwargs={"quantization": "awq"},
 )
 
 #faithfulness.nli_statements_message = nli_statement_message_new
@@ -79,7 +77,7 @@ faithfulness.max_retries=3
 try:
     # Valuta il modello
     results = evaluate(
-        llm=evaluator,
+        llm=LangchainLLMWrapper(evaluator),
         dataset=ds,
         metrics=[
             faithfulness,
