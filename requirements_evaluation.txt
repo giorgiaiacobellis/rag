@@ -1,5 +1,5 @@
 huggingface_hub
-vllm
+vllm == 0.2.7
 chromadb
 git+https://github.com/explodinggradients/ragas
 langchain_core<0.3.0
@@ -8,3 +8,5 @@ langchain-chroma
 langchain-huggingface
 langsmith
 transformers
+accelerate
+langchain_ollama
