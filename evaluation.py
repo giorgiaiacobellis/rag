@@ -1,4 +1,3 @@
-import data
 import os
 import json
 import datetime
