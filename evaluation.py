@@ -33,35 +33,6 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 #ds.remove_columns(["ground_truth"])
 
-long_form_answer_prompt_new = Prompt(
-    name="long_form_answer_new_v1",
-    instruction='''[INST] <<SYS>> Given a question, an answer, and sentences from the answer analyze the complexity of each sentence given under 'sentences' and break down each sentence into one or more fully understandable statements while also ensuring no pronouns are used in each statement. Format the outputs in JSON.
-                    The output should be a well-formatted JSON instance that conforms to the JSON schema below.
-                    As an example, for the schema {"properties": {"foo": {"title": "Foo", "description": "a list of strings", "type": "array", "items": {"type": "string"}}}, "required": ["foo"]}
-                    the object {"foo": ["bar", "baz"]} is a well-formatted instance of the schema. The object {"properties": {"foo": ["bar", "baz"]}} is not well-formatted.
-                    Here is the output JSON schema:
-                    ```
-                    {"type": "array", "items": {"$ref": "#/definitions/Statements"}, "definitions": {"Statements": {"title": "Statements", "type": "object", "properties": {"sentence_index": {"title": "Sentence Index", "description": "Index of the sentence from the statement list", "type": "integer"}, "simpler_statements": {"title": "Simpler Statements", "description": "the simpler statements", "type": "array", "items": {"type": "string"}}}, "required": ["sentence_index", "simpler_statements"]}}}
-                    ```
-                    Do not return any preamble or explanations, return only a pure JSON string surrounded by triple backticks (```).<</SYS>>\n'''"{input}[/INST]",
-    
-    input_keys=["question", "answer", "sentences"],
-    output_key="analysis",
-    language="italian",
-    output_type="json",
-)
-
-nli_statement_message_new = Prompt(
-    name="nli_statements_new_v1",
-    instruction=" [INST] <<SYS>>Your task is to judge the faithfulness of a series of statements based on a given context. For each statement you must return verdict as 1 if the statement can be directly inferred based on the context or 0 if the statement can not be directly inferred based on the context.<</SYS>>\n""Context: {context}\n""Statement: {statements}\n""[/INST]",
-    input_keys=["context", "statements"],
-    output_key="answer",
-    output_type="json",
-    language="italian",
-)
-
-
-
 evaluator =  VLLM(
     model="TheBloke/LLaMA2-13B-Tiefighter-AWQ",
     trust_remote_code=True,
@@ -111,5 +82,4 @@ Lista modelli testati come evaluators:
 - hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4
 - meta-llama/Llama-2-13b-hf
 - TheBloke/LLaMA2-13B-Tiefighter-AWQ"
-
 '''

@@ -1,5 +1,5 @@
 huggingface_hub
-vllm == 0.2.7
+vllm
 chromadb
 git+https://github.com/explodinggradients/ragas
 langchain_core<0.3.0
