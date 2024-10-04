@@ -47,6 +47,7 @@ def costruzione_retriever():
 #test retriever cambiando embedder
 retriever, vectordb = costruzione_retriever()
 query = "Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?"
-docs = vectordb.similarity_search(query)
+#docs = vectordb.similarity_search(query)
+
 docs = retriever.invoke("Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?")
 print(docs[0].page_content)
