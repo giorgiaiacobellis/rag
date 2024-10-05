@@ -26,8 +26,9 @@ def costruzione_retriever():
     #Vector DB
     print("caricamento embedder")
     embedder = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-mpnet-base-v2",
+        model_name="sentence-transformers/multi-qa-mpnet-base-dot-v1",
         model_kwargs= {"trust_remote_code": True, "device": 0},
+        encode_kwargs = {"batch_size":64},
     )
 
     print("generazione vectorDB")
