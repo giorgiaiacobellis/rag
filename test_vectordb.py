@@ -31,10 +31,10 @@ def costruzione_retriever():
     )
 
     print("generazione vectorDB")
-    vectordb = Chroma(collection_name="turism_collection",
-                        embedding_function=embedder,
-                        persist_directory="./chroma_langchain_db")
-
+    vectordb = Chroma(collection_name="test_vectordb",
+                      embedding_function=embedder,
+                      persist_directory="./test_vectordb")
+    vectordb.reset_collection()
 
     vectordb.from_documents(documents=splits, 
                             collection_name="test_vectordb",
@@ -45,19 +45,7 @@ def costruzione_retriever():
     return retriever, vectordb
 
 #test retriever cambiando embedder
-#retriever, vectordb = costruzione_retriever()
-
-print("caricamento embedder")
-embedder = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-mpnet-base-v2",
-    model_kwargs= {"trust_remote_code": True, "device": 0},
-)
-
-print("generazione vectorDB")
-vectordb = Chroma(collection_name="turism_collection",
-                    embedding_function=embedder,
-                    persist_directory="./chroma_langchain_db")
-retriever = vectordb.as_retriever(search_type = "mmr", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
+retriever, vectordb = costruzione_retriever()
 
 query = "Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?"
 #docs = vectordb.similarity_search(query)
