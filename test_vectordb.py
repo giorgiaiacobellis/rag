@@ -26,14 +26,14 @@ def costruzione_retriever():
     #Vector DB
     print("caricamento embedder")
     embedder = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/multi-qa-mpnet-base-dot-v1",
-        model_kwargs= {"trust_remote_code": True, "device": "cuda"},
+        model_name="sentence-transformers/all-mpnet-base-v2",
+        model_kwargs= {"trust_remote_code": True, "device": 0},
     )
 
     print("generazione vectorDB")
-    vectordb = Chroma(collection_name="test_vectordb",
+    vectordb = Chroma(collection_name="turism_collection",
                         embedding_function=embedder,
-                        persist_directory="./test_vectordb")
+                        persist_directory="./chroma_langchain_db")
 
 
     vectordb.from_documents(documents=splits, 
@@ -42,10 +42,23 @@ def costruzione_retriever():
                             persist_directory="./test_vectordb")
         
     retriever = vectordb.as_retriever(search_type = "similarity", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
-    return retriever , vectordb
+    return retriever, vectordb
 
 #test retriever cambiando embedder
-retriever, vectordb = costruzione_retriever()
+#retriever, vectordb = costruzione_retriever()
+
+print("caricamento embedder")
+embedder = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-mpnet-base-v2",
+    model_kwargs= {"trust_remote_code": True, "device": 0},
+)
+
+print("generazione vectorDB")
+vectordb = Chroma(collection_name="turism_collection",
+                    embedding_function=embedder,
+                    persist_directory="./chroma_langchain_db")
+retriever = vectordb.as_retriever(search_type = "similarity", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
+
 query = "Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?"
 #docs = vectordb.similarity_search(query)
 
