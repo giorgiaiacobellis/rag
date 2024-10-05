@@ -63,4 +63,4 @@ query = "Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?
 #docs = vectordb.similarity_search(query)
 
 docs = retriever.invoke("Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?")
-print(docs[0].page_content)
+print(docs[3].page_content)
