@@ -57,7 +57,7 @@ print("generazione vectorDB")
 vectordb = Chroma(collection_name="turism_collection",
                     embedding_function=embedder,
                     persist_directory="./chroma_langchain_db")
-retriever = vectordb.as_retriever(search_type = "similarity", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
+retriever = vectordb.as_retriever(search_type = "mmr", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
 
 query = "Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?"
 #docs = vectordb.similarity_search(query)
