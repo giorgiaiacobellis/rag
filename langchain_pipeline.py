@@ -7,15 +7,6 @@ import utils
 import data
 import json
 
-from ragas.metrics import (
-    answer_correctness,
-    answer_relevancy,
-    context_precision,
-    context_recall,
-    faithfulness,
-)
-from ragas import evaluate
-
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
@@ -70,7 +61,7 @@ def main():
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
     ds = generate_db(rag_chain)
-    
+
 
 if __name__ == "__main__":
     main()
