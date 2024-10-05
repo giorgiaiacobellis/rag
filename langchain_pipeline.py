@@ -70,32 +70,7 @@ def main():
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
     ds = generate_db(rag_chain)
-
-    '''
-    # Caricamento dei dati
-    filename = "dataset_2024-09-27_18-23-43.json"
-    with open(filename, "r") as f: # Caricamento dei dati dal file JSON
-        json_data = json.load(f)
-
-    ds  = Dataset.from_dict(json_data["data"])
     
-
-    print("sto valutando il modello!")
-    try:
-        # Valuta il modello
-        results = evaluate(
-            llm=evaluator,
-            embeddings=embedder,
-            dataset=ds,
-            metrics=[
-                faithfulness
-            ],
-        )
-        print(results)
-    except Exception as e:
-        print(f"Errore durante la valutazione: {e}")
-        results = None
-'''
 
 if __name__ == "__main__":
     main()

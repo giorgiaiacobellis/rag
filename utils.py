@@ -1,7 +1,7 @@
 import json
-#from langchain_text_splitters import RecursiveCharacterTextSplitter rimetti
+from langchain_text_splitters import RecursiveCharacterTextSplitter 
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.llms import VLLM
+from langchain_community.llms.vllm import VLLM
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_chroma import Chroma
 from langchain_core.prompts import PromptTemplate
@@ -24,9 +24,8 @@ def split_data(split_value):
 
 
         print("split dei dati!")
-        #text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200) rimetti
-        #splits = text_splitter.split_documents(documents) rimetti
-        splits = [] #elimina
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200) 
+        splits = text_splitter.split_documents(documents) 
         return splits
     else:
         return []
@@ -51,7 +50,7 @@ def create_vector_db(vectordb_value, config, splits):
                                 embedding=embedder,
                                 persist_directory=config["vectordb"]["persist_directory"])
     
-    retriever = vectordb.as_retriever(search_type = "mmr")
+    retriever = vectordb.as_retriever(search_type = "mmr", search_kwargs= { "k":5, "fetch_k": 50, "lambda_mult": 0})
     return retriever, embedder
 
 
@@ -84,9 +83,9 @@ def generate_chat(config):
     llm = VLLM(
             model=config["llm"]["model"],
             top_p=config["llm"]["top_p"],
-            max_tokens=config["llm"]["max_tokens"],
+            max_new_tokens=config["llm"]["max_new_tokens"],
             temperature=config["llm"]["temperature"],
-            stream=config["llm"]["stream"]
+            top_k=config["llm"]["top_k"],
         )
     
     prompt = PromptTemplate.from_template(config["llm"]["prompt"])
