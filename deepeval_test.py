@@ -58,7 +58,7 @@ answer_relevancy = AnswerRelevancyMetric(
     threshold=0.7,
     model=zephyr,
     include_reason=True,
-    async_mode=False
+    
 )
 
 test_cases = costruisci_testcases("dataset_prova.json")
