@@ -22,7 +22,7 @@ def costruzione_retriever():
     print("split dei dati!")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200) 
     splits = text_splitter.split_documents(documents) 
-    print("lensplits" + len(splits))
+    print("lensplits", len(splits))
 
     #Vector DB
     print("caricamento embedder")
