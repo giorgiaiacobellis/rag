@@ -48,6 +48,12 @@ class Zephyr(DeepEvalBaseLLM):
         )
 
         return pipeline(prompt)
+    
+    async def a_generate(self, prompt: str) -> str:
+        return self.generate(prompt)
+
+    def get_model_name(self):
+        return "Llama-3 8B"
 
 
 zephyr = Zephyr()
