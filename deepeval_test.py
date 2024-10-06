@@ -58,7 +58,8 @@ answer_relevancy = AnswerRelevancyMetric(
     threshold=0.7,
     model=zephyr,
     include_reason=True,
-    async_mode = False
+    async_mode = False,
+    verbose_mode=True
     
 )
 
