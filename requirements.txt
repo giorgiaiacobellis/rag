@@ -8,3 +8,4 @@ langchain-huggingface
 langchain-text-splitters
 langsmith
 sentence-transformers
+deepeval

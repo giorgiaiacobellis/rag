@@ -18,6 +18,8 @@ os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 SPLIT = 1  # vale zero se lo split è da eseguire altimenti 1
 VECTORDB = 1 #vale 0 se il vectordb è da costruire altrimenti 1
 
+
+
 def generate_db(rag_chain):
     
     answers = []
@@ -72,6 +74,4 @@ if __name__ == "__main__":
 0) se non è stato ancora fatto, caricare i dati nel vectordb
 1) caricare il modello da testare
 2) dare al modello le question, ottenere le risposte e creare un file per ogni modello che contenga risposte e ground truth
-3) calcolare le metriche di valutazione per ogni modello 
-4) fare il confronto tra i modelli
 """

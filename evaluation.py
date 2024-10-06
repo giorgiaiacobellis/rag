@@ -31,6 +31,8 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 #ds.remove_columns(["ground_truth"])
 
+new_prompt = Prompt
+
 evaluator =  VLLM(
     model="TheBloke/LLaMA2-13B-Tiefighter-AWQ",
     trust_remote_code=True,
