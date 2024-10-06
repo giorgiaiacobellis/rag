@@ -62,8 +62,13 @@ answer_relevancy = AnswerRelevancyMetric(
 )
 
 test_cases = costruisci_testcases("dataset_prova.json")
-print(test_cases[0])
+#print(test_cases[0])
+
+answer_relevancy.measure(test_cases[0])
+print("Score: ", answer_relevancy.score)
+print("Reason: ", answer_relevancy.reason)
+'''
 print(evaluate(
     test_cases=test_cases,
     metrics=[answer_relevancy]
-))
+))'''
