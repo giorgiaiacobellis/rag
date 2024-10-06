@@ -11,7 +11,7 @@ def costruisci_testcases(file):
     with open(file, 'r') as f:
         data = json.load(f)
 
-    for question, answer, ground, context in zip(data['data']['question'], data['data']['answer'], data['data']['contexts'], data['data']['ground_truth']):
+    for question, answer, context, ground, in zip(data['data']['question'], data['data']['answer'], data['data']['contexts'], data['data']['ground_truth']):
         test_case = LLMTestCase(input=question, actual_output=answer, expected_output = ground, retrieval_context=context)
         test_cases.append(test_case)
 
