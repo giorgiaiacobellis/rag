@@ -21,7 +21,7 @@ def costruisci_testcases(file):
 class Zephyr(DeepEvalBaseLLM):
     def __init__(self):
         self.model = AutoModelForCausalLM.from_pretrained("HuggingFaceH4/zephyr-7b-beta")
-        self.tokenizer = AutoTokenizer.from_pretrained("HuggingFaceH4/zephyr-7b-beta1")
+        self.tokenizer = AutoTokenizer.from_pretrained("HuggingFaceH4/zephyr-7b-beta")
 
     def load_model(self):
         return self.model
