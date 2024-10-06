@@ -49,7 +49,7 @@ class Zephyr(DeepEvalBaseLLM):
         return self.generate(prompt)
 
     def get_model_name(self):
-        return "Llama-3 8B"
+        return "Zepyhr-7B-Beta"
 
 
 zephyr = Zephyr()
@@ -57,10 +57,12 @@ zephyr = Zephyr()
 answer_relevancy = AnswerRelevancyMetric(
     threshold=0.7,
     model=zephyr,
-    include_reason=True
+    include_reason=True,
+    async_mode=False
 )
 
 test_cases = costruisci_testcases("dataset_prova.json")
+print(test_cases[0])
 print(evaluate(
     test_cases=[test_cases],
     metrics=[answer_relevancy]
