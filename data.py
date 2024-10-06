@@ -137,7 +137,7 @@ config2 = {
 }
 
 
-config = {
+config3 = {
     "llm": {
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
             "top_p": 0.2,
@@ -162,7 +162,7 @@ config = {
     },
 }
 
-config3 = {
+config = {
     "llm": {
             "model": "mistralai/Mistral-Nemo-Instruct-2407",
             "top_p": 0.2,
