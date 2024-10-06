@@ -101,7 +101,7 @@ config = {
     },
     "embedder": {
             "model": "sentence-transformers/all-mpnet-base-v2",
-            "model_kwargs": {"trust_remote_code": True, "device": 0},
+            "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
     },
 
     "vectordb": {

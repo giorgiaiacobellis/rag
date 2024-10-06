@@ -22,20 +22,21 @@ def costruzione_retriever():
     print("split dei dati!")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200) 
     splits = text_splitter.split_documents(documents) 
+    len("len splits: "+splits)
 
     #Vector DB
     print("caricamento embedder")
     embedder = HuggingFaceEmbeddings(
         model_name="sentence-transformers/multi-qa-mpnet-base-dot-v1",
-        model_kwargs= {"trust_remote_code": True, "device": 0},
-        encode_kwargs = {"batch_size":64},
+        model_kwargs= {"trust_remote_code": True, "device": "cuda"},
     )
+
 
     print("generazione vectorDB")
     vectordb = Chroma(collection_name="test_vectordb",
                       embedding_function=embedder,
                       persist_directory="./test_vectordb")
-    vectordb.reset_collection()
+    #vectordb.reset_collection()
 
     vectordb.from_documents(documents=splits, 
                             collection_name="test_vectordb",
