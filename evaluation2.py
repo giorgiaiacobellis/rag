@@ -62,8 +62,8 @@ metrics = [FaithfulnesswithHHEM()]
 try:
     # Valuta il modello
     results = evaluate(
-        llm=evaluator_llm,
-        embeddings=embd,
+        #llm=evaluator_llm,
+        #embeddings=embd,
         dataset=dataset,
         metrics=metrics
     )
