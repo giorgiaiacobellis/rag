@@ -34,10 +34,6 @@ def create_samples_from_dataset(dataset):
 
 evaluator = VLLM(
             model=data.config3["llm"]["model"],
-            top_p=data.config3["llm"]["top_p"],
-            max_new_tokens=data.config3["llm"]["max_new_tokens"],
-            temperature=data.config3["llm"]["temperature"],
-            top_k=data.config3["llm"]["top_k"],
             trust_remote_code= True
         )
 
