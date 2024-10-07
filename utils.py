@@ -86,7 +86,6 @@ def generate_chat(config):
             max_new_tokens=config["llm"]["max_new_tokens"],
             temperature=config["llm"]["temperature"],
             top_k=config["llm"]["top_k"],
-            vllm_kwargs=config["llm"]["vllm_kwargs"],
             trust_remote_code= True
         )
     
