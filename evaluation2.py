@@ -62,6 +62,7 @@ try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator_llm,
+        embeddings=hf,
         dataset=dataset,
         metrics=metrics,
     )
