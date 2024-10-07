@@ -4,7 +4,7 @@ import json
 import data
 import os
 
-from ragas.metrics import LLMContextRecall, Faithfulness, FactualCorrectness, SemanticSimilarity
+from ragas.metrics import LLMContextRecall, Faithfulness, FactualCorrectness, SemanticSimilarity, answer_similarity
 from ragas import evaluate
 from langchain_community.llms.vllm import VLLM
 from ragas.llms import LangchainLLMWrapper
@@ -53,7 +53,7 @@ samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
 
-metrics = [LLMContextRecall(), FactualCorrectness(), Faithfulness(), SemanticSimilarity()]
+metrics = [ FactualCorrectness(), Faithfulness(), SemanticSimilarity(), answer_similarity]
 try:
     # Valuta il modello
     results = evaluate(
