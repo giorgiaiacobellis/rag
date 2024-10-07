@@ -2,10 +2,12 @@ import os
 import json
 import datetime
 
+from langchain_huggingface import HuggingFaceEmbeddings
+import data
+
 from datasets import Dataset
 from ragas import evaluate
 from langchain_community.llms.vllm import VLLM
-from ragas.llms import LangchainLLMWrapper
 from ragas.llms.prompt import Prompt
 from ragas.metrics import (
     answer_correctness,
@@ -33,11 +35,19 @@ ds  = Dataset.from_dict(json_data["data"])
 
 new_prompt = Prompt
 
-evaluator =  VLLM(
-    model="TheBloke/LLaMA2-13B-Tiefighter-AWQ",
-    trust_remote_code=True,
-    temperature=0.1,
-    vllm_kwargs={"quantization": "awq"},
+evaluator = VLLM(
+            model=data.config3["llm"]["model"],
+            top_p=data.config3["llm"]["top_p"],
+            max_new_tokens=data.config3["llm"]["max_new_tokens"],
+            temperature=data.config3["llm"]["temperature"],
+            top_k=data.config3["llm"]["top_k"],
+            vllm_kwargs=data.config3["llm"]["vllm_kwargs"],
+            trust_remote_code= True
+        )
+
+hf = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-mpnet-base-v2",
+    model_kwargs={"trust_remote_code": True, "device": "cuda"},
 )
 
 
@@ -46,13 +56,16 @@ evaluator =  VLLM(
 #answer_correctness.llm = evaluator
 #faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
 
+
+
 try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator,
+        embeddings=hf,
         dataset=ds,
         metrics=[
-            answer_correctness
+            answer_relevancy
         ],
         show_progress=False,
     )
