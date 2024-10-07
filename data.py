@@ -85,12 +85,12 @@ ground_truth = [
 # ----------------------------CONFIGURATIONS------------------------------
 # Config1: zephyr-7b-beta
 
-config1 = {
+config = {
     "llm": {
             "model": "HuggingFaceH4/zephyr-7b-beta",
-            "top_p": 0.2,
+            "top_p": 0.5,
             "max_new_tokens": 1000,
-            "temperature": 0.85,
+            "temperature": 0.5,
             "trust_remote_code":True,  # mandatory for hf models
             "top_k": 10,
             "prompt": utils.get_modified_prompt(
@@ -163,8 +163,7 @@ config3 = {
 }
 
 
-
-config = {
+config1 = {
         "llm": {
             "model": "TheBloke/Open_Gpt4_8x7B-AWQ",
             "top_p": 0.2,
