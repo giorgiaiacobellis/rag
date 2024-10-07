@@ -4,7 +4,7 @@ import json
 import data
 import os
 
-from ragas.metrics import LLMContextRecall, Faithfulness, answer_similarity
+from ragas.metrics import LLMContextRecall, Faithfulness, answer_similarity, answer_relevancy
 from ragas import evaluate
 import vllm
 from langchain_community.llms.vllm import VLLM
@@ -36,7 +36,7 @@ def create_samples_from_dataset(dataset):
     return samples
 
 evaluator = VLLM(
-            model=data.config3["llm"]["model"],
+            model="HuggingFaceH4/zephyr-7b-beta",
             trust_remote_code= True,
             max_new_tokens = 128000
         )
@@ -50,7 +50,7 @@ hf = HuggingFaceEmbeddings(
 embd = LangchainEmbeddingsWrapper(hf)
 
 # Caricamento dei dati
-filename = "dataset_2024-10-07_12-09-43.json"
+filename = "dataset_prova.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
@@ -58,7 +58,7 @@ samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
 
-metrics = [Faithfulness()]
+metrics = [answer_relevancy]
 try:
     # Valuta il modello
     results = evaluate(
