@@ -87,7 +87,7 @@ ground_truth = [
 
 config = {
     "llm": {
-            "model": "HuggingFaceH4/zephyr-7b-beta",
+            "model": "mistralai/Mistral-7B-Instruct-v0.2",  #"HuggingFaceH4/zephyr-7b-beta",
             "top_p": 0.2,
             "max_new_tokens": 1000,
             "temperature": 0.2,
