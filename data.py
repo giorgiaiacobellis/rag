@@ -140,9 +140,9 @@ config2 = {
 config = {
     "llm": {
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-            "top_p": 0.2, #testare anche  0.5 , 0.75 , 0.85,  1
+            "top_p": 0.5, #testare anche  0.5 , 0.75 , 0.85,  1
             "max_new_tokens": 1000, #testare anche 250
-            "temperature": 0.2, #testare anche 0.2, 0,5, 0.85, 1
+            "temperature": 0.5, #testare anche 0.2, 0,5, 0.85, 1
             "trust_remote_code":True,  # mandatory for hf models
             "top_k": 10, #testare 1 e 30
             "prompt": utils.get_modified_prompt(
