@@ -25,7 +25,7 @@ def create_samples_from_dataset(dataset):
         samples.append(
             SingleTurnSample(
                 user_input=question,
-                retrieved_contexts=[contexts[1]],
+                retrieved_contexts=contexts,
                 response=answer,
                 reference=ground_truth
             )
@@ -45,7 +45,7 @@ hf = HuggingFaceEmbeddings(
 )
 
 # Caricamento dei dati
-filename = "dataset_prova.json"
+filename = "dataset_2024-10-06_11-42-12.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
@@ -53,7 +53,7 @@ samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
 
-metrics = [ FactualCorrectness(), Faithfulness(), SemanticSimilarity(), answer_similarity]
+metrics = [answer_similarity]
 try:
     # Valuta il modello
     results = evaluate(
