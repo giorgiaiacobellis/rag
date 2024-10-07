@@ -43,8 +43,8 @@ def generate_db(rag_chain):
     
     ds  = Dataset.from_dict(dataset_dict["data"])
     #save results 
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename = f"dataset_{timestamp}.json" 
+    
+    filename = "dataset_Mistral-11.json" 
     with open(filename, "w") as outfile:
         json.dump(dataset_dict, outfile) 
     
