@@ -4,11 +4,12 @@ import json
 import data
 import os
 
-from ragas.metrics import LLMContextRecall, Faithfulness, FactualCorrectness, SemanticSimilarity, answer_similarity
+from ragas.metrics import LLMContextRecall, faithfulness, FactualCorrectness, SemanticSimilarity, answer_similarity
 from ragas import evaluate
 import vllm
 from langchain_community.llms.vllm import VLLM
 from ragas.llms import LangchainLLMWrapper
+from ragas.embeddings import LangchainEmbeddingsWrapper
 
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
@@ -44,6 +45,7 @@ hf = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-mpnet-base-v2",
     model_kwargs={"trust_remote_code": True, "device": "cuda"},
 )
+embd = LangchainEmbeddingsWrapper(hf)
 
 # Caricamento dei dati
 filename = "dataset_2024-10-06_19-50-49.json"
@@ -54,7 +56,7 @@ samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
 
-metrics = [Faithfulness(),answer_similarity]
+metrics = [faithfulness,answer_similarity]
 try:
     # Valuta il modello
     results = evaluate(
