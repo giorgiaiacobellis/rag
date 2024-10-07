@@ -29,7 +29,6 @@ evaluator = VLLM(
             max_new_tokens=data.config3["llm"]["max_new_tokens"],
             temperature=data.config3["llm"]["temperature"],
             top_k=data.config3["llm"]["top_k"],
-            vllm_kwargs=data.config3["llm"]["vllm_kwargs"],
             trust_remote_code= True
         )
 
