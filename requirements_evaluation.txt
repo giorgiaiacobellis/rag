@@ -1,6 +1,5 @@
 huggingface_hub
 vllm== 0.2.7
-chromadb
 git+https://github.com/explodinggradients/ragas
 langsmith
 pydantic==1.*
