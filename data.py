@@ -88,9 +88,9 @@ ground_truth = [
 config = {
     "llm": {
             "model": "HuggingFaceH4/zephyr-7b-beta",
-            "top_p": 0.5,
+            "top_p": 1,
             "max_new_tokens": 1000,
-            "temperature": 0.5,
+            "temperature": 1,
             "trust_remote_code":True,  # mandatory for hf models
             "top_k": 10,
             "prompt": utils.get_modified_prompt(
