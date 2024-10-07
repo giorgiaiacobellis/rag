@@ -58,7 +58,7 @@ metrics = [Faithfulness(),answer_similarity]
 try:
     # Valuta il modello
     results = evaluate(
-        llm=evaluator,
+        llm=evaluator_llm,
         embeddings=hf,
         dataset=dataset,
         metrics=metrics,
