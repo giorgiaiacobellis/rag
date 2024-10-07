@@ -45,7 +45,9 @@ def generate_questions_from_answer(answer):
     )
     
     # Generate the questions using the LangChain VLLM model
-    result = llm(prompt)
+    result = llm.invoke(prompt)
+    print(result)
+    #result = llm(prompt)
     questions = result.strip().split("\n")[:3]  # Assuming the model returns each question on a new line
     return questions
 
