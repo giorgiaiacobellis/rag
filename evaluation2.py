@@ -25,7 +25,7 @@ def create_samples_from_dataset(dataset):
         samples.append(
             SingleTurnSample(
                 user_input=question,
-                retrieved_contexts=contexts,
+                retrieved_contexts=[contexts[1]],
                 response=answer,
                 reference=ground_truth
             )
