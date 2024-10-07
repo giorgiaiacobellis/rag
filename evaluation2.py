@@ -34,6 +34,7 @@ def create_samples_from_dataset(dataset):
 
 evaluator = VLLM(
             model=data.config3["llm"]["model"],
+            max_new_tokens=4000,
             trust_remote_code= True
         )
 
@@ -45,7 +46,7 @@ hf = HuggingFaceEmbeddings(
 )
 
 # Caricamento dei dati
-filename = "dataset_2024-10-06_11-42-12.json"
+filename = "dataset_2024-09-27_17-47-35.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
@@ -53,11 +54,11 @@ samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
 
-metrics = [answer_similarity]
+metrics = [Faithfulness(),answer_similarity]
 try:
     # Valuta il modello
     results = evaluate(
-        llm=evaluator_llm,
+        llm=evaluator,
         embeddings=hf,
         dataset=dataset,
         metrics=metrics,
