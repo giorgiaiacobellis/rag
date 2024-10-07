@@ -6,6 +6,7 @@ import os
 
 from ragas.metrics import LLMContextRecall, Faithfulness, FactualCorrectness, SemanticSimilarity, answer_similarity
 from ragas import evaluate
+import vllm
 from langchain_community.llms.vllm import VLLM
 from ragas.llms import LangchainLLMWrapper
 
@@ -32,9 +33,9 @@ def create_samples_from_dataset(dataset):
         )
     return samples
 
-evaluator = VLLM(
+evaluator = vllm.LLM(
+            engine='vllm',
             model=data.config3["llm"]["model"],
-            max_new_tokens=4000,
             trust_remote_code= True
         )
 
