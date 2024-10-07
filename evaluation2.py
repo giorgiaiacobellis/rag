@@ -10,6 +10,7 @@ import vllm
 from langchain_community.llms.vllm import VLLM
 from ragas.llms import LangchainLLMWrapper
 from ragas.embeddings import LangchainEmbeddingsWrapper
+from ragas.run_config import RunConfig
 
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
@@ -34,9 +35,10 @@ def create_samples_from_dataset(dataset):
         )
     return samples
 
-evaluator = vllm.LLM(
+evaluator = VLLM(
             model=data.config3["llm"]["model"],
-            trust_remote_code= True
+            trust_remote_code= True,
+            max_new_tokens = 128000
         )
 
 evaluator_llm = LangchainLLMWrapper(evaluator)
@@ -48,7 +50,7 @@ hf = HuggingFaceEmbeddings(
 embd = LangchainEmbeddingsWrapper(hf)
 
 # Caricamento dei dati
-filename = "dataset_2024-10-06_20-06-46.json"
+filename = "dataset_2024-10-07_12-09-43.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
@@ -61,9 +63,10 @@ try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator_llm,
-        embeddings=hf,
+        embeddings=embd,
         dataset=dataset,
         metrics=metrics,
+        run_config=RunConfig(max_retries=64)
     )
 
     print(results)
