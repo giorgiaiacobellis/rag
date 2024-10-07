@@ -35,7 +35,7 @@ ds  = Dataset.from_dict(json_data["data"])
 
 new_prompt = Prompt
 
-evaluator = VLLM(
+prova = VLLM(
             model=data.config3["llm"]["model"],
             top_p=data.config3["llm"]["top_p"],
             max_new_tokens=data.config3["llm"]["max_new_tokens"],
@@ -61,7 +61,7 @@ hf = HuggingFaceEmbeddings(
 try:
     # Valuta il modello
     results = evaluate(
-        llm=evaluator,
+        llm=prova,
         embeddings=hf,
         dataset=ds,
         metrics=[
