@@ -4,7 +4,7 @@ import json
 import data
 import os
 
-from ragas.metrics import LLMContextRecall, faithfulness, FactualCorrectness, SemanticSimilarity, answer_similarity
+from ragas.metrics import LLMContextRecall, faithfulness, FactualCorrectness, answer_similarity
 from ragas import evaluate
 import vllm
 from langchain_community.llms.vllm import VLLM
@@ -28,7 +28,7 @@ def create_samples_from_dataset(dataset):
         samples.append(
             SingleTurnSample(
                 user_input=question,
-                retrieved_contexts=contexts,
+                retrieved_contexts=[contexts[1]],
                 response=answer,
                 reference=ground_truth
             )
@@ -58,7 +58,7 @@ samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
 
-metrics = [faithfulness,answer_similarity]
+metrics = [FactualCorrectness()]
 try:
     # Valuta il modello
     results = evaluate(
