@@ -47,7 +47,7 @@ hf = HuggingFaceEmbeddings(
 )
 
 # Caricamento dei dati
-filename = "dataset_2024-10-06_19-21-42.json"
+filename = "dataset_2024-10-06_19-50-49.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
