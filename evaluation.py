@@ -35,11 +35,13 @@ llm = VLLM(
 
 # Function to generate question variations from the answer using LangChain VLLM
 def generate_questions_from_answer(answer):
-    prompt = (
-        f"Data la seguente risposta, genera tre domande diverse ma pertinenti "
-        f"come se fossero domande per cui questa risposta è corretta. "
-        f"Ecco la risposta:\n\n{answer}\n\n"
-        "Ora, genera tre domande alternative in italiano."
+    prompt = (f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
+        f"Data la seguente risposta, genera tre domande pertinenti "
+        f"come se fossero domande per cui questa risposta è corretta. Fai quindi reverse engineering dalla risposta sulla domanda.<|eot_id|>\n"
+        f"<|start_header_id|>user<|end_header_id|>"
+        f"Ecco la risposta:\n\n{answer}<|eot_id|>\n\n"
+        f"Ora, genera tre(3) domande alternative in italiano."
+        "<|start_header_id|>assistant<|end_header_id|>\n\n"
     )
     
     # Generate the questions using the LangChain VLLM model
