@@ -1,21 +1,13 @@
 import os
-import json
-import datetime
-
 from langchain_huggingface import HuggingFaceEmbeddings
 import data
-
 from datasets import Dataset
-from ragas import evaluate
 from langchain_community.llms.vllm import VLLM
-from ragas.llms.prompt import Prompt
-from ragas.metrics import (
-    answer_correctness,
-    answer_relevancy,
-    context_precision,
-    context_recall,
-    faithfulness,
-)
+from langchain.llms import VLLM
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import json
+
 
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
@@ -31,11 +23,8 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
 ds  = Dataset.from_dict(json_data["data"])
-#ds.remove_columns(["ground_truth"])
 
-new_prompt = Prompt
-
-prova = VLLM(
+llm = VLLM(
             model=data.config3["llm"]["model"],
             top_p=data.config3["llm"]["top_p"],
             max_new_tokens=data.config3["llm"]["max_new_tokens"],
@@ -44,44 +33,67 @@ prova = VLLM(
             trust_remote_code= True
         )
 
-hf = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-mpnet-base-v2",
-    model_kwargs={"trust_remote_code": True, "device": "cuda"},
-)
-
-
-#faithfulness.nli_statements_message = nli_statement_message_new
-#answer_correctness.max_retries=3
-#answer_correctness.llm = evaluator
-#faithfulness.long_form_answer_prompt = long_form_answer_prompt_new
-
-try:
-    # Valuta il modello
-    results = evaluate(
-        llm=prova,
-        embeddings=hf,
-        dataset=ds,
-        metrics=[
-            answer_relevancy
-        ],
-        show_progress=False,
+# Function to generate question variations from the answer using LangChain VLLM
+def generate_questions_from_answer(answer):
+    prompt = (
+        f"Data la seguente risposta, genera tre domande diverse ma pertinenti "
+        f"come se fossero domande per cui questa risposta è corretta. "
+        f"Ecco la risposta:\n\n{answer}\n\n"
+        "Ora, genera tre domande alternative in italiano."
     )
-    print(results)
-except Exception as e:
-    print(f"Errore durante la valutazione: {e}")
-    results = None
+    
+    # Generate the questions using the LangChain VLLM model
+    result = llm(prompt)
+    questions = result.strip().split("\n")[:3]  # Assuming the model returns each question on a new line
+    return questions
 
-'''
-# Salva i risultati in un file
-save_results = {"model_info": data.config["llm"], "evaluation_results": results}
+# Function to calculate cosine similarity
+def calculate_cosine_similarity(original_question, generated_questions):
+    questions = [original_question] + generated_questions
+    vectorizer = TfidfVectorizer().fit_transform(questions)
+    vectors = vectorizer.toarray()
+    
+    # Compute cosine similarity between the original question and each generated question
+    cosine_similarities = cosine_similarity(vectors[0:1], vectors[1:]).flatten()
+    return cosine_similarities.mean()
 
-timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-results_file = f"results_{timestamp}.json"
-with open(results_file, "w") as f:
-    json.dump(save_results, f, indent=4)
+# Main function to calculate answer relevancy from a dataset
+def calculate_answer_relevancy(dataset_path):
+    # Load the dataset
+    with open(dataset_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    results = []
+    for i, item in enumerate(data['data']['question']):
+        original_question = item
+        answer = data['data']['answer'][i]
+        
+        # Generate the questions using the answer
+        generated_questions = generate_questions_from_answer(answer)
+        
+        # Calculate cosine similarity
+        avg_cosine_similarity = calculate_cosine_similarity(original_question, generated_questions)
+        
+        # Store the result
+        results.append({
+            'question': original_question,
+            'generated_question_1': generated_questions[0],
+            'generated_question_2': generated_questions[1],
+            'generated_question_3': generated_questions[2],
+            'average_cosine_similarity': avg_cosine_similarity
+        })
+    
+    # Display the results
+    for result in results:
+        print(f"Question: {result['question']}")
+        print(f"Generated Questions: {result['generated_question_1']}, {result['generated_question_2']}, {result['generated_question_3']}")
+        print(f"Average Cosine Similarity: {result['average_cosine_similarity']}\n")
+    
+    return results
 
-print(f"Results saved to {results_file}")
-'''
+# Example usage
+dataset_path = 'your_dataset.json'  # Replace with your dataset file
+calculate_answer_relevancy(dataset_path)
 
 
 '''
