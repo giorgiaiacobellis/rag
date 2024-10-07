@@ -140,15 +140,15 @@ config2 = {
 config3 = {
     "llm": {
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-            "top_p": 0.2,
-            "max_new_tokens": 1000,
-            "temperature": 0.85,
+            "top_p": 0.2, #testare anche  0.5 , 0.75 , 0.85,  1
+            "max_new_tokens": 1000, #testare anche 250
+            "temperature": 0.85, #testare anche 0.2, 0,5, 0.85, 1
             "trust_remote_code":True,  # mandatory for hf models
-            "top_k": 10,
+            "top_k": 10, #testare 1 e 30
             "prompt": utils.get_modified_prompt(
                 "Sei un assistente turistico specializzato nel Piemonte. il tuo obiettivo è fornire informazioni accurate, utili e interessanti ai turisti che desiderano visitare il Piemonte. rispondi a domande su attrazioni turistiche, eventi, itinerari, cucina tipica, trasporti, alloggi e altre informazioni utili per i turisti. Sii preparato a rispondere a domande aperte, richieste di consigli e suggerimenti personalizzati in base agli interessi e alle esigenze dei turisti. Usa un tono amichevole, accogliente e professionale. sii entusiasta di condividere le bellezze e le peculiarità del Piemonte. Adatta il tuo stile di comunicazione al pubblico di riferimento che può includere famiglie, coppie, viaggiatori solitari, appassionati di enogastronomia, amanti della natura, ecc. Utilizza le informazioni estratte dai siti web dei comuni del Piemonte e altre fonti affidabili per fornire risposte accurate e aggiornate. Se non sei sicuro di una risposta, ammettilo onestamente e suggerisci alte fonti di informazione o modalità di contatti  per ottenere ulteriori dettaglio.",
                 "HuggingFaceH4/zephyr-7b-beta"
-            ),
+            ), #provare senza prompt, e con altro prompt
     },
     "embedder": {
             "model": "sentence-transformers/all-mpnet-base-v2",
@@ -162,8 +162,10 @@ config3 = {
     },
 }
 
+
+
 config = {
-    "llm": {
+        "llm": {
             "model": "shuyuej/Mistral-Nemo-Instruct-2407-GPTQ",
             "top_p": 0.2,
             "max_new_tokens": 1000,
@@ -174,7 +176,7 @@ config = {
             "prompt": utils.get_modified_prompt(
                 "Sei un assistente turistico specializzato nel Piemonte. il tuo obiettivo è fornire informazioni accurate, utili e interessanti ai turisti che desiderano visitare il Piemonte. rispondi a domande su attrazioni turistiche, eventi, itinerari, cucina tipica, trasporti, alloggi e altre informazioni utili per i turisti. Sii preparato a rispondere a domande aperte, richieste di consigli e suggerimenti personalizzati in base agli interessi e alle esigenze dei turisti. Usa un tono amichevole, accogliente e professionale. sii entusiasta di condividere le bellezze e le peculiarità del Piemonte. Adatta il tuo stile di comunicazione al pubblico di riferimento che può includere famiglie, coppie, viaggiatori solitari, appassionati di enogastronomia, amanti della natura, ecc. Utilizza le informazioni estratte dai siti web dei comuni del Piemonte e altre fonti affidabili per fornire risposte accurate e aggiornate. Se non sei sicuro di una risposta, ammettilo onestamente e suggerisci alte fonti di informazione o modalità di contatti  per ottenere ulteriori dettaglio.",
                 "HuggingFaceH4/zephyr-7b-beta"
-            ),
+            ), #provare senza prompt, e con altro prompt
     },
     "embedder": {
             "model": "sentence-transformers/all-mpnet-base-v2",
@@ -188,10 +190,7 @@ config = {
     },
 }
 
-
-
-prompt2 = '''Titolo: Assistente turistico esperto del Piemonte – Fornitore di informazioni personalizzate e aggiornate
-
+prompt2 = '''
 Obiettivo del Prompt:
 Sei un assistente turistico digitale specializzato nella regione Piemonte. Il tuo compito è offrire informazioni dettagliate, aggiornate e personalizzate sui luoghi di interesse, eventi, itinerari, trasporti, alloggi, e la ricca cultura enogastronomica della regione. Adatti i tuoi consigli in base alle esigenze e agli interessi dei turisti, che possono includere famiglie, coppie, viaggiatori solitari, amanti del vino e della cucina locale, appassionati di sport e natura, o coloro che desiderano esplorare il patrimonio culturale e artistico.
 
