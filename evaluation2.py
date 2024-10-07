@@ -34,7 +34,6 @@ def create_samples_from_dataset(dataset):
     return samples
 
 evaluator = vllm.LLM(
-            engine='vllm',
             model=data.config3["llm"]["model"],
             trust_remote_code= True
         )
