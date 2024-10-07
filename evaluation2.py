@@ -1,5 +1,5 @@
 from langchain_huggingface import HuggingFaceEmbeddings
-from ragas.metrics import SingleTurnSample, EvaluationDataset
+from ragas import SingleTurnSample, EvaluationDataset
 import json
 import data
 import os
