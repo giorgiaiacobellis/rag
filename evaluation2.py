@@ -1,11 +1,20 @@
 from langchain_huggingface import HuggingFaceEmbeddings
-from ragas import SingleTurnSample, EvaluationDataset
+from ragas.metrics import SingleTurnSample, EvaluationDataset
 import json
 import data
+import os
 
-from ragas.metrics import Faithfulness, ResponseRelevancy
+from ragas.metrics import LLMContextRecall, Faithfulness, FactualCorrectness, SemanticSimilarity
 from ragas import evaluate
 from langchain_community.llms.vllm import VLLM
+from ragas.llms import LangchainLLMWrapper
+
+os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
+os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_API_KEY"] = "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"
+os.environ["LANGCHAIN_ENDPOINT"]="https://api.smith.langchain.com"
+os.environ["LANGCHAIN_PROJECT"]="RagasTest"
 
 
 def create_samples_from_dataset(dataset):
@@ -32,6 +41,8 @@ evaluator = VLLM(
             trust_remote_code= True
         )
 
+evaluator_llm = LangchainLLMWrapper(evaluator)
+
 hf = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-mpnet-base-v2",
     model_kwargs={"trust_remote_code": True, "device": "cuda"},
@@ -45,20 +56,16 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
-# Stampa i sample creati
-for sample in samples:
-    print(sample)
 
-metrics = [ResponseRelevancy(), Faithfulness()]
+metrics = [LLMContextRecall(), FactualCorrectness(), Faithfulness(), SemanticSimilarity()]
 try:
     # Valuta il modello
     results = evaluate(
-        llm=evaluator,
-        embeddings=hf,
+        llm=evaluator_llm,
         dataset=dataset,
         metrics=metrics,
-        show_progress=False,
     )
+
     print(results)
 except Exception as e:
     print(f"Errore durante la valutazione: {e}")
