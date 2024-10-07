@@ -4,7 +4,7 @@ import json
 import data
 import os
 
-from ragas.metrics import LLMContextRecall, FaithfulnesswithHHEM, answer_similarity
+from ragas.metrics import LLMContextRecall, Faithfulness, answer_similarity
 from ragas import evaluate
 import vllm
 from langchain_community.llms.vllm import VLLM
@@ -28,7 +28,7 @@ def create_samples_from_dataset(dataset):
         samples.append(
             SingleTurnSample(
                 user_input=question,
-                retrieved_contexts=[contexts[1]],
+                retrieved_contexts=[ground_truth],
                 response=answer,
                 reference=ground_truth
             )
@@ -58,11 +58,11 @@ samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
 
-metrics = [FaithfulnesswithHHEM()]
+metrics = [Faithfulness()]
 try:
     # Valuta il modello
     results = evaluate(
-        #llm=evaluator_llm,
+        llm=evaluator,
         #embeddings=embd,
         dataset=dataset,
         metrics=metrics
