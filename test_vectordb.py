@@ -44,7 +44,7 @@ def costruzione_retriever(filename):
     #Vector DB
     print("caricamento embedder")
     embedder = HuggingFaceEmbeddings(
-        model_name="dunzhang/stella_en_1.5B_v5",
+        model_name="dunzhang/stella_en_400M_v5",
         model_kwargs= {"trust_remote_code": True, "device": "cuda"},
     )
 

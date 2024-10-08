@@ -182,8 +182,8 @@ config = {
     },
 
     "vectordb": {
-            "collection_name":"new_vectordb", #"turism_collection", #new_vectordb
-            "persist_directory": "new_vectordb", #"./chroma_langchain_db", #new_vectordb
+            "collection_name":"test_vectordb", #"turism_collection", #new_vectordb
+            "persist_directory": "test_vectordb", #"./chroma_langchain_db", #new_vectordb
             "allow_reset": False,
     },
 }

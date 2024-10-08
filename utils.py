@@ -22,7 +22,6 @@ def split_data(split_value):
             for item in json_data
         ]
 
-
         print("split dei dati!")
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200) 
         splits = text_splitter.split_documents(documents) 
@@ -38,6 +37,7 @@ def create_vector_db(vectordb_value, config, splits):
         model_name=config["embedder"]["model"],
         model_kwargs=config["embedder"]["model_kwargs"],
     )
+    
 
     print("generazione vectorDB")
     vectordb = Chroma(collection_name=config["vectordb"]["collection_name"],
