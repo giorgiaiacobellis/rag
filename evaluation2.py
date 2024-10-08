@@ -49,7 +49,7 @@ hf = HuggingFaceEmbeddings(
 )
 
 # Caricamento dei dati
-filename = "dataset_prova.json"
+filename = "dataset_Open_Gpt4-11.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
