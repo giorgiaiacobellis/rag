@@ -137,7 +137,7 @@ config2 = {
 }
 
 
-config = {
+config1 = {
     "llm": {
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
             "top_p": 1, #testare anche  0.5 , 0.75 , 0.85,  1
@@ -163,12 +163,12 @@ config = {
 }
 
 
-config1 = {
+config = {
         "llm": {
             "model": "TheBloke/Open_Gpt4_8x7B-AWQ",
             "top_p": 0.2,
             "max_new_tokens": 1000,
-            "temperature": 0.85,
+            "temperature": 0.2,
             "trust_remote_code":True,  # mandatory for hf models
             "top_k": 10,
             "vllm_kwargs" :{"quantization": "awq"},
