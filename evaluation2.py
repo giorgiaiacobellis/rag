@@ -37,7 +37,7 @@ def create_samples_from_dataset(dataset):
     return samples
 
 evaluator = VLLM(
-            model=data.config3["llm"]["model"],
+            model="meta-llama/Meta-Llama-3.1-8B-Instruct",
             trust_remote_code= True
         )
 
