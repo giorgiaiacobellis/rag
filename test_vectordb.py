@@ -54,8 +54,9 @@ def costruzione_retriever(filename):
                       embedding_function=embedder,
                       persist_directory="./test_vectordb")
     vectordb.reset_collection()
-
-    vectordb.from_documents(documents=splits, 
+    
+    for i in range(0, len(splits), 100):
+        vectordb.from_documents(documents=splits[i:i+100], 
                             collection_name="test_vectordb",
                             embedding=embedder,
                             persist_directory="./test_vectordb")
