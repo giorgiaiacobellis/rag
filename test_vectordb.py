@@ -54,12 +54,18 @@ def costruzione_retriever(filename):
                       persist_directory="./new_vectordb")
     #vectordb.reset_collection()
     
-    for i in range(70000, len(splits), 4000):
-        print("altri 1000")
-        vectordb.from_documents(documents=splits[i:i+4000], 
+    for i in range(102000, len(splits), 4000):
+        print("altri 4000")
+        if (i+4000) > len(splits):
+            vectordb.from_documents(documents=splits[i:], 
                             collection_name="new_vectordb",
                             embedding=embedder,
                             persist_directory="./new_vectordb")
+        else:
+            vectordb.from_documents(documents=splits[i:i+4000], 
+                                collection_name="new_vectordb",
+                                embedding=embedder,
+                                persist_directory="./new_vectordb")
         
     retriever = vectordb.as_retriever(search_type = "mmr", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
     return retriever, vectordb
