@@ -177,7 +177,7 @@ config = {
             ), #provare senza prompt, e con altro prompt
     },
     "embedder": {
-            "model": "dunzhang/stella_en_1.5B_v5",
+            "model": "sentence-transformers/all-mpnet-base-v2",
             "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
     },
 
