@@ -7,19 +7,16 @@ import os
 from ragas.llms.prompt import Prompt
 from ragas.metrics import LLMContextRecall, Faithfulness, answer_similarity, AnswerRelevancy
 from ragas import evaluate
-import vllm
 from langchain_community.llms.vllm import VLLM
 from ragas.llms import LangchainLLMWrapper
 from ragas.embeddings import LangchainEmbeddingsWrapper
-from ragas.run_config import RunConfig
 
-os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
+
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = "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"
 os.environ["LANGCHAIN_ENDPOINT"]="https://api.smith.langchain.com"
 os.environ["LANGCHAIN_PROJECT"]="RagasTest"
-
 
 def create_samples_from_dataset(dataset):
     samples = []
@@ -50,13 +47,12 @@ hf = HuggingFaceEmbeddings(
 embd = LangchainEmbeddingsWrapper(hf)
 
 # Caricamento dei dati
-filename = "dataset_Open_Gpt4-11.json"
+filename = "dataset_prova.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
 samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
-
 
 metrics = [answer_similarity]
 
