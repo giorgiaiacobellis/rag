@@ -73,11 +73,18 @@ def costruzione_retriever(filename):
 
 #carica_file("https://evilscript.eu/upload/files/new_dati_wiki_piemonte.json", "wiki_piemonte.json")
 #test retriever cambiando embedder
-retriever, vectordb = costruzione_retriever("cleaned_data.json")
+#retriever, vectordb = costruzione_retriever("cleaned_data.json")
 
 #query = "Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?"
+embedder = HuggingFaceEmbeddings(
+        model_name="dunzhang/stella_en_400M_v5",
+        model_kwargs= {"trust_remote_code": True, "device": "cuda"},
+    )
+vectordb2 = Chroma(collection_name="test_vectordb",
+                      embedding_function=embedder,
+                      persist_directory="./test_vectordb")
 
-
+retriever = vectordb2.as_retriever(search_type = "mmr", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
 docs = retriever.invoke("Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?")
 print(docs)
 
