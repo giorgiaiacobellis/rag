@@ -166,9 +166,9 @@ config1 = {
 config = {
         "llm": {
             "model": "TheBloke/Open_Gpt4_8x7B-AWQ",
-            "top_p": 0.8,
+            "top_p": 1,
             "max_new_tokens": 1000,
-            "temperature": 0.8,
+            "temperature": 1,
             "trust_remote_code":True,  # mandatory for hf models
             "top_k": 10,
             "vllm_kwargs" :{"quantization": "awq"},
