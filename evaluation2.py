@@ -44,7 +44,7 @@ evaluator = VLLM(
 evaluator_llm = LangchainLLMWrapper(evaluator)
 
 hf = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-mpnet-base-v2",
+    model_name="dunzhang/stella_en_400M_v5",
     model_kwargs={"trust_remote_code": True, "device": "cuda"},
 )
 
