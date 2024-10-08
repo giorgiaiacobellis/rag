@@ -1,10 +1,11 @@
 from langchain_huggingface import HuggingFaceEmbeddings
-from ragas import SingleTurnSample, EvaluationDataset
+from ragas.dataset_schema import SingleTurnSample, EvaluationDataset
 import json
 import data
 import os
 
-from ragas.metrics import LLMContextRecall, Faithfulness, answer_similarity, answer_relevancy
+from ragas.llms.prompt import Prompt
+from ragas.metrics import LLMContextRecall, Faithfulness, answer_similarity, AnswerRelevancy
 from ragas import evaluate
 import vllm
 from langchain_community.llms.vllm import VLLM
@@ -28,7 +29,7 @@ def create_samples_from_dataset(dataset):
         samples.append(
             SingleTurnSample(
                 user_input=question,
-                retrieved_contexts=[ground_truth],
+                retrieved_contexts=[contexts[1]],
                 response=answer,
                 reference=ground_truth
             )
@@ -36,9 +37,8 @@ def create_samples_from_dataset(dataset):
     return samples
 
 evaluator = VLLM(
-            model="HuggingFaceH4/zephyr-7b-beta",
+            model="meta-llama/Meta-Llama-3.1-8B-Instruct",
             trust_remote_code= True,
-            max_new_tokens = 128000
         )
 
 evaluator_llm = LangchainLLMWrapper(evaluator)
@@ -58,12 +58,29 @@ samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
 
-metrics = [answer_relevancy]
-try:
+metrics = [answer_similarity]
+
+
+sample = SingleTurnSample(
+        user_input="When was the first super bowl?",
+        response="The first superbowl was held on Jan 15, 1967",
+        retrieved_contexts=[
+            "The First AFL–NFL World Championship Game was an American football game played on January 15, 1967, at the Los Angeles Memorial Coliseum in Los Angeles."
+        ]
+    )
+scorer = Faithfulness(llm=evaluator_llm)
+
+async def evaluate_sample():
+    return await scorer.single_turn_ascore(sample)
+
+import asyncio
+asyncio.run(evaluate_sample())
+
+"""try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator_llm,
-        embeddings=embd,
+        #embeddings=embd,
         dataset=dataset,
         metrics=metrics
     )
@@ -72,3 +89,4 @@ try:
 except Exception as e:
     print(f"Errore durante la valutazione: {e}")
     results = None
+"""
