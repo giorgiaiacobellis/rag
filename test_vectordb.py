@@ -32,7 +32,7 @@ def costruzione_retriever(filename):
 
     # Conversione dei dati in documenti Langchain
     documents = [
-        Document(page_content=item["text"][0], metadata={"source": item["page_name"]})
+        Document(page_content=item["text"], metadata={"source": item["page_name"]})
         for item in json_data
     ]
 
