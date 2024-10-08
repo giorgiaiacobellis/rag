@@ -53,14 +53,14 @@ def costruzione_retriever(filename):
     vectordb = Chroma(collection_name="test_vectordb",
                       embedding_function=embedder,
                       persist_directory="./test_vectordb")
-    vectordb.reset_collection()
-    
+    #vectordb.reset_collection()
+    '''
     for i in range(0, len(splits), 100):
         vectordb.from_documents(documents=splits[i:i+100], 
                             collection_name="test_vectordb",
                             embedding=embedder,
                             persist_directory="./test_vectordb")
-        
+     '''   
     retriever = vectordb.as_retriever(search_type = "mmr", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
     return retriever, vectordb
 
@@ -73,5 +73,5 @@ retriever, vectordb = costruzione_retriever("wiki_piemonte.json")
 
 
 docs = retriever.invoke("Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?")
-print(docs[3].page_content)
+print(docs)
 
