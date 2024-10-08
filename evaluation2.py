@@ -50,7 +50,7 @@ hf = HuggingFaceEmbeddings(
 embd = LangchainEmbeddingsWrapper(hf)
 
 # Caricamento dei dati
-filename = "dataset_prova.json"
+filename = "dataset_Open_Gpt4-11.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
@@ -60,23 +60,7 @@ dataset = EvaluationDataset(samples=samples)
 
 metrics = [answer_similarity]
 
-
-sample = SingleTurnSample(
-        user_input="When was the first super bowl?",
-        response="The first superbowl was held on Jan 15, 1967",
-        retrieved_contexts=[
-            "The First AFL–NFL World Championship Game was an American football game played on January 15, 1967, at the Los Angeles Memorial Coliseum in Los Angeles."
-        ]
-    )
-scorer = Faithfulness(llm=evaluator_llm)
-
-async def evaluate_sample():
-    return await scorer.single_turn_ascore(sample)
-
-import asyncio
-asyncio.run(evaluate_sample())
-
-"""try:
+try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator_llm,
@@ -89,4 +73,3 @@ asyncio.run(evaluate_sample())
 except Exception as e:
     print(f"Errore durante la valutazione: {e}")
     results = None
-"""
