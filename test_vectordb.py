@@ -54,7 +54,7 @@ def costruzione_retriever(filename):
                       persist_directory="./new_vectordb")
     #vectordb.reset_collection()
     
-    for i in range(102000, len(splits), 4000):
+    for i in range(181000, len(splits), 4000):
         print("altri 4000")
         if (i+4000) > len(splits):
             vectordb.from_documents(documents=splits[i:], 

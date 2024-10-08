@@ -165,11 +165,11 @@ config1 = {
 
 config = {
         "llm": {
-            "model": "TheBloke/Open_Gpt4_8x7B-AWQ",
+            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
             "top_p": 1,
             "max_new_tokens": 1000,
             "temperature": 1,
-            "trust_remote_code":True,  # mandatory for hf models
+            "trust_remote_code":True,  
             "top_k": 10,
             "vllm_kwargs" :{"quantization": "awq"},
             "prompt": utils.get_modified_prompt(
@@ -178,13 +178,13 @@ config = {
             ), #provare senza prompt, e con altro prompt
     },
     "embedder": {
-            "model": "sentence-transformers/all-mpnet-base-v2",
+            "model": "dunzhang/stella_en_1.5B_v5",
             "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
     },
 
     "vectordb": {
-            "collection_name": "turism_collection",
-            "persist_directory":"./chroma_langchain_db",
+            "collection_name":"new_vectordb", #"turism_collection", #new_vectordb
+            "persist_directory": "new_vectordb", #"./chroma_langchain_db", #new_vectordb
             "allow_reset": False,
     },
 }
