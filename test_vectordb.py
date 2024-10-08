@@ -37,7 +37,7 @@ def costruzione_retriever(filename):
     ]
 
     print("split dei dati!")
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200) 
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=50) 
     splits = text_splitter.split_documents(documents) 
     print("lensplits", len(splits))
 
@@ -49,23 +49,23 @@ def costruzione_retriever(filename):
     )
 
     print("generazione vectorDB")
-    vectordb = Chroma(collection_name="new_vectordb",
+    vectordb = Chroma(collection_name="test_vectordb",
                       embedding_function=embedder,
-                      persist_directory="./new_vectordb")
-    #vectordb.reset_collection()
+                      persist_directory="./test_vectordb")
+    vectordb.reset_collection()
     
-    for i in range(181000, len(splits), 4000):
+    for i in range(0, len(splits), 4000):
         print("altri 4000")
         if (i+4000) > len(splits):
             vectordb.from_documents(documents=splits[i:], 
-                            collection_name="new_vectordb",
+                            collection_name="test_vectordb",
                             embedding=embedder,
-                            persist_directory="./new_vectordb")
+                            persist_directory="./test_vectordb")
         else:
             vectordb.from_documents(documents=splits[i:i+4000], 
-                                collection_name="new_vectordb",
+                                collection_name="test_vectordb",
                                 embedding=embedder,
-                                persist_directory="./new_vectordb")
+                                persist_directory="./test_vectordb")
         
     retriever = vectordb.as_retriever(search_type = "mmr", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
     return retriever, vectordb
@@ -73,18 +73,12 @@ def costruzione_retriever(filename):
 
 #carica_file("https://evilscript.eu/upload/files/new_dati_wiki_piemonte.json", "wiki_piemonte.json")
 #test retriever cambiando embedder
-#retriever, vectordb = costruzione_retriever("cleaned_data.json")
+retriever, vectordb = costruzione_retriever("wiki_piemonte.json")
 
 #query = "Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?"
-embedder = HuggingFaceEmbeddings(
-        model_name="dunzhang/stella_en_400M_v5",
-        model_kwargs= {"trust_remote_code": True, "device": "cuda"},
-    )
-vectordb2 = Chroma(collection_name="test_vectordb",
-                      embedding_function=embedder,
-                      persist_directory="./test_vectordb")
 
-retriever = vectordb2.as_retriever(search_type = "mmr", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
+
+retriever = vectordb.as_retriever(search_type = "mmr", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
 docs = retriever.invoke("Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?")
 print(docs)
 
