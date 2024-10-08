@@ -32,42 +32,42 @@ def costruzione_retriever(filename):
 
     # Conversione dei dati in documenti Langchain
     documents = [
-        Document(page_content=item["text"][0], metadata={"source": item["title"]})
+        Document(page_content=item["text"][0], metadata={"source": item["page_name"]})
         for item in json_data
     ]
 
-
     print("split dei dati!")
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=50) 
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200) 
     splits = text_splitter.split_documents(documents) 
     print("lensplits", len(splits))
 
     #Vector DB
     print("caricamento embedder")
     embedder = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2",
+        model_name="dunzhang/stella_en_1.5B_v5",
         model_kwargs= {"trust_remote_code": True, "device": "cuda"},
     )
 
     print("generazione vectorDB")
-    vectordb = Chroma(collection_name="test_vectordb",
+    vectordb = Chroma(collection_name="new_vectordb",
                       embedding_function=embedder,
-                      persist_directory="./test_vectordb")
+                      persist_directory="./new_vectordb")
     #vectordb.reset_collection()
-    '''
-    for i in range(0, len(splits), 100):
-        vectordb.from_documents(documents=splits[i:i+100], 
-                            collection_name="test_vectordb",
+    
+    for i in range(0, len(splits), 1000):
+        print("altri 1000")
+        vectordb.from_documents(documents=splits[i:i+1000], 
+                            collection_name="new_vectordb",
                             embedding=embedder,
-                            persist_directory="./test_vectordb")
-     '''   
+                            persist_directory="./new_vectordb")
+        
     retriever = vectordb.as_retriever(search_type = "mmr", search_kwargs={ "k":5, "fetch_k": 50, "lambda_mult": 0})
     return retriever, vectordb
 
 
-carica_file("https://evilscript.eu/upload/files/new_dati_wiki_piemonte.json", "wiki_piemonte.json")
+#carica_file("https://evilscript.eu/upload/files/new_dati_wiki_piemonte.json", "wiki_piemonte.json")
 #test retriever cambiando embedder
-retriever, vectordb = costruzione_retriever("wiki_piemonte.json")
+retriever, vectordb = costruzione_retriever("cleaned_data.json")
 
 #query = "Quali sono i piatti tipici piemontesi che dovrei assolutamente provare?"
 
