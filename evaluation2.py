@@ -20,6 +20,7 @@ os.environ["LANGCHAIN_ENDPOINT"]="https://api.smith.langchain.com"
 os.environ["LANGCHAIN_PROJECT"]="RagasTest"
 
 
+
 def create_samples_from_dataset(dataset):
     samples = []
     for question, answer, contexts, ground_truth in zip(
@@ -28,7 +29,7 @@ def create_samples_from_dataset(dataset):
         samples.append(
             SingleTurnSample(
                 user_input=question,
-                retrieved_contexts=[contexts[1]],
+                retrieved_contexts=contexts,
                 response=answer,
                 reference=ground_truth
             )
@@ -36,8 +37,8 @@ def create_samples_from_dataset(dataset):
     return samples
 
 evaluator = VLLM(
-            model="meta-llama/Meta-Llama-3.1-8B-Instruct",
-            trust_remote_code= True,
+            model=data.config3["llm"]["model"],
+            trust_remote_code= True
         )
 
 evaluator_llm = LangchainLLMWrapper(evaluator)
@@ -46,7 +47,6 @@ hf = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-mpnet-base-v2",
     model_kwargs={"trust_remote_code": True, "device": "cuda"},
 )
-embd = LangchainEmbeddingsWrapper(hf)
 
 # Caricamento dei dati
 filename = "dataset_prova.json"
@@ -56,15 +56,15 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
-metrics = [answer_similarity]
 
+metrics = [answer_similarity]
 try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator_llm,
-        #embeddings=embd,
+        embeddings=hf,
         dataset=dataset,
-        metrics=metrics
+        metrics=metrics,
     )
 
     print(results)
