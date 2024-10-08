@@ -54,9 +54,9 @@ def costruzione_retriever(filename):
                       persist_directory="./new_vectordb")
     #vectordb.reset_collection()
     
-    for i in range(0, len(splits), 1000):
+    for i in range(70000, len(splits), 4000):
         print("altri 1000")
-        vectordb.from_documents(documents=splits[i:i+1000], 
+        vectordb.from_documents(documents=splits[i:i+4000], 
                             collection_name="new_vectordb",
                             embedding=embedder,
                             persist_directory="./new_vectordb")
