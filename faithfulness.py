@@ -89,7 +89,7 @@ def calculate_faithfulness_score(context, answer):
 # Example usage:
 if __name__ == "__main__":
     # Define the context and generated answer
-    
+    total_score = 0
     with open("dataset_prova.json", 'r', encoding='utf-8') as f:
         data = json.load(f)
     
