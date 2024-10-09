@@ -170,7 +170,7 @@ config2 = {
 
 config = {
         "llm": {
-            "model": "google/gemma-7b-it",
+            "model": "mistralai/Mistral-7B-Instruct-v0.2",
             "top_p": 1,
             "max_new_tokens": 1000,
             "temperature": 1,
@@ -182,16 +182,16 @@ config = {
             ), #provare senza prompt, e con altro prompt
     },
     "embedder": {
-            "model": "dunzhang/stella_en_400M_v5",
+            "model": "sentence-transformers/all-mpnet-base-v2",
             "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
     },
 
     "vectordb": {
-            "collection_name":"test_vectordb", #"turism_collection", #new_vectordb
-            "persist_directory": "test_vectordb", #"./chroma_langchain_db", #new_vectordb
+            "collection_name":"turism_collection", #new_vectordb
+            "persist_directory":"./chroma_langchain_db", #new_vectordb
             "allow_reset": False,
     },
-    "filename": "dataset_gemma2_11_stella.json"
+    "filename": "dataset_mistral_11.json"
 }
 
 prompt2 = '''
