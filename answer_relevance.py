@@ -72,7 +72,6 @@ def answer_relevancy_score(dataset_path):
         avg_cosine_similarity = calculate_cosine_similarity(original_question, generated_questions)
         total_sim = total_sim + avg_cosine_similarity
 
-
         ''' # Store the result
         results.append({
             'question': original_question,

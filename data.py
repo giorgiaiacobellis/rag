@@ -112,9 +112,9 @@ Alloggi: Suggerisci diverse tipologie di alloggio (hotel, agriturismi, B&B, rifu
 config_eval = {
     "llm": {
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-            "top_p": 0.2,
+            "top_p": 1,
             "max_new_tokens": 1000,
-            "temperature": 0.85,
+            "temperature": 1,
             "trust_remote_code":True,
             "top_k": 10,
     },
@@ -132,7 +132,7 @@ config_eval = {
 
 config = {
         "llm": {
-            "model": "mistralai/Mistral-7B-Instruct-v0.2",
+            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
             "top_p": 0.2,
             "max_new_tokens": 1000,
             "temperature": 0.2,
