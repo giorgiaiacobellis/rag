@@ -98,7 +98,7 @@ def calculate_answer_relevancy(dataset_path):
     return results
 
 # Example usage
-dataset_path = 'dataset_gemma_11_stella_wiki.json'  # Replace with your dataset file
+dataset_path = 'dataset_gemma_11_stella.json'  # Replace with your dataset file
 calculate_answer_relevancy(dataset_path)
 
 
