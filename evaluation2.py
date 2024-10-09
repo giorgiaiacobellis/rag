@@ -45,10 +45,7 @@ evaluator = VLLM(
 
 evaluator_llm = LangchainLLMWrapper(evaluator)
 
-hf = HuggingFaceEmbeddings(
-    model_name="dunzhang/stella_en_400M_v5",
-    model_kwargs={"trust_remote_code": True, "device": "cuda"},
-)
+
 
 # Caricamento dei dati
 filename = "dataset_gemma_11_stella.json"
@@ -64,7 +61,7 @@ try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator_llm,
-        embeddings=hf,
+        #embeddings=hf,
         dataset=dataset,
         metrics=metrics,
     )
