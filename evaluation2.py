@@ -49,7 +49,7 @@ hf = HuggingFaceEmbeddings(
 )
 
 # Caricamento dei dati
-filename = "dataset_Open_Gpt4-11.json"
+filename = "dataset_gemma_11_stella_wiki.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
@@ -57,7 +57,7 @@ samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
 
-metrics = [answer_similarity]
+metrics = [Faithfulness(),answer_similarity]
 try:
     # Valuta il modello
     results = evaluate(
