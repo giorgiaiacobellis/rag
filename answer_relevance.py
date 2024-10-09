@@ -29,11 +29,11 @@ llm = VLLM(
 # Function to generate question variations from the answer using LangChain VLLM
 def generate_questions_from_answer(answer):
     prompt = (f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
-        f"Data la risposta, genera tre domande in italiano pertinenti "
+        f"Data la risposta, genera tre domande in italiano che siano pertinenti,"
         f"come se fossero domande per cui questa risposta è corretta. Rispondi solo con le tre domande generate separate da &.<|eot_id|>\n"
         f"<|start_header_id|>user<|end_header_id|>\n"
-        f"Ecco la risposta:\n\n{answer}<|eot_id|>\n\n"
-        "<|start_header_id|>assistant<|end_header_id|>Risposta:\n\n"
+        f"Ecco la risposta da cui trarre le domande:\n\n{answer}<|eot_id|>\n\n"
+        "<|start_header_id|>assistant<|end_header_id|>Gemerazione:\n\n"
     )
     
     # Generate the questions using the LangChain VLLM model
@@ -64,14 +64,18 @@ def answer_relevancy_score(dataset_path):
     for i, item in enumerate(data['data']['question']):
         original_question = item
         answer = data['data']['answer'][i]
+        print(f"Question: {original_question}")
+        print(f"Answer: {answer}")
         
         # Generate the questions using the answer
         generated_questions = generate_questions_from_answer(answer)
         
         # Calculate cosine similarity
         avg_cosine_similarity = calculate_cosine_similarity(original_question, generated_questions)
-        
-        # Store the result
+        total_sim = total_sim + avg_cosine_similarity
+
+
+        ''' # Store the result
         results.append({
             'question': original_question,
             'generated_question_1': generated_questions[0],
@@ -79,17 +83,12 @@ def answer_relevancy_score(dataset_path):
             'generated_question_3': generated_questions[2],
             'average_cosine_similarity': avg_cosine_similarity
         })
-    
-        total_sim = total_sim + avg_cosine_similarity
-    # Display the results
-    '''
+
     for result in results:
         print(f"Question: {result['question']}")
         print(f"Generated Questions: {result['generated_question_1']}, {result['generated_question_2']}, {result['generated_question_3']}")
-        print(f"Average Cosine Similarity: {result['average_cosine_similarity']}\n")
-    
+        print(f"Average Cosine Similarity: {result['average_cosine_similarity']}\n")  
     '''
-    print(f"Aanswer relavancy: {total_sim/len(data['data']['question'])}")
 
     return total_sim/len(data['data']['question'])
 
