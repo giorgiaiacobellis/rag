@@ -132,7 +132,7 @@ config_eval = {
 
 config = {
         "llm": {
-            "model": "google/gemma-7b-it",
+            "model": "HuggingFaceH4/zephyr-7b-beta",
             "top_p": 0.5,
             "max_new_tokens": 1000,
             "temperature": 0.5,
