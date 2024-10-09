@@ -44,7 +44,7 @@ def generate_db(rag_chain):
     ds  = Dataset.from_dict(dataset_dict["data"])
     #save results 
     
-    filename = "dataset_llama_11_stella.json" 
+    filename = "dataset_gemma_11_stella.json" 
     with open(filename, "w") as outfile:
         json.dump(dataset_dict, outfile) 
     

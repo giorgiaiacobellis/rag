@@ -85,7 +85,7 @@ ground_truth = [
 # ----------------------------CONFIGURATIONS------------------------------
 # Config1: zephyr-7b-beta
 
-config3 = {
+config = {
     "llm": {
             "model": "mistralai/Mistral-7B-Instruct-v0.2",  #,
             "top_p": 1,
@@ -111,7 +111,7 @@ config3 = {
 }
 
 
-config2 = {
+config3 = {
     "llm": {
             "model": "HuggingFaceH4/zephyr-7b-beta",
             "top_p": 0.2,
@@ -137,7 +137,7 @@ config2 = {
 }
 
 
-config1 = {
+config2 = {
     "llm": {
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
             "top_p": 1, #testare anche  0.5 , 0.75 , 0.85,  1
@@ -163,9 +163,14 @@ config1 = {
 }
 
 
-config = {
+#HuggingFaceH4/zephyr-7b-beta
+#mistralai/Mistral-7B-Instruct-v0.2
+#google/gemma-7b-it
+#meta-llama/Meta-Llama-3.1-8B-Instruct
+
+config1 = {
         "llm": {
-            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+            "model": "google/gemma-7b-it",
             "top_p": 1,
             "max_new_tokens": 1000,
             "temperature": 1,
