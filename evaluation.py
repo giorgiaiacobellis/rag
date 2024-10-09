@@ -17,23 +17,23 @@ os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 
 
 llm = VLLM(
-            model="meta-llama/Meta-Llama-3.1-8B-Instruct",
+            model="HuggingFaceH4/zephyr-7b-beta",
             trust_remote_code= True,
             max_new_tokens=4000,
         )
 
 # Function to generate question variations from the answer using LangChain VLLM
 def generate_questions_from_answer(answer):
-    prompt = (f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
+    prompt = (f"<|system<|>\n"
         f"Data la seguente risposta, genera tre domande pertinenti "
-        f"come se fossero domande per cui questa risposta è corretta. Fai quindi reverse engineering dalla risposta sulla domanda.<|eot_id|>\n"
-        f"<|start_header_id|>user<|end_header_id|>"
-        f"Ecco la risposta:\n\n{answer}<|eot_id|>\n\n"
-        f"Ora, genera tre(3) domande alternative in italiano e non fare nessuna introduzione o spiegazione, restituisci solo le tre domande con ? alla fine.\n"
-        "<|start_header_id|>assistant<|end_header_id|>\n\n"
+        f"come se fossero domande per cui questa risposta è corretta. Fai quindi reverse engineering dalla risposta sulla domanda."
+        f"genera tre(3) domande alternative in italiano e non fare nessuna introduzione o spiegazione, restituisci solo le tre domande con ? alla fine.<\s>\n"
+        f"\n<|user|>"
+        f"Ecco la risposta:\n\n{answer}<\s>\n\n"
+        "<|assistant|>\n\n"
     )
     
-    
+
     # Generate the questions using the LangChain VLLM model
     result = llm.invoke(prompt)
     print(result)
