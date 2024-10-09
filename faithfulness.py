@@ -42,7 +42,7 @@ sentence_segmenter= Segmenter(
 
 
 def split_statements(answer):
-    print("split di: ", answer)
+    #print("split di: ", answer)
     #Splits the generated answer into individual statements based on punctuation and line breaks.
     sentences = sentence_segmenter.segment(answer)
     sentences = [
@@ -67,7 +67,7 @@ def check_statement_relevance(statement, context):
     print("Check statement: " , statement)
     # Query the LLM to get the answer
     result = llm.invoke(prompt)
-    
+    print ("risultato: ", result)
     # Check if the LLM answered "yes" or "no"
     return result.strip().lower() == "si"
 
