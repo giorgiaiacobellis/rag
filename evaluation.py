@@ -40,7 +40,7 @@ def generate_questions_from_answer(answer):
         f"come se fossero domande per cui questa risposta è corretta. Fai quindi reverse engineering dalla risposta sulla domanda.<|eot_id|>\n"
         f"<|start_header_id|>user<|end_header_id|>"
         f"Ecco la risposta:\n\n{answer}<|eot_id|>\n\n"
-        f"Ora, genera tre(3) domande alternative in italiano."
+        f"Ora, genera tre(3) domande alternative in italiano e alla fine di ogni domanda inserisci il simbolo & per identificare la fine della domanda."
         "<|start_header_id|>assistant<|end_header_id|>\n\n"
     )
     
@@ -48,7 +48,7 @@ def generate_questions_from_answer(answer):
     result = llm.invoke(prompt)
     print(result)
     #result = llm(prompt)
-    questions = result.strip().split("\n")[:3]  # Assuming the model returns each question on a new line
+    questions = result.strip().split("&")[:3]  
     return questions
 
 # Function to calculate cosine similarity
@@ -96,7 +96,7 @@ def calculate_answer_relevancy(dataset_path):
     return results
 
 # Example usage
-dataset_path = 'dataset_prova.json'  # Replace with your dataset file
+dataset_path = 'dataset_gemma_11_stella_wiki.json'  # Replace with your dataset file
 calculate_answer_relevancy(dataset_path)
 
 
