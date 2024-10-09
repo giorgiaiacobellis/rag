@@ -48,13 +48,9 @@ def split_statements(answer):
     sentences = [
         sentence for sentence in sentences if sentence.strip().endswith(".")
     ]
-
-    # This regex assumes the statements are separated by punctuation marks like periods or newlines.
-    #statements = re.split(r'(?<=[.!?])\s+', answer.strip())
     return sentences
 
 def check_statement_relevance(statement, context):
-    #Uses the LLM to determine if a statement is relevant to the context.
     #Returns True if relevant, False otherwise.
     
     prompt = (f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
@@ -97,14 +93,12 @@ if __name__ == "__main__":
     with open("dataset_prova.json", 'r', encoding='utf-8') as f:
         data = json.load(f)
     
-'''
+
     for i, item in enumerate(data['data']['question']):
         original_question = item
         answer = data['data']['answer'][i]
-        context = data['data']['contexts'][1][i]
-'''
-answer = "Il Piemonte \u00e8 conosciuto per la sua cucina tradizionale ricca di sapori e profumi. Tra i piatti tipici piemontesi che dovresti assolutamente provare, ci sono:\n\n1. Agnolotti del Plin: questi piccoli ravioli riempiti di carne, formaggio e spezie sono un classico della cucina piemontese.\n\n2. Vitello Tonnato: questo piatto, composto da insalata di carne di vitello affettata e condimentata con una salsa di tonno, olio d'oliva, aceto balsamico e peperoncino, \u00e8 uno dei piatti pi\u00f9 famosi della regione.\n\n3. Bagna Cauda: questo piatto consiste in una ciotola di salsa di olio, acciughe, aglio e peperoncino, utilizzata per bollire e condire vari tipi di verdure crudite.\n\n4. Brasato al Barolo: il Brasato al Barolo \u00e8 un piatto tradizionale, preparato con una carne di manzo affettata, condita con Barolo e servita con patate e verdure.\n\n5. Torta di Nocciole: questa torta dolce \u00e8 preparata con nocciole, zucchero, uova e sciroppo di mandarino.\n\n6. Polenta: la Polenta \u00e8 una pietanza tipica della cucina piemontese, preparata con farina di mais, acqua e burro.\n\n7. Riso al Barolo: il Riso al Barolo \u00e8 una pietanza preparata con riso, Barolo, carne di manzo, verdure e peperoncino.\n\n8. Gelato: il Gelato \u00e8 un dolce tradizionale, preparato con zucchero, latte, crema e aromi vari, come cioccolato, nocciole, mandarino e fragola.\n\n9. Bicerin: il Bicerin \u00e8 un drink caldo, preparato con espresso, cioccolato e crema di latte.\n\n10. Amaretti di Mand"
-context = "Antipasti: Vitello tonnato, battuta di fassona al coltello, acciughe al verde, peperoni con la bagna cauda. Primi: Agnolotti del plin, tajarin al tartufo, risotto al Barolo, panissa. Secondi: Brasato al Barolo, bollito misto alla piemontese, finanziera, polenta concia. Dolci: Bonet, torta di nocciole, baci di dama, panna cotta.",
+        context = " ".join(data['data']['contexts'][i])
+
 # Calculate the faithfulness score
 score = calculate_faithfulness_score(context, answer)
 print(f"Faithfulness score: {score:.2f}")
