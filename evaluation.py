@@ -86,13 +86,15 @@ def calculate_answer_relevancy(dataset_path):
             'generated_question_3': generated_questions[2],
             'average_cosine_similarity': avg_cosine_similarity
         })
-    
+
+        total_sim = total_sim + avg_cosine_similarity
     # Display the results
     for result in results:
         print(f"Question: {result['question']}")
         print(f"Generated Questions: {result['generated_question_1']}, {result['generated_question_2']}, {result['generated_question_3']}")
         print(f"Average Cosine Similarity: {result['average_cosine_similarity']}\n")
     
+    print(f"Average Cosine Similarity across all questions: {total_sim/len(data['data']['question'])}")
     return results
 
 # Example usage
