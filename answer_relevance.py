@@ -21,7 +21,7 @@ llm = VLLM(
             model=data.config_eval["llm"]["model"],
             top_p=data.config_eval["llm"]["top_p"],
             max_new_tokens=4000,
-            temperature=0.8,
+            temperature=0.1,
             top_k=data.config_eval["llm"]["top_k"],
             trust_remote_code= True
         )
@@ -33,7 +33,7 @@ def generate_questions_from_answer(answer):
         f"come se fossero domande per cui questa risposta è corretta. Rispondi solo con le tre domande generate separate da &.<|eot_id|>\n"
         f"<|start_header_id|>user<|end_header_id|>\n"
         f"Ecco la risposta da cui trarre le domande:\n\n{answer}<|eot_id|>\n\n"
-        "<|start_header_id|>assistant<|end_header_id|>Gemerazione:\n\n"
+        "<|start_header_id|>assistant<|end_header_id|>Generazione:\n\n"
     )
     
     # Generate the questions using the LangChain VLLM model
