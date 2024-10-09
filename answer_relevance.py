@@ -64,14 +64,13 @@ def answer_relevancy_score(dataset_path):
     for i, item in enumerate(data['data']['question']):
         original_question = item
         answer = data['data']['answer'][i]
-        print(f"Question: {original_question}")
-        print(f"Answer: {answer}")
         
         # Generate the questions using the answer
         generated_questions = generate_questions_from_answer(answer)
         
         # Calculate cosine similarity
         avg_cosine_similarity = calculate_cosine_similarity(original_question, generated_questions)
+        print("Cosine Similarity" ,avg_cosine_similarity)
         total_sim = total_sim + avg_cosine_similarity
 
 
