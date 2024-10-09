@@ -5,7 +5,7 @@ import data
 import os
 
 from ragas.llms.prompt import Prompt
-from ragas.metrics import LLMContextRecall, Faithfulness, answer_similarity, AnswerRelevancy
+from ragas.metrics import LLMContextRecall, Faithfulness, answer_similarity, answer_relevancy
 from ragas import evaluate
 import vllm
 from langchain_community.llms.vllm import VLLM
@@ -57,7 +57,7 @@ samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
 
-metrics = [Faithfulness(),answer_similarity]
+metrics = [answer_relevancy,answer_similarity]
 try:
     # Valuta il modello
     results = evaluate(
