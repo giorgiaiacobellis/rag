@@ -170,7 +170,7 @@ config2 = {
 
 config = {
         "llm": {
-            "model": "google/gemma-7b-it",
+            "model": "mistralai/Mistral-7B-Instruct-v0.2",
             "top_p": 1,
             "max_new_tokens": 1000,
             "temperature": 1,
