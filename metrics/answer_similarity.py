@@ -2,7 +2,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from ragas.dataset_schema import SingleTurnSample, EvaluationDataset
 import json
 import os
-
+import sys
 
 from ragas.metrics import answer_similarity
 from ragas import evaluate
@@ -16,7 +16,6 @@ os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = ("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")
 os.environ["LANGCHAIN_ENDPOINT"]="https://api.smith.langchain.com"
 os.environ["LANGCHAIN_PROJECT"]="RagasTest"
-
 
 
 def create_samples_from_dataset(dataset):
@@ -34,6 +33,7 @@ def create_samples_from_dataset(dataset):
         )
     return samples
 
+#-----modelli----
 evaluator = VLLM(
             model="meta-llama/Meta-Llama-3.1-8B-Instruct",
             trust_remote_code= True,
@@ -48,6 +48,32 @@ hf = HuggingFaceEmbeddings(
     model_kwargs={"trust_remote_code": True, "device": "cuda"},
 )
 
+
+#calcolo metrica
+def answer_similarity_score(filename):
+
+    with open(filename, "r") as f: # Caricamento dei dati dal file JSON
+        json_data = json.load(f)
+
+    samples = create_samples_from_dataset(json_data["data"])
+    dataset = EvaluationDataset(samples=samples)
+
+    metrics = [answer_similarity]
+    try:
+        # Valuta il modello
+        results = evaluate(
+            llm=evaluator_llm,
+            embeddings=hf,
+            dataset=dataset,
+            metrics=metrics,
+        )
+
+        #print(f"Answer similarity: {results}")
+    except Exception as e:
+        print(f"Errore durante la valutazione: {e}")
+        results = None
+    return results
+
 # Caricamento dei dati
 #dataset_zephyr_11_stella.json ok
 #dataset_mistral_11.json ok 
@@ -55,26 +81,17 @@ hf = HuggingFaceEmbeddings(
 # dataset_gemma_11_stella.json ok
 #dataset_Llama-11.json ok
 #dataset_Mistral-11.json ok
-# dataset_2024-10-07_20-17-04.json
+# dataset_2024-10-07_20-17-04.json ok
 #dataset_gemma_11_.json ok
 filename = "dataset_2024-10-07_20-17-04.json"
-with open(filename, "r") as f: # Caricamento dei dati dal file JSON
-    json_data = json.load(f)
 
-samples = create_samples_from_dataset(json_data["data"])
-dataset = EvaluationDataset(samples=samples)
 
-metrics = [answer_similarity]
-try:
-    # Valuta il modello
-    results = evaluate(
-        llm=evaluator_llm,
-        embeddings=hf,
-        dataset=dataset,
-        metrics=metrics,
-    )
 
-    print(results)
-except Exception as e:
-    print(f"Errore durante la valutazione: {e}")
-    results = None
+def main():
+    filename = sys.argv[1]
+    print(f"Test file: {filename}")
+    result = answer_similarity_score(filename)
+    print(f"Answer similarity score totale: {result}")
+
+if __name__ == "__main__":
+    main()

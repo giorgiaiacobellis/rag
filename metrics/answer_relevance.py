@@ -1,11 +1,12 @@
 import os
-from langchain_huggingface import HuggingFaceEmbeddings
 import data
-from datasets import Dataset
+import json
+import sys
+
+
 from langchain_community.llms.vllm import VLLM
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import json
 
 
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
@@ -28,11 +29,10 @@ llm = VLLM(
 # Function to generate question variations from the answer using LangChain VLLM
 def generate_questions_from_answer(answer):
     prompt = (f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
-        f"Data la seguente risposta, genera tre domande pertinenti "
-        f"come se fossero domande per cui questa risposta è corretta. Fai quindi reverse engineering dalla risposta sulla domanda.<|eot_id|>\n"
+        f"Data la seguente risposta, genera tre domande in italiano pertinenti "
+        f"come se fossero domande per cui questa risposta è corretta. Rispondi solo con le tre domande generate separate da &.<|eot_id|>\n"
         f"<|start_header_id|>user<|end_header_id|>"
         f"Ecco la risposta:\n\n{answer}<|eot_id|>\n\n"
-        f"Ora, genera tre(3) domande alternative in italiano e separale con "
         "<|start_header_id|>assistant<|end_header_id|>\n\n"
     )
     
@@ -40,7 +40,7 @@ def generate_questions_from_answer(answer):
     result = llm.invoke(prompt)
     print(result)
 
-    questions = result.strip().split("\n")[:3]  # Assuming the model returns each question on a new line
+    questions = result.strip().split("&")[:3]  # Assuming the model returns each question on a new line
     return questions
 
 # Function to calculate cosine similarity
@@ -54,7 +54,7 @@ def calculate_cosine_similarity(original_question, generated_questions):
     return cosine_similarities.mean()
 
 # Main function to calculate answer relevancy from a dataset
-def calculate_answer_relevancy(dataset_path):
+def answer_relevancy_score(dataset_path):
     # Load the dataset
     with open(dataset_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
@@ -82,14 +82,27 @@ def calculate_answer_relevancy(dataset_path):
     
         total_sim = total_sim + avg_cosine_similarity
     # Display the results
+    '''
     for result in results:
         print(f"Question: {result['question']}")
         print(f"Generated Questions: {result['generated_question_1']}, {result['generated_question_2']}, {result['generated_question_3']}")
         print(f"Average Cosine Similarity: {result['average_cosine_similarity']}\n")
     
-    print(f"Average Cosine Similarity across all questions: {total_sim/len(data['data']['question'])}")
-    return results
+    '''
+    print(f"Aanswer relavancy: {total_sim/len(data['data']['question'])}")
+
+    return total_sim/len(data['data']['question'])
 
 # Example usage
 dataset_path = 'dataset_gemma_11_stella.json'  # Replace with your dataset file
-calculate_answer_relevancy(dataset_path)
+result = answer_relevancy_score(dataset_path)
+
+
+def main():
+    filename = sys.argv[1]
+    print(f"Test file: {filename}")
+    result = answer_relevancy_score(filename)
+    print(f"Answer relevancy score totale: {result}")
+
+if __name__ == "__main__":
+    main()

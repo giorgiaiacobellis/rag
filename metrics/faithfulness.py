@@ -1,14 +1,10 @@
 import json
 import re
 import data
-from langchain import PromptTemplate
 from langchain_community.llms.vllm import VLLM
-
-# Initialize the LLM engine using vLLM and LangChain
-
+import sys
 from pysbd import Segmenter
 
-# Use a Mistral model - replace with the local path or Mistral model you are using
 llm = VLLM(
             model=data.config_eval["llm"]["model"],
             top_p=data.config_eval["llm"]["top_p"],
@@ -70,22 +66,35 @@ def calculate_faithfulness_score(context, answer):
     faithfulness_score = relevant_statements / total_statements
     return faithfulness_score
 
-# Example usage:
-if __name__ == "__main__":
-    # Define the context and generated answer
+
+def faithfulness_score(filename):
     total_score = 0
-    with open("dataset_gemma_11_stella.json", 'r', encoding='utf-8') as f:
+    with open(filename, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    
 
     for i, item in enumerate(data['data']['question']):
-        original_question = item
         answer = data['data']['answer'][i]
         context = " ".join(data['data']['contexts'][i])
+
         # Calculate the faithfulness score
         score = calculate_faithfulness_score(context, answer)
 
         total_score = total_score + score
         print(f"Faithfulness score intermedio: {score:.2f}")
 
-    print(f"Faithfulness score totale: {total_score/len(data['data']['question'])}")
+    return total_score/len(data['data']['question'])
+
+filename = "dataset_gemma_11_stella.json"
+result = faithfulness_score(filename)
+
+
+
+
+def main():
+    filename = sys.argv[1]
+    print(f"Test file: {filename}")
+    result = faithfulness_score(filename)
+    print(f"Faithfulness score totale: {result}")
+
+if __name__ == "__main__":
+    main()
