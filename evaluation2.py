@@ -1,16 +1,14 @@
 from langchain_huggingface import HuggingFaceEmbeddings
 from ragas.dataset_schema import SingleTurnSample, EvaluationDataset
 import json
-import data
 import os
 
-from ragas.llms.prompt import Prompt
-from ragas.metrics import LLMContextRecall, Faithfulness, answer_similarity, answer_relevancy
-from ragas import RunConfig, evaluate
-import vllm
+
+from ragas.metrics import answer_similarity
+from ragas import evaluate
 from langchain_community.llms.vllm import VLLM
 from ragas.llms import LangchainLLMWrapper
-from ragas.embeddings import LangchainEmbeddingsWrapper
+
 
 os.environ["OPENAI_API_KEY"] = ("sk-proj-aVtM"+"47AoCct6IkxYRd7kUdwAQSCO8DmcZ2Ht88YqVKmOsRUFGk6fT0aVQeAdT4M9j8aDv8pFiUT3BlbkFJ4EjTuuQ"+"_MbmTWCik4mPzQ9f8YKQcMWlcBu1boiwsnLSqPSDB2HGjuwbUDbUPx6lBFK85uYElkA")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
@@ -45,23 +43,25 @@ evaluator = VLLM(
 
 evaluator_llm = LangchainLLMWrapper(evaluator)
 
-
+hf = HuggingFaceEmbeddings(
+    model_name="dunzhang/stella_en_400M_v5",
+    model_kwargs={"trust_remote_code": True, "device": "cuda"},
+)
 
 # Caricamento dei dati
-filename = "dataset_gemma_11_stella.json"
+filename = "dataset_gemma_11_.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
 samples = create_samples_from_dataset(json_data["data"])
 dataset = EvaluationDataset(samples=samples)
 
-
 metrics = [answer_similarity]
 try:
     # Valuta il modello
     results = evaluate(
         llm=evaluator_llm,
-        #embeddings=hf,
+        embeddings=hf,
         dataset=dataset,
         metrics=metrics,
     )
