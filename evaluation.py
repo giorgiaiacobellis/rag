@@ -25,12 +25,11 @@ with open(filename, "r") as f: # Caricamento dei dati dal file JSON
 ds  = Dataset.from_dict(json_data["data"])
 
 llm = VLLM(
-            model=data.config3["llm"]["model"],
-            top_p=data.config3["llm"]["top_p"],
-            max_new_tokens=4000,
-            temperature=data.config3["llm"]["temperature"],
-            top_k=data.config3["llm"]["top_k"],
-            trust_remote_code= True
+            model="meta-llama/Meta-Llama-3.1-8B-Instruct",
+            trust_remote_code= True,
+            max_new_tokens=2000,
+            temperature = 1,
+            vllm_kwargs={"max_new_tokens": 2000},
         )
 
 # Function to generate question variations from the answer using LangChain VLLM
