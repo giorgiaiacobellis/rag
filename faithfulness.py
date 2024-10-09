@@ -98,7 +98,10 @@ if __name__ == "__main__":
         original_question = item
         answer = data['data']['answer'][i]
         context = " ".join(data['data']['contexts'][i])
+        # Calculate the faithfulness score
+        score = calculate_faithfulness_score(context, answer)
 
-# Calculate the faithfulness score
-score = calculate_faithfulness_score(context, answer)
-print(f"Faithfulness score: {score:.2f}")
+        total_score = total_score + score
+        print(f"Faithfulness score intermedio: {score:.2f}")
+
+    print(f"Faithfulness score totale: {total_score/len(data['data']['question'])}")
