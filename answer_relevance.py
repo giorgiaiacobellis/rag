@@ -38,7 +38,7 @@ def generate_questions_from_answer(answer):
     
     # Generate the questions using the LangChain VLLM model
     result = llm.invoke(prompt)
-    print(result)
+    #print(result)
 
     questions = result.strip().split("&")[:3]  # Assuming the model returns each question on a new line
     return questions
@@ -70,7 +70,6 @@ def answer_relevancy_score(dataset_path):
         
         # Calculate cosine similarity
         avg_cosine_similarity = calculate_cosine_similarity(original_question, generated_questions)
-        print("Cosine Similarity" ,avg_cosine_similarity)
         total_sim = total_sim + avg_cosine_similarity
 
 

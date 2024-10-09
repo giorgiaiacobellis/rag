@@ -132,13 +132,13 @@ config_eval = {
 
 config = {
         "llm": {
-            "model": "HuggingFaceH4/zephyr-7b-beta",
+            "model": "mistralai/Mistral-7B-Instruct-v0.2",
             "top_p": 0.2,
             "max_new_tokens": 1000,
             "temperature": 0.2,
             "trust_remote_code":True,  
             "top_k": 10,
-            "prompt": utils.get_modified_prompt(prompt1,"zephyr")
+            "prompt": utils.get_modified_prompt(prompt1,"mistral")
     },
     "embedder": {
             "model":  "dunzhang/stella_en_400M_v5",  #"sentence-transformers/all-mpnet-base-v2",
