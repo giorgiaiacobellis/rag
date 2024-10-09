@@ -170,7 +170,7 @@ config2 = {
 
 config = {
         "llm": {
-            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+            "model": "google/gemma-7b-it",
             "top_p": 1,
             "max_new_tokens": 1000,
             "temperature": 1,
@@ -191,7 +191,7 @@ config = {
             "persist_directory": "new_vectordb", #"./chroma_langchain_db", #new_vectordb
             "allow_reset": False,
     },
-    "filename": "dataset_llama_11_stella.json"
+    "filename": "dataset_gemma_11_stella.json"
 }
 
 prompt2 = '''
