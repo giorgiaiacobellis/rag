@@ -85,7 +85,7 @@ ground_truth = [
 # ----------------------------CONFIGURATIONS------------------------------
 # Config1: zephyr-7b-beta
 
-config = {
+config4 = {
     "llm": {
             "model": "mistralai/Mistral-7B-Instruct-v0.2",  #,
             "top_p": 1,
@@ -168,7 +168,7 @@ config2 = {
 #google/gemma-7b-it
 #meta-llama/Meta-Llama-3.1-8B-Instruct
 
-config1 = {
+config = {
         "llm": {
             "model": "google/gemma-7b-it",
             "top_p": 1,
