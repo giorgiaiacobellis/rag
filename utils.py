@@ -38,7 +38,6 @@ def create_vector_db(vectordb_value, config, splits):
         model_kwargs=config["embedder"]["model_kwargs"],
     )
     
-
     print("generazione vectorDB")
     vectordb = Chroma(collection_name=config["vectordb"]["collection_name"],
                       embedding_function=embedder,
@@ -51,7 +50,7 @@ def create_vector_db(vectordb_value, config, splits):
                                 persist_directory=config["vectordb"]["persist_directory"])
     
     retriever = vectordb.as_retriever(search_type = "mmr", search_kwargs= { "k":5, "fetch_k": 50, "lambda_mult": 0})
-    return retriever, embedder
+    return retriever
 
 
 # funzione che adatta il prompt in base al modello
@@ -93,4 +92,4 @@ def generate_chat(config):
 
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     
-    return question_answer_chain, llm
+    return question_answer_chain

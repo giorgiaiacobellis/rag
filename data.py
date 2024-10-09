@@ -82,107 +82,8 @@ ground_truth = [
     "Il Piemonte è una meta ideale per gli amanti dello sci, con diverse località che offrono piste per tutti i livelli: Sestriere: Una delle località sciistiche più famose d'Italia, con un comprensorio sciistico vasto e moderno. Limone Piemonte: Situata nelle Alpi Marittime, Limone Piemonte offre piste per tutti i livelli e un'atmosfera accogliente. Bardonecchia: Una località sciistica storica, con piste per lo sci alpino e lo sci di fondo. Alagna Valsesia: Situata ai piedi del Monte Rosa, Alagna Valsesia offre un comprensorio sciistico immerso in un paesaggio mozzafiato. Prato Nevoso: Una località adatta alle famiglie, con piste per principianti e un'ampia offerta di attività per bambini.",
     "Dall'aeroporto di Milano Malpensa potete raggiungere il Piemonte in diversi modi: Treno: La stazione ferroviaria di Malpensa offre collegamenti diretti con Torino e altre città del Piemonte. Autobus: Ci sono diverse compagnie di autobus che collegano l'aeroporto di Malpensa con Torino e altre destinazioni in Piemonte. Auto a noleggio: Potete noleggiare un'auto all'aeroporto e raggiungere il Piemonte in autonomia. Taxi o servizio di transfer privato: Potete prenotare un taxi o un servizio di transfer privato per raggiungere la vostra destinazione in Piemonte." ]
 
-# ----------------------------CONFIGURATIONS------------------------------
-# Config1: zephyr-7b-beta
 
-config4 = {
-    "llm": {
-            "model": "mistralai/Mistral-7B-Instruct-v0.2",  #,
-            "top_p": 1,
-            "max_new_tokens": 1000,
-            "temperature": 1,
-            "trust_remote_code":True,  # mandatory for hf models
-            "top_k": 10,
-            "prompt": utils.get_modified_prompt(
-                "Sei un assistente turistico specializzato nel Piemonte. il tuo obiettivo è fornire informazioni accurate, utili e interessanti ai turisti che desiderano visitare il Piemonte. rispondi a domande su attrazioni turistiche, eventi, itinerari, cucina tipica, trasporti, alloggi e altre informazioni utili per i turisti. Sii preparato a rispondere a domande aperte, richieste di consigli e suggerimenti personalizzati in base agli interessi e alle esigenze dei turisti. Usa un tono amichevole, accogliente e professionale. sii entusiasta di condividere le bellezze e le peculiarità del Piemonte. Adatta il tuo stile di comunicazione al pubblico di riferimento che può includere famiglie, coppie, viaggiatori solitari, appassionati di enogastronomia, amanti della natura, ecc. Utilizza le informazioni estratte dai siti web dei comuni del Piemonte e altre fonti affidabili per fornire risposte accurate e aggiornate. Se non sei sicuro di una risposta, ammettilo onestamente e suggerisci alte fonti di informazione o modalità di contatti  per ottenere ulteriori dettaglio.",
-                "HuggingFaceH4/zephyr-7b-beta"
-            ),
-    },
-    "embedder": {
-            "model": "sentence-transformers/all-mpnet-base-v2",
-            "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
-    },
-
-    "vectordb": {
-            "collection_name": "turism_collection",
-            "persist_directory":"./chroma_langchain_db",
-            "allow_reset": False,
-    },
-}
-
-
-config_eval = {
-    "llm": {
-            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-            "top_p": 0.2,
-            "max_new_tokens": 1000,
-            "temperature": 0.85,
-            "trust_remote_code":True,  # mandatory for hf models
-            "top_k": 10,
-    },
-    "embedder": {
-            "model": "sentence-transformers/all-mpnet-base-v2",
-            "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
-    },
-}
-
-
-config2 = {
-    "llm": {
-            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-            "top_p": 1, #testare anche  0.5 , 0.75 , 0.85,  1
-            "max_new_tokens": 1000, #testare anche 250
-            "temperature": 1, #testare anche 0.2, 0,5, 0.85, 1
-            "trust_remote_code":True,  # mandatory for hf models
-            "top_k": 10, #testare 1 e 30
-            "prompt": utils.get_modified_prompt(
-                "Sei un assistente turistico specializzato nel Piemonte. il tuo obiettivo è fornire informazioni accurate, utili e interessanti ai turisti che desiderano visitare il Piemonte. rispondi a domande su attrazioni turistiche, eventi, itinerari, cucina tipica, trasporti, alloggi e altre informazioni utili per i turisti. Sii preparato a rispondere a domande aperte, richieste di consigli e suggerimenti personalizzati in base agli interessi e alle esigenze dei turisti. Usa un tono amichevole, accogliente e professionale. sii entusiasta di condividere le bellezze e le peculiarità del Piemonte. Adatta il tuo stile di comunicazione al pubblico di riferimento che può includere famiglie, coppie, viaggiatori solitari, appassionati di enogastronomia, amanti della natura, ecc. Utilizza le informazioni estratte dai siti web dei comuni del Piemonte e altre fonti affidabili per fornire risposte accurate e aggiornate. Se non sei sicuro di una risposta, ammettilo onestamente e suggerisci alte fonti di informazione o modalità di contatti  per ottenere ulteriori dettaglio.",
-                "meta-llama/Meta-Llama-3.1-8B-Instruct"
-            ), #provare senza prompt, e con altro prompt
-    },
-    "embedder": {
-            "model": "sentence-transformers/all-mpnet-base-v2",
-            "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
-    },
-
-    "vectordb": {
-            "collection_name": "turism_collection",
-            "persist_directory":"./chroma_langchain_db",
-            "allow_reset": False,
-    },
-}
-
-
-#HuggingFaceH4/zephyr-7b-beta
-#mistralai/Mistral-7B-Instruct-v0.2
-#google/gemma-7b-it
-#meta-llama/Meta-Llama-3.1-8B-Instruct
-
-config = {
-        "llm": {
-            "model": "HuggingFaceH4/zephyr-7b-beta",
-            "top_p": 1,
-            "max_new_tokens": 1000,
-            "temperature": 1,
-            "trust_remote_code":True,  
-            "top_k": 10,
-            "prompt": utils.get_modified_prompt(
-                "Sei un assistente turistico specializzato nel Piemonte. il tuo obiettivo è fornire informazioni accurate, utili e interessanti ai turisti che desiderano visitare il Piemonte. rispondi a domande su attrazioni turistiche, eventi, itinerari, cucina tipica, trasporti, alloggi e altre informazioni utili per i turisti. Sii preparato a rispondere a domande aperte, richieste di consigli e suggerimenti personalizzati in base agli interessi e alle esigenze dei turisti. Usa un tono amichevole, accogliente e professionale. sii entusiasta di condividere le bellezze e le peculiarità del Piemonte. Adatta il tuo stile di comunicazione al pubblico di riferimento che può includere famiglie, coppie, viaggiatori solitari, appassionati di enogastronomia, amanti della natura, ecc. Utilizza le informazioni estratte dai siti web dei comuni del Piemonte e altre fonti affidabili per fornire risposte accurate e aggiornate. Se non sei sicuro di una risposta, ammettilo onestamente e suggerisci alte fonti di informazione o modalità di contatti  per ottenere ulteriori dettaglio.",
-                "llama"
-            ), #provare senza prompt, e con altro prompt
-    },
-    "embedder": {
-            "model": "sentence-transformers/all-mpnet-base-v2",
-            "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
-    },
-
-    "vectordb": {
-            "collection_name": "turism_collection",#"new_vectordb", #"turism_collection", #new_vectordb
-            "persist_directory": "./chroma_langchain_db",#"new_vectordb", #"./chroma_langchain_db", #new_vectordb
-            "allow_reset": False,
-    },
-    "filename": "dataset_gemma_11_.json"
-}
+prompt1 = "Sei un assistente turistico specializzato nel Piemonte. il tuo obiettivo è fornire informazioni accurate, utili e interessanti ai turisti che desiderano visitare il Piemonte. rispondi a domande su attrazioni turistiche, eventi, itinerari, cucina tipica, trasporti, alloggi e altre informazioni utili per i turisti. Sii preparato a rispondere a domande aperte, richieste di consigli e suggerimenti personalizzati in base agli interessi e alle esigenze dei turisti. Usa un tono amichevole, accogliente e professionale. sii entusiasta di condividere le bellezze e le peculiarità del Piemonte. Adatta il tuo stile di comunicazione al pubblico di riferimento che può includere famiglie, coppie, viaggiatori solitari, appassionati di enogastronomia, amanti della natura, ecc. Utilizza le informazioni estratte dai siti web dei comuni del Piemonte e altre fonti affidabili per fornire risposte accurate e aggiornate. Se non sei sicuro di una risposta, ammettilo onestamente e suggerisci alte fonti di informazione o modalità di contatti  per ottenere ulteriori dettaglio.",
 
 prompt2 = '''
 Obiettivo del Prompt:
@@ -204,3 +105,51 @@ Itinerari personalizzati: Proponi percorsi giornalieri o di più giorni, tenendo
 Cucina tipica: Includi piatti locali, vini e prodotti DOP/IGP del Piemonte come tartufi, Barolo, Bagna Cauda, agnolotti, e formaggi tipici.
 Trasporti e mobilità: Fornisci dettagli su come muoversi in Piemonte, spiegando le opzioni di trasporto pubblico (es. treni regionali, bus), come raggiungere aree più remote, e suggerendo noleggi auto o biciclette.
 Alloggi: Suggerisci diverse tipologie di alloggio (hotel, agriturismi, B&B, rifugi in montagna), con consigli su dove soggiornare in base alle preferenze del turista (es. alloggi rurali per chi cerca relax in campagna o hotel di lusso per coppie).'''
+
+# ----------------------------CONFIGURATIONS------------------------------
+# Config1: zephyr-7b-beta
+
+config_eval = {
+    "llm": {
+            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+            "top_p": 0.2,
+            "max_new_tokens": 1000,
+            "temperature": 0.85,
+            "trust_remote_code":True,
+            "top_k": 10,
+    },
+    "embedder": {
+            "model": "sentence-transformers/all-mpnet-base-v2",
+            "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
+    },
+}
+
+
+#HuggingFaceH4/zephyr-7b-beta
+#mistralai/Mistral-7B-Instruct-v0.2
+#google/gemma-7b-it
+#meta-llama/Meta-Llama-3.1-8B-Instruct
+
+config = {
+        "llm": {
+            "model": "HuggingFaceH4/zephyr-7b-beta",
+            "top_p": 0.2,
+            "max_new_tokens": 1000,
+            "temperature": 0.2,
+            "trust_remote_code":True,  
+            "top_k": 10,
+            "prompt": utils.get_modified_prompt(prompt1,"zephyr")
+    },
+    "embedder": {
+            "model":  "dunzhang/stella_en_400M_v5",  #"sentence-transformers/all-mpnet-base-v2",
+            "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
+    },
+
+    "vectordb": {
+            "collection_name": "new_vectordb", #"turism_collection",#
+            "persist_directory": "./new_vectordb",  #"./chroma_langchain_db",#
+            "allow_reset": False,
+    },
+    
+}
+

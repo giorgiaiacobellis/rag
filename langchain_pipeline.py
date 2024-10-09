@@ -1,7 +1,8 @@
-from langchain.chains import create_retrieval_chain
+from langchain.chains.retrieval import create_retrieval_chain
 from datasets import Dataset
+import sys
 
-import datetime
+
 import os
 import utils
 import data
@@ -19,8 +20,7 @@ SPLIT = 1  # vale zero se lo split è da eseguire altimenti 1
 VECTORDB = 1 #vale 0 se il vectordb è da costruire altrimenti 1
 
 
-
-def generate_db(rag_chain):
+def generate_db(rag_chain, filename):
     
     answers = []
     contexts = []
@@ -41,28 +41,29 @@ def generate_db(rag_chain):
                 }
     }
     
-    ds  = Dataset.from_dict(dataset_dict["data"])
+    #ds  = Dataset.from_dict(dataset_dict["data"])
     #save results 
     
-    filename = data.config["filename"]
+    #filename = data.config["filename"]
     with open(filename, "w") as outfile:
         json.dump(dataset_dict, outfile) 
     
     print(f"Results saved to {filename}")
 
-    return ds
+    #return ds
 
 
 def main():
-
+    filename = sys.argv[1]
+    print(f"Test file: {filename}")
     splits = utils.split_data(SPLIT)  # Caricamento dei dati e divisione in chunk
-    retriever,embedder = utils.create_vector_db(VECTORDB,data.config, splits)  # Creazione del Vector DB
+    retriever = utils.create_vector_db(VECTORDB,data.config, splits)  # Creazione del Vector DB
 
     print("chattiamo!")
-    question_answer_chain, evaluator = utils.generate_chat(data.config)
+    question_answer_chain= utils.generate_chat(data.config)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
-    ds = generate_db(rag_chain)
+    generate_db(rag_chain, filename)
 
 
 if __name__ == "__main__":
