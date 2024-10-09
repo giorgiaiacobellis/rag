@@ -170,7 +170,7 @@ config2 = {
 
 config = {
         "llm": {
-            "model": "HuggingFaceH4/zephyr-7b-beta",
+            "model": "google/gemma-7b-it",
             "top_p": 1,
             "max_new_tokens": 1000,
             "temperature": 1,
@@ -191,7 +191,7 @@ config = {
             "persist_directory": "test_vectordb", #"./chroma_langchain_db", #new_vectordb
             "allow_reset": False,
     },
-    "filename": "dataset_zephyr_11_stella.json"
+    "filename": "dataset_gemma2_11_stella.json"
 }
 
 prompt2 = '''
