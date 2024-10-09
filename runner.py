@@ -9,13 +9,13 @@ def main():
     var = sys.argv[1]
 
     # Eseguire file1.py
-    subprocess.run(['python', 'metrics/answer_relevance.py', var])
+    subprocess.run(['python3', 'answer_relevance.py', var])
 
     # Eseguire file2.py
-    subprocess.run(['python', 'metrics/faithfulness.py', var])
+    subprocess.run(['python3', 'faithfulness.py', var])
 
     # Eseguire file3.py
-    subprocess.run(['python', 'metrics/answer_similarity.py', var])
+    subprocess.run(['python3', 'answer_similarity.py', var])
 
 if __name__ == "__main__":
     main()
