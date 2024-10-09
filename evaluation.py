@@ -17,19 +17,11 @@ os.environ["LANGCHAIN_ENDPOINT"]="https://api.smith.langchain.com"
 os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 
 
-# Caricamento dei dati
-filename = "dataset_prova.json"
-with open(filename, "r") as f: # Caricamento dei dati dal file JSON
-    json_data = json.load(f)
-
-ds  = Dataset.from_dict(json_data["data"])
-
 llm = VLLM(
-            model="meta-llama/Meta-Llama-3.1-8B-Instruct",
+            model="HuggingFaceH4/zephyr-7b-beta",
             trust_remote_code= True,
             max_new_tokens=2000,
-            temperature = 1,
-            
+            temperature = 1
         )
 
 # Function to generate question variations from the answer using LangChain VLLM
