@@ -54,10 +54,10 @@ hf = HuggingFaceEmbeddings(
 #dataset_llama_11_stella.json ok
 # dataset_gemma_11_stella.json ok
 #dataset_Llama-11.json ok
-#dataset_Mistral-11.json
+#dataset_Mistral-11.json ok
 # dataset_2024-10-07_20-17-04.json
 #dataset_gemma_11_.json ok
-filename = "dataset_Mistral-11.json"
+filename = "dataset_2024-10-07_20-17-04.json"
 with open(filename, "r") as f: # Caricamento dei dati dal file JSON
     json_data = json.load(f)
 
