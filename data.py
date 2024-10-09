@@ -182,16 +182,16 @@ config = {
             ), #provare senza prompt, e con altro prompt
     },
     "embedder": {
-            "model": "dunzhang/stella_en_400M_v5",
+            "model": "sentence-transformers/all-mpnet-base-v2",
             "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
     },
 
     "vectordb": {
-            "collection_name":"new_vectordb", #"turism_collection", #new_vectordb
-            "persist_directory": "new_vectordb", #"./chroma_langchain_db", #new_vectordb
+            "collection_name": "turism_collection",#"new_vectordb", #"turism_collection", #new_vectordb
+            "persist_directory": "./chroma_langchain_db",#"new_vectordb", #"./chroma_langchain_db", #new_vectordb
             "allow_reset": False,
     },
-    "filename": "dataset_zephyr_11_stella.json"
+    "filename": "dataset_gemma_11_.json"
 }
 
 prompt2 = '''
