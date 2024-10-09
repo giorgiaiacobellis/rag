@@ -58,13 +58,14 @@ def check_statement_relevance(statement, context):
     #Returns True if relevant, False otherwise.
     
     prompt = (f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
-        f"Data il seguente contesto:\n\n{context}\n\n"
-        f"E la seguente affermazione: \n{statement}\n"
-        f"determina se l'affermazione può essere inferita o supportata dal contesto dato. Rispondi 'si' se è supportato, rispondi 'no' altrimenti.<|eot_id|>\n"
-        "<|start_header_id|>assistant<|end_header_id|>\n Risposta: \n\n"
+              f"Dato contesto e affermazione, determina se l'affermazione può essere inferita o supportata dal contesto dato. Rispondi solamente 'si' se è supportato, rispondi solamente 'no' altrimenti. Non aggiungere altre descrizioni o frasi aggiuntive.<|eot_id|>\n"
+              f"<|start_header_id|>user<|end_header_id|>\n"
+              f"Data il seguente contesto:\n\n{context}\n\n"
+              f"E la seguente affermazione: \n{statement}<|eot_id|>\n\n"
+                "<|start_header_id|>assistant<|end_header_id|>\n Risposta: \n\n"
     )
     
-    print("Check statement: " , statement)
+    print("Check statement: " , prompt)
     # Query the LLM to get the answer
     result = llm.invoke(prompt)
     print ("risultato: ", result)
