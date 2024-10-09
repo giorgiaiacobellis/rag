@@ -133,9 +133,9 @@ config_eval = {
 config = {
         "llm": {
             "model": "google/gemma-7b-it",
-            "top_p": 0.2,
+            "top_p": 0.5,
             "max_new_tokens": 1000,
-            "temperature": 0.2,
+            "temperature": 0.5,
             "trust_remote_code":True,  
             "top_k": 10,
             "prompt": utils.get_modified_prompt(prompt1,"mistral")
