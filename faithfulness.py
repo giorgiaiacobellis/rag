@@ -17,22 +17,6 @@ llm = VLLM(
             top_k=data.config_eval["llm"]["top_k"],
             trust_remote_code= True
         )
-# Define a prompt for verifying statement relevance
-prompt_template = """
-Dato il seguente contesto:
-
-\n{context}\n
-
-And the following statement:
-
-{statement}
-
-Determine whether the statement can be inferred or supported by the context. Answer "yes" if it is supported and "no" if it is not.
-
-Answer:
-"""
-# Template for the LLMChain
-prompt = PromptTemplate(template=prompt_template, input_variables=["context", "statement"])
 
 sentence_segmenter= Segmenter(
         language="it",
@@ -64,7 +48,7 @@ def check_statement_relevance(statement, context):
     #print("Check statement: " , prompt)
     # Query the LLM to get the answer
     result = llm.invoke(prompt)
-    print ("risultato: ", result)
+    #print ("risultato: ", result)
     # Check if the LLM answered "yes" or "no"
     return result.strip().lower() == "si"
 
@@ -81,7 +65,7 @@ def calculate_faithfulness_score(context, answer):
         if check_statement_relevance(statement, context):
             relevant_statements += 1
     
-    print("fine calcolo")
+    #print("fine calcolo")
     # Faithfulness score is the ratio of relevant statements to total statements
     faithfulness_score = relevant_statements / total_statements
     return faithfulness_score
@@ -90,7 +74,7 @@ def calculate_faithfulness_score(context, answer):
 if __name__ == "__main__":
     # Define the context and generated answer
     total_score = 0
-    with open("dataset_prova.json", 'r', encoding='utf-8') as f:
+    with open("dataset_gemma_11_stella.json", 'r', encoding='utf-8') as f:
         data = json.load(f)
     
 
