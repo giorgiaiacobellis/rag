@@ -132,7 +132,7 @@ config_eval = {
 
 config = {
         "llm": {
-            "model": "mistralai/Mistral-7B-Instruct-v0.2",
+            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
             "top_p": 0.2,
             "max_new_tokens": 1000,
             "temperature": 0.85,
