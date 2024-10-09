@@ -17,10 +17,9 @@ os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 
 
 llm = VLLM(
-            model="HuggingFaceH4/zephyr-7b-beta",
+            model="meta-llama/Meta-Llama-3.1-8B-Instruct",
             trust_remote_code= True,
-            max_new_tokens=2000,
-            temperature = 1
+            max_new_tokens=4000,
         )
 
 # Function to generate question variations from the answer using LangChain VLLM
@@ -30,15 +29,16 @@ def generate_questions_from_answer(answer):
         f"come se fossero domande per cui questa risposta è corretta. Fai quindi reverse engineering dalla risposta sulla domanda.<|eot_id|>\n"
         f"<|start_header_id|>user<|end_header_id|>"
         f"Ecco la risposta:\n\n{answer}<|eot_id|>\n\n"
-        f"Ora, genera tre(3) domande alternative in italiano e alla fine di ogni domanda inserisci il simbolo & per identificare la fine della domanda."
+        f"Ora, genera tre(3) domande alternative in italiano e non fare nessuna introduzione o spiegazione, restituisci solo le tre domande con ? alla fine.\n"
         "<|start_header_id|>assistant<|end_header_id|>\n\n"
     )
+    
     
     # Generate the questions using the LangChain VLLM model
     result = llm.invoke(prompt)
     print(result)
     #result = llm(prompt)
-    questions = result.strip().split("&")[:3]  
+    questions = result.strip().split("?")[:3]  
     return questions
 
 # Function to calculate cosine similarity
