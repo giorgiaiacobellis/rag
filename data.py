@@ -111,7 +111,7 @@ config4 = {
 }
 
 
-config3 = {
+config_eval = {
     "llm": {
             "model": "HuggingFaceH4/zephyr-7b-beta",
             "top_p": 0.2,
