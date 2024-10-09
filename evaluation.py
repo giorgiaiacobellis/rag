@@ -3,7 +3,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 import data
 from datasets import Dataset
 from langchain_community.llms.vllm import VLLM
-from langchain.llms import VLLM
+from langchain.llms.vllm import VLLM
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import json
@@ -29,7 +29,7 @@ llm = VLLM(
             trust_remote_code= True,
             max_new_tokens=2000,
             temperature = 1,
-            vllm_kwargs={"max_new_tokens": 2000},
+            
         )
 
 # Function to generate question variations from the answer using LangChain VLLM
