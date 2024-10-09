@@ -170,7 +170,7 @@ config2 = {
 
 config = {
         "llm": {
-            "model": "mistralai/Mistral-7B-Instruct-v0.2",
+            "model": "HuggingFaceH4/zephyr-7b-beta",
             "top_p": 1,
             "max_new_tokens": 1000,
             "temperature": 1,
@@ -191,6 +191,7 @@ config = {
             "persist_directory": "new_vectordb", #"./chroma_langchain_db", #new_vectordb
             "allow_reset": False,
     },
+    "filename": "dataset_zephyr_11_stella.json"
 }
 
 prompt2 = '''
