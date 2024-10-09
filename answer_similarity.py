@@ -83,9 +83,6 @@ def answer_similarity_score(filename):
 #dataset_Mistral-11.json ok
 # dataset_2024-10-07_20-17-04.json ok
 #dataset_gemma_11_.json ok
-filename = "dataset_2024-10-07_20-17-04.json"
-
-
 
 def main():
     filename = sys.argv[1]

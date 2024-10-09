@@ -80,14 +80,9 @@ def faithfulness_score(filename):
         score = calculate_faithfulness_score(context, answer)
 
         total_score = total_score + score
-        print(f"Faithfulness score intermedio: {score:.2f}")
+        #print(f"Faithfulness score intermedio: {score:.2f}")
 
     return total_score/len(data['data']['question'])
-
-filename = "dataset_gemma_11_stella.json"
-result = faithfulness_score(filename)
-
-
 
 
 def main():

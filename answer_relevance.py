@@ -29,11 +29,11 @@ llm = VLLM(
 # Function to generate question variations from the answer using LangChain VLLM
 def generate_questions_from_answer(answer):
     prompt = (f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
-        f"Data la seguente risposta, genera tre domande in italiano pertinenti "
+        f"Data la risposta, genera tre domande in italiano pertinenti "
         f"come se fossero domande per cui questa risposta è corretta. Rispondi solo con le tre domande generate separate da &.<|eot_id|>\n"
-        f"<|start_header_id|>user<|end_header_id|>"
+        f"<|start_header_id|>user<|end_header_id|>\n"
         f"Ecco la risposta:\n\n{answer}<|eot_id|>\n\n"
-        "<|start_header_id|>assistant<|end_header_id|>\n\n"
+        "<|start_header_id|>assistant<|end_header_id|>Risposta:\n\n"
     )
     
     # Generate the questions using the LangChain VLLM model
@@ -92,10 +92,6 @@ def answer_relevancy_score(dataset_path):
     print(f"Aanswer relavancy: {total_sim/len(data['data']['question'])}")
 
     return total_sim/len(data['data']['question'])
-
-# Example usage
-dataset_path = 'dataset_gemma_11_stella.json'  # Replace with your dataset file
-result = answer_relevancy_score(dataset_path)
 
 
 def main():
