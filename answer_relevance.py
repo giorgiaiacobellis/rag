@@ -21,7 +21,7 @@ llm = VLLM(
             model=data.config_eval["llm"]["model"],
             top_p=data.config_eval["llm"]["top_p"],
             max_new_tokens=4000,
-            temperature=data.config_eval["llm"]["temperature"],
+            temperature=0.8,
             top_k=data.config_eval["llm"]["top_k"],
             trust_remote_code= True
         )
