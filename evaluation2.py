@@ -6,7 +6,7 @@ import os
 
 from ragas.llms.prompt import Prompt
 from ragas.metrics import LLMContextRecall, Faithfulness, answer_similarity, answer_relevancy
-from ragas import evaluate
+from ragas import RunConfig, evaluate
 import vllm
 from langchain_community.llms.vllm import VLLM
 from ragas.llms import LangchainLLMWrapper
@@ -38,7 +38,9 @@ def create_samples_from_dataset(dataset):
 
 evaluator = VLLM(
             model="meta-llama/Meta-Llama-3.1-8B-Instruct",
-            trust_remote_code= True
+            trust_remote_code= True,
+            max_new_tokens=2000,
+            vllm_kwargs={"max_new_tokens": 2000},
         )
 
 evaluator_llm = LangchainLLMWrapper(evaluator)
