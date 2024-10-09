@@ -132,7 +132,7 @@ config_eval = {
 
 config = {
         "llm": {
-            "model": "HuggingFaceH4/zephyr-7b-beta",
+            "model": "mistralai/Mistral-7B-Instruct-v0.2",
             "top_p": 0.5,
             "max_new_tokens": 1000,
             "temperature": 0.5,
