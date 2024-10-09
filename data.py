@@ -132,10 +132,10 @@ config_eval = {
 
 config = {
         "llm": {
-            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-            "top_p": 0.5,
+            "model": "HuggingFaceH4/zephyr-7b-beta",
+            "top_p": 0.8,
             "max_new_tokens": 1000,
-            "temperature": 0.5,
+            "temperature": 0.8,
             "trust_remote_code":True,  
             "top_k": 10,
             "prompt": utils.get_modified_prompt(prompt1,"mistral")
