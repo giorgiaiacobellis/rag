@@ -17,28 +17,30 @@ os.environ["LANGCHAIN_PROJECT"]="ragTestServer"
 
 
 llm = VLLM(
-            model="HuggingFaceH4/zephyr-7b-beta",
-            trust_remote_code= True,
+            model=data.config_eval["llm"]["model"],
+            top_p=data.config_eval["llm"]["top_p"],
             max_new_tokens=4000,
+            temperature=data.config_eval["llm"]["temperature"],
+            top_k=data.config_eval["llm"]["top_k"],
+            trust_remote_code= True
         )
 
 # Function to generate question variations from the answer using LangChain VLLM
 def generate_questions_from_answer(answer):
-    prompt = (f"<|system<|>\n"
+    prompt = (f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
         f"Data la seguente risposta, genera tre domande pertinenti "
-        f"come se fossero domande per cui questa risposta è corretta. Fai quindi reverse engineering dalla risposta sulla domanda."
-        f"genera tre(3) domande alternative in italiano e non fare nessuna introduzione o spiegazione, restituisci solo le tre domande con ? alla fine.<\s>\n"
-        f"\n<|user|>"
-        f"Ecco la risposta:\n\n{answer}<\s>\n\n"
-        "<|assistant|>\n\n"
+        f"come se fossero domande per cui questa risposta è corretta. Fai quindi reverse engineering dalla risposta sulla domanda.<|eot_id|>\n"
+        f"<|start_header_id|>user<|end_header_id|>"
+        f"Ecco la risposta:\n\n{answer}<|eot_id|>\n\n"
+        f"Ora, genera tre(3) domande alternative in italiano."
+        "<|start_header_id|>assistant<|end_header_id|>\n\n"
     )
     
-
     # Generate the questions using the LangChain VLLM model
     result = llm.invoke(prompt)
     print(result)
     #result = llm(prompt)
-    questions = result.strip().split("?")[:3]  
+    questions = result.strip().split("\n")[:3]  # Assuming the model returns each question on a new line
     return questions
 
 # Function to calculate cosine similarity
@@ -77,7 +79,7 @@ def calculate_answer_relevancy(dataset_path):
             'generated_question_3': generated_questions[2],
             'average_cosine_similarity': avg_cosine_similarity
         })
-
+    
         total_sim = total_sim + avg_cosine_similarity
     # Display the results
     for result in results:
@@ -91,14 +93,3 @@ def calculate_answer_relevancy(dataset_path):
 # Example usage
 dataset_path = 'dataset_gemma_11_stella.json'  # Replace with your dataset file
 calculate_answer_relevancy(dataset_path)
-
-
-'''
-Lista modelli testati come evaluators: 
-- ybelkada/Mixtral-8x7B-Instruct-v0.1-AWQ
-- TheBloke/Llama-2-13B-chat-GGM
-- TheBloke/Llama-2-7b-Chat-AWQ
-- hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4
-- meta-llama/Llama-2-13b-hf
-- TheBloke/LLaMA2-13B-Tiefighter-AWQ"
-'''
