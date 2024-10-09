@@ -3,7 +3,6 @@ from langchain_huggingface import HuggingFaceEmbeddings
 import data
 from datasets import Dataset
 from langchain_community.llms.vllm import VLLM
-from langchain.llms.vllm import VLLM
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import json
@@ -59,6 +58,7 @@ def calculate_answer_relevancy(dataset_path):
         data = json.load(f)
     
     results = []
+    total_sim = 0
     for i, item in enumerate(data['data']['question']):
         original_question = item
         answer = data['data']['answer'][i]
