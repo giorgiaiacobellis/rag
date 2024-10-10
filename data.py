@@ -135,7 +135,7 @@ config = {
             "model": "HuggingFaceH4/zephyr-7b-beta",
             "top_p": 1,
             "max_new_tokens": 1000,
-            "temperature": 0.3,
+            "temperature": 0.5,
             "trust_remote_code":True,  
             "top_k": 10,
             "prompt": utils.get_modified_prompt(prompt1,"mistral")
