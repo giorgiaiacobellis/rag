@@ -11,10 +11,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 os.environ["OPENAI_API_KEY"] = ("sk-rf-yLyTntiSYVkhQm8O5bgiGQn1GAYwlPngB80vlNsT3BlbkFJtntowM_ykl6TVjFdZalhu6MuYHeBdSMh1OJmtqbH4A")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
+#os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = "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"
-os.environ["LANGCHAIN_ENDPOINT"]="https://api.smith.langchain.com"
-os.environ["LANGCHAIN_PROJECT"]="ragcontextRel"
+#os.environ["LANGCHAIN_ENDPOINT"]="https://api.smith.langchain.com"
+#os.environ["LANGCHAIN_PROJECT"]="ragcontextRel"
 
 
 llm = VLLM(
@@ -59,7 +59,7 @@ def check_statement_relevance(statement,gt):
 
 def calculate_answer_correctness_score(answer, gt):
 
-    statements = split_statements(answer)
+    ''' statements = split_statements(answer)
     total_statements = len(statements)
     if total_statements == 0:
         return 0  
@@ -70,6 +70,10 @@ def calculate_answer_correctness_score(answer, gt):
             relevant_statements += 1
     
     correctness = relevant_statements/total_statements
+    '''
+    correctness = 0
+    if check_statement_relevance(answer,gt):
+        correctness
     return correctness
 
 
@@ -83,8 +87,8 @@ def answer_correctness_score(filename):
         gt = data['data']['ground_truth'][i]
         
         # Calculate the correctness score
-        score = calculate_answer_correctness_score(answer, gt)
-        total_score = total_score + score
+        if check_statement_relevance(answer, gt):
+            total_score = total_score + 1
 
     return total_score/len(data['data']['question'])
 
