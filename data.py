@@ -141,7 +141,7 @@ config = {
             "prompt": utils.get_modified_prompt(prompt1,"mistral")
     },
     "embedder": {
-            "model":"sentence-transformers/all-mpnet-base-v2",  # "dunzhang/stella_en_400M_v5",  #"sentence-transformers/all-mpnet-base-v2",
+            "model": "dunzhang/stella_en_400M_v5",  #"sentence-transformers/all-mpnet-base-v2",
             "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
     },
 
