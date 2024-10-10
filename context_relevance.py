@@ -67,7 +67,8 @@ def calculate_context_relevance_score(context, question):
         if check_statement_relevance(question,statement):
             relevant_statements += 1
     
-    relevance = relevant_statements/  total_statements
+    relevance = relevant_statements/total_statements
+    print("relevance",relevance)
     return relevance
 
 
