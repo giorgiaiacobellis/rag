@@ -54,7 +54,7 @@ def check_statement_relevance(statement,gt):
     )
     
     result = llm.invoke(prompt)
-    return result.strip().lower() == "Corretto" 
+    return result.strip().lower() == "corretto" 
 
 
 def calculate_answer_correctness_score(answer, gt):

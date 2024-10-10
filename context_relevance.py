@@ -52,7 +52,7 @@ def check_statement_relevance(question,statement):
     )
     
     result = llm.invoke(prompt)
-    return result.strip().lower() == "Rilevante" 
+    return result.strip().lower() == "rilevante" 
 
 
 def calculate_context_relevance_score(context, question):
