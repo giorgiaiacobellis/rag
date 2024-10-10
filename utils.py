@@ -63,12 +63,6 @@ def get_modified_prompt(system: str, model_name: str) -> str:
 
     elif "meta" in model_name.lower():
         return f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n{system}<|eot_id|>\n<|start_header_id|>user<|end_header_id|>\n""Context {context}\n Question: {input}<|eot_id|>""<|start_header_id|>assistant<|end_header_id|>\n\n"
-
-    elif "c4ai" in model_name.lower():
-        return f"<BOS_TOKEN><|START_OF_TURN_TOKEN|><|USER_TOKEN|>{system}<|END_OF_TURN_TOKEN|><|START_OF_TURN_TOKEN|><|CHATBOT_TOKEN|>"
-
-    elif "jamba" in model_name.lower():
-        return f"{system}\n""{context}"
     
     elif "mistral" in model_name.lower():
          return f"<s>[INST]{system}[/INST]<\s>\n" "Question:{input}\n Context:{context}" "Answer: [/INST]"

@@ -132,7 +132,7 @@ config_eval = {
 
 config = {
         "llm": {
-            "model": "google/gemma-7b-it",
+            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
             "top_p": 1,
             "max_new_tokens": 1000,
             "temperature": 0.3,
