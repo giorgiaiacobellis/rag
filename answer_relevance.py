@@ -72,21 +72,6 @@ def answer_relevancy_score(dataset_path):
         avg_cosine_similarity = calculate_cosine_similarity(original_question, generated_questions)
         total_sim = total_sim + avg_cosine_similarity
 
-        ''' # Store the result
-        results.append({
-            'question': original_question,
-            'generated_question_1': generated_questions[0],
-            'generated_question_2': generated_questions[1],
-            'generated_question_3': generated_questions[2],
-            'average_cosine_similarity': avg_cosine_similarity
-        })
-
-    for result in results:
-        print(f"Question: {result['question']}")
-        print(f"Generated Questions: {result['generated_question_1']}, {result['generated_question_2']}, {result['generated_question_3']}")
-        print(f"Average Cosine Similarity: {result['average_cosine_similarity']}\n")  
-    '''
-
     return total_sim/len(data['data']['question'])
 
 
@@ -95,6 +80,9 @@ def main():
     print(f"Test file: {filename}")
     result = answer_relevancy_score(filename)
     print(f"Answer relevancy score totale: {result}")
+    data = {"test": filename, "relevance_score": result}
+    with open("metrics.json", "w") as f:
+        json.dump(data, f)
 
 if __name__ == "__main__":
     main()

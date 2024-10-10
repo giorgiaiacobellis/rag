@@ -90,6 +90,8 @@ def main():
     print(f"Test file: {filename}")
     result = answer_similarity_score(filename)
     print(f"Answer similarity score totale: {result}")
-
+    data = {"test": filename, "similarity_score": result}
+    with open("metrics.json", "w") as f:
+        json.dump(data, f)
 if __name__ == "__main__":
     main()
