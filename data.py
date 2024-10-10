@@ -132,10 +132,10 @@ config_eval = {
 
 config = {
         "llm": {
-            "model": "google/gemma-7b-it",
-            "top_p": 0.2,
+            "model": "mistralai/Mistral-7B-Instruct-v0.2",
+            "top_p": 1,
             "max_new_tokens": 1000,
-            "temperature": 0.85,
+            "temperature": 0.3,
             "trust_remote_code":True,  
             "top_k": 10,
             "prompt": utils.get_modified_prompt(prompt1,"mistral")
@@ -146,8 +146,8 @@ config = {
     },
 
     "vectordb": {
-            "collection_name": "turism_collection",#"new_vectordb",
-            "persist_directory": "./chroma_langchain_db",#"./new_vectordb",
+            "collection_name":"new_vectordb", #"turism_collection",#
+            "persist_directory":"./new_vectordb", #"./chroma_langchain_db",#
             "allow_reset": False,
     },
     
