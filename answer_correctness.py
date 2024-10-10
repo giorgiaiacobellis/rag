@@ -55,18 +55,6 @@ def check_statement_relevance(statement,gt):
 
 def calculate_answer_correctness_score(answer, gt):
 
-    ''' statements = split_statements(answer)
-    total_statements = len(statements)
-    if total_statements == 0:
-        return 0  
-
-    relevant_statements = 0
-    for statement in statements:
-        if check_statement_relevance(statement,gt):
-            relevant_statements += 1
-    
-    correctness = relevant_statements/total_statements
-    '''
     correctness = 0
     if check_statement_relevance(answer,gt):
         correctness
