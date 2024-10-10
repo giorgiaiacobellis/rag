@@ -132,10 +132,10 @@ config_eval = {
 
 config = {
         "llm": {
-            "model": "HuggingFaceH4/zephyr-7b-beta",
+            "model": "google/gemma-7b-it",
             "top_p": 1,
             "max_new_tokens": 1000,
-            "temperature": 0.5,
+            "temperature": 0.3,
             "trust_remote_code":True,  
             "top_k": 10,
             "prompt": utils.get_modified_prompt(prompt1,"mistral")
