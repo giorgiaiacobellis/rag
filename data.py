@@ -132,7 +132,7 @@ config_eval = {
 
 config = {
         "llm": {
-            "model": "google/gemma-7b-it",
+            "model": "HuggingFaceH4/zephyr-7b-beta",
             "top_p": 1,
             "max_new_tokens": 1000,
             "temperature": 0.3,
@@ -141,13 +141,13 @@ config = {
             "prompt": utils.get_modified_prompt(prompt1,"mistral")
     },
     "embedder": {
-            "model": "dunzhang/stella_en_400M_v5",  #"sentence-transformers/all-mpnet-base-v2",
+            "model":"sentence-transformers/all-mpnet-base-v2", #"dunzhang/stella_en_400M_v5",  #"sentence-transformers/all-mpnet-base-v2",
             "model_kwargs": {"trust_remote_code": True, "device": "cuda"},
     },
 
     "vectordb": {
-            "collection_name":"new_vectordb", #"turism_collection",#
-            "persist_directory":"./new_vectordb", #"./chroma_langchain_db",#
+            "collection_name":"turism_collection",#"new_vectordb",
+            "persist_directory": "./chroma_langchain_db",#"./new_vectordb",
             "allow_reset": False,
     },
     
