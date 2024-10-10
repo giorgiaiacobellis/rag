@@ -1,9 +1,9 @@
 import json
-import re
 import data
 from langchain_community.llms.vllm import VLLM
 import sys
 from pysbd import Segmenter
+
 
 llm = VLLM(
             model=data.config_eval["llm"]["model"],

@@ -12,10 +12,7 @@ from ragas.llms import LangchainLLMWrapper
 
 os.environ["OPENAI_API_KEY"] = ("sk-proj-aVtM"+"47AoCct6IkxYRd7kUdwAQSCO8DmcZ2Ht88YqVKmOsRUFGk6fT0aVQeAdT4M9j8aDv8pFiUT3BlbkFJ4EjTuuQ"+"_MbmTWCik4mPzQ9f8YKQcMWlcBu1boiwsnLSqPSDB2HGjuwbUDbUPx6lBFK85uYElkA")
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = ("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")
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_API_KEY"] = ("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")
-os.environ["LANGCHAIN_ENDPOINT"]="https://api.smith.langchain.com"
-os.environ["LANGCHAIN_PROJECT"]="RagasTest"
+os.environ["LANGCHAIN_API_KEY"] = ("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")
 
 
 def create_samples_from_dataset(dataset):
