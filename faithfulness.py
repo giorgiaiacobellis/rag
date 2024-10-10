@@ -7,10 +7,10 @@ from pysbd import Segmenter
 
 llm = VLLM(
             model=data.config_eval["llm"]["model"],
-            top_p=data.config_eval["llm"]["top_p"],
+            top_p=data.config_eval["llm"]["top_p"], #1
             max_new_tokens=4000,
-            temperature=data.config_eval["llm"]["temperature"],
-            top_k=data.config_eval["llm"]["top_k"],
+            temperature=data.config_eval["llm"]["temperature"], #0.3
+            top_k=data.config_eval["llm"]["top_k"], #10
             trust_remote_code= True
         )
 
