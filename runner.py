@@ -9,7 +9,7 @@ def main():
     var = sys.argv[1]
 
     # Eseguire file1.py
-    subprocess.run(['python3', 'langchain_pipeline.py', var])
+    #subprocess.run(['python3', 'langchain_pipeline.py', var])
 
     # Eseguire file1.py
     subprocess.run(['python3', 'answer_relevance.py', var])

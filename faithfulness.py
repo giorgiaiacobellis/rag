@@ -91,8 +91,16 @@ def main():
     result = faithfulness_score(filename)
     print(f"Faithfulness score totale: {result}")
     data = {"test": filename, "faithfulness_score": result}
-    with open("metrics.json", "w") as f:
-        json.dump(data, f)
-        
+    try:
+        with open("metrics_scores.json", "r") as f:
+            js = json.load(f)
+    except FileNotFoundError:
+        js = [] 
+
+    js.append(data)
+
+    with open("metrics_scores.json", "w") as f:
+        json.dump(js, f, indent=4)
+
 if __name__ == "__main__":
     main()
