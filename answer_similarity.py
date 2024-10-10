@@ -38,6 +38,7 @@ evaluator = VLLM(
             model="meta-llama/Meta-Llama-3.1-8B-Instruct",
             trust_remote_code= True,
             max_new_tokens=2000,
+            temperature=0.3, #verificare
             #n=1
         )
 
