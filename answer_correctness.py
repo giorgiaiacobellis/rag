@@ -41,8 +41,8 @@ def split_statements(context):
 def check_statement_relevance(statement,gt):
     prompt = (f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n"
         f"Dato un testo generato come risposta e il riferimento ('ground truth'), confronta la RISPOSTA generata con la risposta di RIFERIMENTO."
-        f"Valuta se la risposta generata trasmette correttamente lo stesso significato, anche se la formulazione è diversa o se lo è solo in parte."
-        f"Restituisci una di queste etichette: 'Corretto' o 'Errato'. Non aggiungere altre informazioni.<|eot_id|>\n"
+        f"Valuta se la risposta generata trasmette correttamente lo stesso significato, anche se la formulazione è diversa. Restituisci una di queste etichette: 'Corretto' o 'Errato'."
+        f"Non aggiungere altre informazioni.<|eot_id|>\n"
         f"<|start_header_id|>user<|end_header_id|>\n"
         f"Ecco la risposta:\n\n{statement}<|eot_id|>\n\n"
         f"Ecco il riferimento:\n\n{gt}<|eot_id|>\n\n"
@@ -50,14 +50,22 @@ def check_statement_relevance(statement,gt):
     )
     
     result = llm.invoke(prompt)
-    return result.strip().lower() == "corretto" 
+    return result.strip().lower() == "Corretto" 
 
 
 def calculate_answer_correctness_score(answer, gt):
 
-    correctness = 0
-    if check_statement_relevance(answer,gt):
-        correctness
+    statements = split_statements(answer)
+    total_statements = len(statements)
+    if total_statements == 0:
+        return 0  
+
+    relevant_statements = 0
+    for statement in statements:
+        if check_statement_relevance(statement,gt):
+            relevant_statements += 1
+    
+    correctness = relevant_statements/total_statements
     return correctness
 
 
@@ -71,8 +79,8 @@ def answer_correctness_score(filename):
         gt = data['data']['ground_truth'][i]
         
         # Calculate the correctness score
-        if check_statement_relevance(answer, gt):
-            total_score = total_score + 1
+        score = calculate_answer_correctness_score(answer, gt)
+        total_score = total_score + score
 
     return total_score/len(data['data']['question'])
 
